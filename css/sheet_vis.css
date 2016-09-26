@@ -1,0 +1,13 @@
+body, html {
+  font-family: sans-serif;
+}
+#visualization { width: 90%; float: right; }
+#filters .filter {
+  width: 9%;
+  border-width: 1px;
+  border-style: solid;
+  margin: 0.25em 0;
+  text-align: center;
+  border-radius: 3px;
+}
+.vis-item.hidden { display: none; }
