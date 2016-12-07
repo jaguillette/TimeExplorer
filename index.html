@@ -4,30 +4,77 @@
   <title>Timeline | Basic demo</title>
 
   <style id="docstyle" type="text/css">
+  .vis-item.vis-background {
+    opacity: 0.6;
+  }
   </style>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.4/handlebars.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 
   <script type="text/javascript" src="js/vis.js"></script>
   <script type="text/javascript" src="js/palette.js"></script>
-  <script type="text/javascript" src="js/sheet_vis.js"></script>
+  <script type="text/javascript" src="js/fabulousTime.js"></script>
 
   <script id="item-template" type="text/x-handlebars-template">
-    <a href="{{link}}">{{title}}</a>
+    {{headline}}
+  </script>
+
+  <script id="item-data-template" type="text/x-handlebars-template">
+    <div>
+      <h1>{{headline}}</h1>
+      <p>{{{text}}}</p>
+    </div>
+
   </script>
 
   <link rel="stylesheet" type="text/css" href="css/vis.css"/>
   <link rel="stylesheet" type="text/css" href="css/sheet_vis.css"/>
+  <link rel="stylesheet" type="text/css" href="css/hint.min.css"/>
 </head>
 <body>
+  <div id="item-data"></div>
+
   <div id="visualization"></div>
 
   <div id="filters">
   </div>
 
   <script type="text/javascript">
+    var sheet_ids = ["an-id","another-id"];
+    test = new FabulousTime(sheet_ids,"your-api-key");
+
+    $(document).ready(function() {
+      var container = document.getElementById('visualization');
+      // create a handlebars template
+      var source = document.getElementById('item-template').innerHTML;
+      var template = Handlebars.compile(source);
+      var options = {
+        template: template,
+        maxHeight: 300,
+        dataAttributes: ['text','media']
+      };
+      $("#item-data").css('max-height',$(window).height()-options['maxHeight']);
+
+      var item_data_source = $('#item-data-template').html();
+      var item_data_template = Handlebars.compile(item_data_source);
+
+      test.promise.done(function() {
+        container = document.getElementById('visualization');
+        var timeline = new vis.Timeline(container);
+        var the_items = new vis.DataSet(test.items);
+        // console.log(the_items);
+        timeline.setItems(the_items);
+        timeline.setOptions(options);
+        timeline.on('select',function(properties) {
+          $('#item-data').empty();
+          if (properties.items.length > 0){
+            var contents = item_data_template(the_items._getItem(properties.items[0]));
+            $('#item-data').append(contents);
+          }
+        })
+      });
+    });
   </script>
 </body>
 </html>

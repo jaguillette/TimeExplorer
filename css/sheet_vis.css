@@ -1,7 +1,18 @@
 body, html {
   font-family: sans-serif;
+  margin: 0;
 }
-#visualization { width: 90%; float: right; }
+#item-data {
+  width: 90%;
+  float: right;
+  overflow-y: scroll;
+}
+#visualization {
+  width: 90%;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
 #filters .filter {
   width: 9%;
   border-width: 1px;
