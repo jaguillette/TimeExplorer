@@ -13,8 +13,18 @@ body, html {
   bottom: 0;
   right: 0;
 }
-#filters .filter {
+#filters {
   width: 9%;
+}
+.filter-group {
+  border-width: 2px;
+  border-style: solid;
+  padding: 2px;
+  margin: 10px 2px;
+  border-radius: 3px;
+}
+#filters .filter,
+#filters .meta-filter {
   border-width: 1px;
   border-style: solid;
   margin: 0.25em 0;

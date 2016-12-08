@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-  <title>Timeline | Basic demo</title>
+  <title>Timeline | Aggregated Timeline</title>
 
   <style id="docstyle" type="text/css">
   .vis-item.vis-background {
@@ -41,11 +41,13 @@
   </div>
 
   <script type="text/javascript">
-    var sheet_ids = ["an-id","another-id"];
-    test = new FabulousTime(sheet_ids,"your-api-key");
+    var container = document.getElementById('visualization');
+    var timeline = new vis.Timeline(container);
+    // var sheet_ids = ["1yf7Xx9od6cCPzo9fJL-73-5sglJy_rCz7Bx8lWJrNaE","1LFySREE0pLJJ-QD78gyLOBNNcQFczLUUA7nHO8wkW8k"];
+    var sheet_ids = ["15odXhht9P2DVd3JckPlIy17_ItrgpEAReS57Zk5XzIw"];
+    test = new FabulousTime(sheet_ids,"AIzaSyDkbD0QpwfTfpMSWBE4get0Mqt17uV4mv0",timeline);
 
     $(document).ready(function() {
-      var container = document.getElementById('visualization');
       // create a handlebars template
       var source = document.getElementById('item-template').innerHTML;
       var template = Handlebars.compile(source);
@@ -61,7 +63,6 @@
 
       test.promise.done(function() {
         container = document.getElementById('visualization');
-        var timeline = new vis.Timeline(container);
         var the_items = new vis.DataSet(test.items);
         // console.log(the_items);
         timeline.setItems(the_items);

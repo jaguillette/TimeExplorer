@@ -24,8 +24,9 @@ class FabulousTime {
    * @param {array} sheet_ids - Array with Google Sheet ids as strings. If
    * sheet_ids is a string, it is assumed to be a single sheet ID
    * @param {string} api_key - Google Sheets API key.
+   * @param {vis.Timeline} timeline - vis.js timeline object to contain the items
    */
-  constructor(sheet_ids, api_key) {
+  constructor(sheet_ids, api_key, timeline) {
     if (typeof(sheet_ids) == 'string') {
       this.sheet_ids = [sheet_ids];
     } else {
@@ -33,12 +34,15 @@ class FabulousTime {
     }
     this.api_key = api_key;
     this.sheet_data = [];
+    this.timeline = timeline;
 
     this.promise = this.get_all_sheet_data();
 
     self = this;
     this.promise.done(function() {
       self.items = self.set_items(self, self.sheet_data);
+      self.groups = self.set_groups(self);
+      self.tags = self.set_tags(self);
     });
   }
 
@@ -142,8 +146,156 @@ class FabulousTime {
       item['media_thumbnail'] = sheet_data[i]['Media Thumbnail'];
       item['sheet_type']      = sheet_data[i]['Type'];
       item['sheet_group']     = sheet_data[i]['Group'];
+      if ('Tags' in sheet_data[i]) {
+        var tags = sheet_data[i]['Tags'].split(',').map(function(x) {
+          return x.trim();
+        });
+        item['tags'] = tags;
+      }
       if (item['start']) { items.push(item); }
     }
     return items;
+  }
+
+  /**
+   * Uses groups from Timeline JS to color the timeline.
+   */
+  set_groups(self) {
+    var groups = [];
+    for (var i = 0; i < self.items.length; i++) {
+      if (self.items[i]['sheet_group']) {
+        var slug = self.slugify(self.items[i]['sheet_group']);
+        if ($.inArray(slug,groups) == -1) {
+          groups.push(slug);
+        }
+        self.items[i]['className'] = slug;
+      } else {
+        self.items[i]['className'] = "Ungrouped"
+        if ($.inArray('Ungrouped',groups) == -1) {
+          groups.push("Ungrouped");
+        }
+      }
+    }
+    groups.sort();
+    self.setup_group_ui(self, groups);
+    return groups;
+  }
+
+  /**
+   * Sets up color scheme and filters for groups.
+   */
+  setup_group_ui(self, groups) {
+    self.setup_filters(self,groups,"Groups");
+    var scheme = palette.listSchemes('rainbow')[0];
+    var colors = scheme.apply(scheme, [groups.length, 0.3]);
+    var darkColors = scheme.apply(scheme, [groups.length, 0.8]);
+    var theStyle = $("#docstyle");
+    for (var i = 0; i < groups.length; i++) {
+      var slug = self.slugify(groups[i]);
+      var style = `.${slug}.vis-item,\
+      .${slug}.filter {\
+        background-color: #${colors[i]};\
+        border-color: #${darkColors[i]};\
+      }\n`;
+      theStyle.append(style);
+    }
+  }
+
+  /**
+   * Sets up tags to be used as filters
+   */
+  set_tags(self) {
+     var tags = [];
+     for (var i = 0; i < self.items.length; i++) {
+       if (self.items[i]['tags']) {
+         var these_tags = self.items[i]['tags'].map(self.slugify);
+         tags = tags.concat(these_tags);
+         if (self.items[i]['className']) {
+           self.items[i]['className'] = self.items[i]['className'] + ' ' + these_tags.join(' ');
+         } else {
+           self.items[i]['className'] = these_tags.join(' ');
+         }
+       }
+     }
+     tags = tags.filter( self.onlyUnique );
+     tags.sort();
+     self.setup_filters(self,tags,"Tags");
+     return tags;
+  }
+
+  /**
+   *
+   */
+  setup_filters(self, filter_names, filter_class) {
+    if (filter_names.length > 0) {
+      var html = `<div class="${filter_class} filter-group">`;
+      for (var i = 0; i < filter_names.length; i++) {
+        var slug = self.slugify(filter_names[i]);
+        var name = filter_names[i];
+        var HTMLtemplate = `<div class="filter ${slug} ${filter_class}"><label for="${slug}">${name}</label>\
+        <input id="${slug}" type="checkbox" class="tagFilter" value="${slug}" checked></div>`;
+        var CSSTemplate = `<style id="${slug}-style">.vis-item.${slug}{display:inline-block !important;}</style>`
+        html += HTMLtemplate;
+        $("head").append(CSSTemplate);
+      }
+      var all_name = "All " + filter_class;
+      var all_slug = self.slugify(all_name);
+      var template = `<div class="meta-filter ${all_slug} ${filter_class}"><label for="${all_slug}">${all_name}</label>\
+      <input id="${all_slug}" type="checkbox" class="tagFilter" value="${all_slug}" checked></input></div>`;
+      html += template;
+      html += "</div>";
+      $("#filters").append(html);
+      $('.filter input').on('click',{self:self},self.filter_items);
+      $(`.${all_slug} input`).on('click',function() {
+        var is_checked = $(this).prop('checked');
+        var selector = `.filter.${filter_class} input`;
+        $(selector).each(function() {
+          if ($(this).prop('checked')!=is_checked) {
+            $(this).click();
+          }
+        });
+        // .prop('checked',$(this).prop('checked'));
+        // self.filter_items();
+      });
+    }
+  }
+
+  /**
+   * This function runs as an on click event on filter checkboxes. It changes
+   * the style blocks that determine how timeline items are displayed, then
+   * redraws the timeline based on the new display settings.
+   * @param {event} event - The event that triggers the function. This should
+   * have a self parameter identified, which should have the timeline object to
+   * be redrawn.
+   */
+  filter_items(event) {
+    var slug = $(this).attr('id');
+    var style_block = $(`#${slug}-style`);
+    style_block.empty();
+    if ($(this).prop('checked')) {
+      style_block.append(`.vis-item.${slug}{display:inline-block !important;}`)
+    } else {
+      style_block.append(`.vis-item.${slug}{display:none;}`);
+    }
+    event.data.self.timeline.redraw();
+  }
+
+  /**
+   * Takes a text string, prepares it to be used as an identifying slug
+   * Returns slugified string
+   * @param {string} text - the text to be made into a slug.
+   */
+  slugify(text) {
+    var output = text.trim()
+    output = output.replace(' ','_')
+    return output
+  }
+
+  /**
+   * Used as a filter for an array, this function returns only the unique values
+   * of that array.
+   */
+  onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
   }
 }
