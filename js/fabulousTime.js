@@ -146,6 +146,11 @@ class FabulousTime {
       item['media_thumbnail'] = sheet_data[i]['Media Thumbnail'];
       item['sheet_type']      = sheet_data[i]['Type'];
       item['sheet_group']     = sheet_data[i]['Group'];
+      if (item['end'] && item['start'] && item['end']-item['start']==0) {
+        // If there is both a start date and an end date, but they are equal,
+        // set the end date to null to make it display as a point.
+        item['end'] = null;
+      }
       if ('Tags' in sheet_data[i]) {
         var tags = sheet_data[i]['Tags'].split(',').map(function(x) {
           return x.trim();
