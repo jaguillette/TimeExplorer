@@ -11,24 +11,30 @@ body, html {
 #item-data {
   width: 90%;
   float: right;
-  overflow-y: scroll;
   position: relative;
   height: 600px;
 }
 #item-media {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  right: 0;
+  float: right;
   height: 600px;
+  overflow-y: scroll;
+}
+.tl-media-content {
+  max-height: 400px;
+  text-align: center;
+  margin-top: 25px;
+  margin-bottom: 5px;
+}
+.tl-caption, .tl-credit {
+  margin: auto;
 }
 #item-media img {
-  width: 100%;
+  max-height: inherit;
+  max-width: 100%;
 }
 #item-text {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+  overflow-y: scroll;
+  height: inherit;
 }
 #visualization {
   width: 90%;
@@ -65,5 +71,5 @@ body, html {
 
 .cols-2 {
   display: inline-block;
-  width: 49%;
+  width: 50%;
 }
