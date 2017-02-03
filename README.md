@@ -28,3 +28,8 @@ entering the urls for all of them into the first column of a Google Sheet. If
 you select "Multiple Timeline Sheets", then paste the sharing link to that
 aggregating spreadsheet into the next window, all of the entries from those
 timelines will be added to the visualization for you to browse.
+
+Once you've set up your spreadsheet, you can bookmark it like you would any
+other website. If you're loading from a file, that bookmark will only work on
+your computer, but if you're serving this tool from a web server, you can link
+to your timeline from anywhere.
