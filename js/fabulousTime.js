@@ -12,6 +12,22 @@ function zip_arrays(keys, values) {
 }
 
 /**
+ * Retrieves HTTP GET parameters from url, returns them in an associative array
+ */
+function get_url_params() {
+  var $_GET = {};
+
+  document.location.search.replace(/\??(?:([^=]+)=([^&]*)&?)/g, function () {
+      function decode(s) {
+          return decodeURIComponent(s.split("+").join(" "));
+      }
+
+      $_GET[decode(arguments[1])] = decode(arguments[2]);
+  });
+  return $_GET;
+}
+
+/**
  * Class loading data from one or more Google Sheets formatted for use in Knight
  * Lab's Timeline JS. Prepares data for use in visjs timeline. Uses jquery.
  * Data is loaded asynchronously, so should be loaded in FabulousTime.promise.done()
@@ -26,24 +42,117 @@ class FabulousTime {
    * @param {string} api_key - Google Sheets API key.
    * @param {vis.Timeline} timeline - vis.js timeline object to contain the items
    */
-  constructor(sheet_ids, api_key, timeline) {
-    if (typeof(sheet_ids) == 'string') {
-      this.sheet_ids = [sheet_ids];
-    } else {
-      this.sheet_ids = sheet_ids;
-    }
+  constructor(api_key, timeline, sheet_ids=null) {
     this.api_key = api_key;
     this.sheet_data = [];
     this.timeline = timeline;
 
-    this.promise = this.get_all_sheet_data();
+    var self = this;
 
-    self = this;
-    this.promise.done(function() {
+    this.getting_sheet_ids = this.get_sheet_ids(self,sheet_ids);
+
+    this.getting_sheet_data = this.getting_sheet_ids.then(function() {
+      return self.get_all_sheet_data();
+    });
+
+    self.ready = self.getting_sheet_data.then(function() {
       self.items = self.set_items(self, self.sheet_data);
       self.groups = self.set_groups(self);
       self.tags = self.set_tags(self);
     });
+  }
+
+  /**
+   * Get sheet ids from parameters, or from HTTP GET pointing to spreadsheets
+   * @param {scope} self - The scope on which this function will be applied.
+   * @param {array|string} - IDs for Google Spreadsheets given as parameters. If
+   * none are given, the function will look to a url parameter, tl_list, for the
+   * id of a master spreadsheet, and pull sheet urls from there.
+   */
+  get_sheet_ids(self,sheet_ids=null) {
+    var dfd = $.Deferred();
+    if (typeof(sheet_ids)=='string') {
+      self.sheet_ids = [sheet_ids];
+      dfd.resolve();
+    } else if (typeof(sheet_ids)=='array') {
+      self.sheet_ids = sheet_ids;
+      dfd.resolve();
+    } else {
+      var pattern = /([a-zA-Z0-9_-]{44})/g
+      var master_id_sheet = get_url_params()['tl_list'];
+      var single_sheet_id = get_url_params()['tl_sheet'];
+      if (master_id_sheet != null) {
+        var sheet_ids = [];
+        $.getJSON("https://sheets.googleapis.com/v4/spreadsheets/"+master_id_sheet+"/values/A:A?key="+self.api_key).done(function(data) {
+          for (var i = 0; i < data.values.length; i++) {
+            var url = data.values[i][0];
+            var the_id = url.match(pattern)[0]
+            sheet_ids.push(the_id);
+          }
+          self.sheet_ids = sheet_ids;
+          dfd.resolve();
+        });
+      } else if (single_sheet_id != null) {
+        self.sheet_ids = [single_sheet_id];
+        dfd.resolve();
+      } else {
+        $( function() {
+          var baseurl = "http://" + window.location.hostname + window.location.pathname;
+          var tl_setup = $('#timeline-setup');
+          function redirect_multi() {
+            var list_sheet_id = $('#multi-sheet-url').val().match(pattern);
+            window.location.replace(baseurl+'?tl_list='+list_sheet_id);
+          }
+          function redirect_single() {
+            var single_sheet_id = $('#single-sheet-url').val().match(pattern);
+            window.location.replace(baseurl+'?tl_sheet='+single_sheet_id);
+          }
+          var tl_single_entry = $('#timeline-single-entry').dialog({
+            autoOpen: false,
+            height: 300,
+            width: 300,
+            modal: true,
+            buttons: {
+              "Create Timeline": redirect_single
+            }
+          });
+          var tl_multi_entry = $('#timeline-multi-entry').dialog({
+            autoOpen: false,
+            height: 300,
+            width: 300,
+            modal: true,
+            buttons: {
+              "Create Timeline": redirect_multi
+            }
+          });
+          tl_setup.dialog({
+            resizable: false,
+            height: "auto",
+            width: 400,
+            modal: true,
+            buttons: {
+              "Single Timeline Sheet": function() {
+                tl_single_entry.dialog('open');
+                $(this).dialog("close");
+              },
+              "Multiple Timeline Sheets": function() {
+                $(this).dialog("close");
+                tl_multi_entry.dialog('open');
+              }
+            }
+          });
+          tl_multi_entry.find("form").on("submit", function(event) {
+            event.preventDefault();
+            redirect_multi();
+          });
+          tl_single_entry.find("form").on("submit", function(event) {
+            event.preventDefault();
+            redirect_single();
+          });
+        });
+      }
+    }
+    return dfd.promise();
   }
 
   /**
@@ -140,10 +249,11 @@ class FabulousTime {
       item['display_date']    = sheet_data[i]['Display Date']
       item['headline']        = sheet_data[i]['Headline'];
       item['text']            = sheet_data[i]['Text'];
-      item['media']           = sheet_data[i]['Media'];
-      item['media_credit']    = sheet_data[i]['Media Credit'];
-      item['media_caption']   = sheet_data[i]['Media Caption'];
-      item['media_thumbnail'] = sheet_data[i]['Media Thumbnail'];
+      item['media']           = {};
+      item['media']['url']       = sheet_data[i]['Media'];
+      item['media']['credit']    = sheet_data[i]['Media Credit'];
+      item['media']['caption']   = sheet_data[i]['Media Caption'];
+      item['media']['thumbnail'] = sheet_data[i]['Media Thumbnail'];
       item['sheet_type']      = sheet_data[i]['Type'];
       item['sheet_group']     = sheet_data[i]['Group'];
       if (item['end'] && item['start'] && item['end']-item['start']==0) {

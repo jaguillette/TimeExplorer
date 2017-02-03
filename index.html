@@ -15,13 +15,21 @@
   <script type="text/javascript" src="js/vis.js"></script>
   <script type="text/javascript" src="js/palette.js"></script>
   <script type="text/javascript" src="js/fabulousTime.js"></script>
+  <script type="text/javascript" src="js/timeline.js"></script>
+
+  <!-- JQuery UI -->
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+  <script type="text/javascript">
+  </script>
 
   <script id="item-template" type="text/x-handlebars-template">
     {{headline}}
   </script>
 
   <script id="item-data-template" type="text/x-handlebars-template">
-    <div>
+    <div id="item-text">
       <h1>{{headline}}</h1>
       <p>{{{text}}}</p>
     </div>
@@ -30,22 +38,52 @@
 
   <link rel="stylesheet" type="text/css" href="css/vis.css"/>
   <link rel="stylesheet" type="text/css" href="css/sheet_vis.css"/>
-  <link rel="stylesheet" type="text/css" href="css/hint.min.css"/>
 </head>
 <body>
-  <div id="item-data"></div>
+  <div id="container">
+    <div id="filters"></div>
 
-  <div id="visualization"></div>
+    <div id="item-data"></div>
 
-  <div id="filters">
+    <div id="visualization"></div>
+  </div>
+
+  <div id="timeline-setup" title="How do you have your Timeline(s) set up?" class="ui-form">
+    <p>This application transforms Timeline JS timelines into a format that makes browsing the timeline easier, at the cost of some of the excellent aesthetics of Timeline JS.</p>
+    <p>You can enter the URL for a Google Sheet that defines a single timeline, or a Google Sheet that contains a list of other Google Sheets in the first column, which will aggregate the contents of all of those sheets.</p>
+    <p>How would you like to set up your timeline?</p>
+  </div>
+
+  <div id="timeline-single-entry" title="Single Sheet Timeline" class="ui-form">
+    <form>
+      <label for="single-sheet-url">Sheet URL: </label>
+      <input type="text" name="single-sheet-url" id="single-sheet-url">
+    </form>
+  </div>
+
+  <div id="timeline-multi-entry" title="Aggregated Timeline" class="ui-form">
+    <form>
+      <label for="multi-sheet-url">Sheet URL: </label>
+      <input type="text" name="multi-sheet-url" id="multi-sheet-url">
+    </form>
   </div>
 
   <script type="text/javascript">
+    var $_GET = {};
+
+    document.location.search.replace(/\??(?:([^=]+)=([^&]*)&?)/g, function () {
+        function decode(s) {
+            return decodeURIComponent(s.split("+").join(" "));
+        }
+
+        $_GET[decode(arguments[1])] = decode(arguments[2]);
+    });
     var container = document.getElementById('visualization');
     var timeline = new vis.Timeline(container);
-    // var sheet_ids = ["1yf7Xx9od6cCPzo9fJL-73-5sglJy_rCz7Bx8lWJrNaE","1LFySREE0pLJJ-QD78gyLOBNNcQFczLUUA7nHO8wkW8k"];
-    var sheet_ids = ["15odXhht9P2DVd3JckPlIy17_ItrgpEAReS57Zk5XzIw"];
-    test = new FabulousTime(sheet_ids,"AIzaSyDkbD0QpwfTfpMSWBE4get0Mqt17uV4mv0",timeline);
+
+    var sheet_ids = ["1yf7Xx9od6cCPzo9fJL-73-5sglJy_rCz7Bx8lWJrNaE","1LFySREE0pLJJ-QD78gyLOBNNcQFczLUUA7nHO8wkW8k","1uCOuJWKbxhmZ32sYHXCB5ZdwfEh_dxn7xDXCvk2OE2c"];
+    // var sheet_ids = ["15odXhht9P2DVd3JckPlIy17_ItrgpEAReS57Zk5XzIw"];
+    test = new FabulousTime("AIzaSyDkbD0QpwfTfpMSWBE4get0Mqt17uV4mv0",timeline);
 
     $(document).ready(function() {
       // create a handlebars template
@@ -53,18 +91,17 @@
       var template = Handlebars.compile(source);
       var options = {
         template: template,
-        maxHeight: 300,
+        height: 400,
         dataAttributes: ['text','media']
       };
-      $("#item-data").css('max-height',$(window).height()-options['maxHeight']);
+      $("#item-data").css('height',$(window).height()-options['maxHeight']);
 
       var item_data_source = $('#item-data-template').html();
       var item_data_template = Handlebars.compile(item_data_source);
 
-      test.promise.done(function() {
+      test.ready.done(function() {
         container = document.getElementById('visualization');
         var the_items = new vis.DataSet(test.items);
-        // console.log(the_items);
         timeline.setItems(the_items);
         timeline.setOptions(options);
         timeline.on('select',function(properties) {
@@ -72,6 +109,15 @@
           if (properties.items.length > 0){
             var contents = item_data_template(the_items._getItem(properties.items[0]));
             $('#item-data').append(contents);
+            var item_media_dict = the_items._getItem(properties.items[0])['media'];
+            if (item_media_dict['url'] && item_media_dict['url']!="") {
+              $('#item-data').append('<div id="item-media" class="cols-2"></div>');
+              $('#item-text').attr('class','cols-2');
+              var item_media_type = TL.MediaType(item_media_dict);
+              var item_media = new item_media_type.cls(item_media_dict);
+              item_media.addTo(document.getElementById('item-media'));
+              item_media.loadMedia();
+            }
           }
         })
       });

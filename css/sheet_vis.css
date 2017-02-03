@@ -2,19 +2,43 @@ body, html {
   font-family: sans-serif;
   margin: 0;
 }
+.ui-form {
+  display: none;
+}
+#container {
+  height: 1000px;
+}
 #item-data {
   width: 90%;
   float: right;
   overflow-y: scroll;
+  position: relative;
+  height: 600px;
+}
+#item-media {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0;
+  height: 600px;
+}
+#item-media img {
+  width: 100%;
+}
+#item-text {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 }
 #visualization {
   width: 90%;
-  position: absolute;
-  bottom: 0;
-  right: 0;
+  height: 400px;
+  float: right;
 }
 #filters {
-  width: 9%;
+  width: 10%;
+  height: 100vh;
+  float: left;
 }
 .filter-group {
   border-width: 2px;
@@ -31,4 +55,15 @@ body, html {
   text-align: center;
   border-radius: 3px;
 }
+.vis-item {
+  font-size: 10pt;
+}
 .vis-item.hidden { display: none; }
+.vis-item .vis-item-content {
+  padding: 3px;
+}
+
+.cols-2 {
+  display: inline-block;
+  width: 49%;
+}
