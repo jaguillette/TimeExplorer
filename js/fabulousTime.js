@@ -97,7 +97,7 @@ class FabulousTime {
         dfd.resolve();
       } else {
         $( function() {
-          var baseurl = "http://" + window.location.hostname + window.location.pathname;
+          var baseurl = window.location.origin + window.location.hostname + window.location.pathname;
           var tl_setup = $('#timeline-setup');
           function redirect_multi() {
             var list_sheet_id = $('#multi-sheet-url').val().match(pattern);
