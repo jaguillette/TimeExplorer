@@ -6,21 +6,18 @@ body, html {
   display: none;
 }
 #container {
-  height: 1000px;
 }
 #item-data {
   width: 90%;
   float: right;
   position: relative;
-  height: 600px;
 }
 #item-media {
   float: right;
-  height: 600px;
+  height: inherit;
   overflow-y: scroll;
 }
 .tl-media-content {
-  max-height: 400px;
   text-align: center;
   margin-top: 25px;
   margin-bottom: 5px;
@@ -38,7 +35,6 @@ body, html {
 }
 #visualization {
   width: 90%;
-  height: 400px;
   float: right;
 }
 #filters {

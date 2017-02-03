@@ -101,16 +101,18 @@ class FabulousTime {
           var tl_setup = $('#timeline-setup');
           function redirect_multi() {
             var list_sheet_id = $('#multi-sheet-url').val().match(pattern);
-            window.location.replace(baseurl+'?tl_list='+list_sheet_id);
+            var page_height = $('#page-height').val();
+            window.location.replace(`${baseurl}?tl_list=${list_sheet_id}&height=${page_height}`);
           }
           function redirect_single() {
             var single_sheet_id = $('#single-sheet-url').val().match(pattern);
-            window.location.replace(baseurl+'?tl_sheet='+single_sheet_id);
+            var page_height = $('#page-height').val();
+            window.location.replace(`${baseurl}?tl_sheet=${single_sheet_id}&height=${page_height}`);
           }
           var tl_single_entry = $('#timeline-single-entry').dialog({
             autoOpen: false,
             height: 300,
-            width: 300,
+            width: 400,
             modal: true,
             buttons: {
               "Create Timeline": redirect_single
@@ -119,7 +121,7 @@ class FabulousTime {
           var tl_multi_entry = $('#timeline-multi-entry').dialog({
             autoOpen: false,
             height: 300,
-            width: 300,
+            width: 400,
             modal: true,
             buttons: {
               "Create Timeline": redirect_multi
@@ -132,8 +134,8 @@ class FabulousTime {
             modal: true,
             buttons: {
               "Single Timeline Sheet": function() {
-                tl_single_entry.dialog('open');
                 $(this).dialog("close");
+                tl_single_entry.dialog('open');
               },
               "Multiple Timeline Sheets": function() {
                 $(this).dialog("close");

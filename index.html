@@ -39,6 +39,7 @@
   <link rel="stylesheet" type="text/css" href="css/timeline.css">
   <link rel="stylesheet" type="text/css" href="css/vis.css"/>
   <link rel="stylesheet" type="text/css" href="css/sheet_vis.css"/>
+  <style media="screen" id="dynamicstyle"></style>
 </head>
 <body>
   <div id="container">
@@ -57,15 +58,27 @@
 
   <div id="timeline-single-entry" title="Single Sheet Timeline" class="ui-form">
     <form>
-      <label for="single-sheet-url">Sheet URL: </label>
-      <input type="text" name="single-sheet-url" id="single-sheet-url">
+      <div>
+        <label for="single-sheet-url">Sheet URL: </label>
+        <input type="text" name="single-sheet-url" id="single-sheet-url">
+      </div>
+      <div>
+        <label for="page-height">Page Height: </label>
+        <input type="number" name="page-height" value="1000" id="page-height">
+      </div>
     </form>
   </div>
 
   <div id="timeline-multi-entry" title="Aggregated Timeline" class="ui-form">
     <form>
-      <label for="multi-sheet-url">Sheet URL: </label>
-      <input type="text" name="multi-sheet-url" id="multi-sheet-url">
+      <div>
+        <label for="multi-sheet-url">Sheet URL: </label>
+        <input type="text" name="multi-sheet-url" id="multi-sheet-url">
+      </div>
+      <div>
+        <label for="page-height">Page Height: </label>
+        <input type="number" name="page-height" value="1000" id="page-height">
+      </div>
     </form>
   </div>
 
@@ -87,12 +100,23 @@
     test = new FabulousTime("AIzaSyDkbD0QpwfTfpMSWBE4get0Mqt17uV4mv0",timeline);
 
     $(document).ready(function() {
+
+      var container_height = get_url_params()['height'];
+      if (container_height == null) {
+        container_height = 1000;
+      }
+      $('#container').height(container_height);
+      $('#filters').height(container_height);
+      $('#item-data').height(0.6*container_height);
+      $('#visualization').height(0.4*container_height);
+      $('#dynamicstyle').append(`.tl-media-content {max-height:${0.4*container_height}px;}`)
+
       // create a handlebars template
       var source = document.getElementById('item-template').innerHTML;
       var template = Handlebars.compile(source);
       var options = {
         template: template,
-        height: 400,
+        height: 0.4*container_height,
         dataAttributes: ['text','media']
       };
       $("#item-data").css('height',$(window).height()-options['maxHeight']);
