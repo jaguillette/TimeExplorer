@@ -95,9 +95,8 @@
     var container = document.getElementById('visualization');
     var timeline = new vis.Timeline(container);
 
-    var sheet_ids = ["1yf7Xx9od6cCPzo9fJL-73-5sglJy_rCz7Bx8lWJrNaE","1LFySREE0pLJJ-QD78gyLOBNNcQFczLUUA7nHO8wkW8k","1uCOuJWKbxhmZ32sYHXCB5ZdwfEh_dxn7xDXCvk2OE2c"];
-    // var sheet_ids = ["15odXhht9P2DVd3JckPlIy17_ItrgpEAReS57Zk5XzIw"];
-    test = new FabulousTime("AIzaSyDkbD0QpwfTfpMSWBE4get0Mqt17uV4mv0",timeline);
+    var api_key = "AIzaSyDkbD0QpwfTfpMSWBE4get0Mqt17uV4mv0"
+    test = new FabulousTime(api_key,timeline);
 
     $(document).ready(function() {
 

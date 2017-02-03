@@ -1,29 +1,30 @@
 Fabulous Time
 =====
 
-This is an implementation of the [vis.js](http://visjs.org/index.html) Timeline
-system. It's built to show data from a simple Google Form on a timeline.
-You can find a spreadsheet from that form input
-[here](https://docs.google.com/spreadsheets/d/12HfDc-EUZrJc_QrdUfQh1vD6XZ0a93Czrgbp8qmCTfE/edit?usp=sharing),
-just create a new Google Form from that setup, or by just making one with these
-questions in this order (suggested question types are in parentheses):
+Fabulous Time is a timeline creation tool that combines the ease of use and
+multimedia focus of [Timeline JS](https://timeline.knightlab.com/) with the
+navigability of a timeline created by [vis.js](http://visjs.org/). It uses code
+from both of these excellent projects to create a timeline tool that can handle
+larger numbers of events.
 
-* Title (short text)
-* Link (short text)
-* Start Date (short text)
-* End Date (short text)
-* Tags (checkboxes)
-* Group (multiple choice)
+To use this tool, all you need is a Google Sheets API key, which you can get
+from the [Google API Console](https://console.developers.google.com/apis/dashboard).
+You may want to host your timeline online, in which case you'll need a server
+to put it on, but you can run this locally with no server setup as well.
 
-Different groups will show up on different "tracks" on the timeline. Tags will
-be used to color the timeline items, and are also usable as filters on the
-timeline. The tag color palette will be generated from the [Google palette.js]
-rainbow palette, because it allows for arbitrarily many colors to be generated.
+In either case, you will have to enter you API key in index.html, on line 98.
+Remember to protect your API key, especially if you've allowed it to be used
+anywhere.
 
-To use this, you need to modify `js/sheet_vis.js` with your own Google Sheets
-API key, and the ID of your spreadsheet. You can find out more about Google APIs
-[here](https://console.developers.google.com), and you can get your Sheet ID
-from the URL of the sheet. Take a look at this URL as an example, with the ID
-highlighted:
+When you've added your own API key, load index.html in your browser (either from
+your server or by dragging the file into your browser).
 
-docs.google.com/spreadsheets/d/**12HfDc-EUZrJc_QrdUfQh1vD6XZ0a93Czrgbp8qmCTfE**/edit#gid=179474476
+The simplest usage of this tool is to use it to re-visualize a single Timeline
+JS timeline. You can select "Single Timeline Sheet", and provide the sharing link
+for your timeline in the next window.
+
+Alternatively, you can use this tool to aggregate many timeline JS timelines, by
+entering the urls for all of them into the first column of a Google Sheet. If
+you select "Multiple Timeline Sheets", then paste the sharing link to that
+aggregating spreadsheet into the next window, all of the entries from those
+timelines will be added to the visualization for you to browse.
