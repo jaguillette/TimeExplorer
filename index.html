@@ -116,7 +116,29 @@
       var options = {
         template: template,
         height: 0.4*container_height,
-        dataAttributes: ['text','media']
+        dataAttributes: ['text','media'],
+        format: {
+          minorLabels: {
+            millisecond:'SSS',
+            second:     's',
+            minute:     'h:mm a',
+            hour:       'h:mm a',
+            weekday:    'ddd D',
+            day:        'D',
+            month:      'MMM',
+            year:       'YYYY'
+          },
+          majorLabels: {
+            millisecond:'h:mm:ss a',
+            second:     'D MMMM h:mm ',
+            minute:     'ddd D MMMM',
+            hour:       'ddd D MMMM',
+            weekday:    'MMMM YYYY',
+            day:        'MMMM YYYY',
+            month:      'YYYY',
+            year:       ''
+          }
+        }
       };
       $("#item-data").css('height',$(window).height()-options['maxHeight']);
 
