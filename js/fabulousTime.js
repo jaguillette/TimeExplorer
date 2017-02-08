@@ -27,6 +27,31 @@ function get_url_params() {
   return $_GET;
 }
 
+function timeParse(timestring) {
+  var ampm_match = timestring.match(/[AP]M$/);
+  if (ampm_match) {
+    var pm_match = timestring.match(/(.*)pm\s*$/i);
+    if (pm_match) {
+      var timeArray = pm_match[1].split(':');
+      var hour = parseInt(timeArray[0])+12;
+      var minute = parseInt(timeArray[1]);
+      var theTime = [hour,minute];
+      return theTime
+    } else {
+      var timeArray = ampm_match[1].split(':');
+      var hour = parseInt(timeArray[0]);
+      var minute = parseInt(timeArray[1]);
+      var theTime = [hour,minute];
+      return theTime
+    }
+  } else {
+    var timeArray = timestring.split(':');
+    var hour = parseInt(timeArray[0]);
+    var minute = parseInt(timeArray[1]);
+    return [hour,minute]
+  }
+}
+
 /**
  * Class loading data from one or more Google Sheets formatted for use in Knight
  * Lab's Timeline JS. Prepares data for use in visjs timeline. Uses jquery.
@@ -208,7 +233,9 @@ class FabulousTime {
     if (year  && year.trim())  { date.setYear(year) }
     if (month && month.trim()) { date.setMonth(month); }
     if (day   && day.trim())   { date.setDate(day); }
-    if (time  && time.trim())  { date.setTime(time); }
+    console.log(timeParse(time));
+    if (time  && time.trim())  { date.setHours(timeParse(time)[0]); date.setMinutes(timeParse(time)[1]); }
+    console.log(date);
     if (date.getTime() != new Date([1,'01','01','00:00']).getTime()) {
       // If the date has changed from the initial value, return it
       return date;
