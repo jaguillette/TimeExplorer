@@ -233,9 +233,7 @@ class FabulousTime {
     if (year  && year.trim())  { date.setYear(year) }
     if (month && month.trim()) { date.setMonth(month); }
     if (day   && day.trim())   { date.setDate(day); }
-    console.log(timeParse(time));
     if (time  && time.trim())  { date.setHours(timeParse(time)[0]); date.setMinutes(timeParse(time)[1]); }
-    console.log(date);
     if (date.getTime() != new Date([1,'01','01','00:00']).getTime()) {
       // If the date has changed from the initial value, return it
       return date;
