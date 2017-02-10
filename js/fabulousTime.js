@@ -122,7 +122,7 @@ class FabulousTime {
         dfd.resolve();
       } else {
         $( function() {
-          var baseurl = window.location.origin + window.location.hostname + window.location.pathname;
+          var baseurl = window.location.origin + window.location.pathname;
           var tl_setup = $('#timeline-setup');
           function redirect_multi() {
             var list_sheet_id = $('#multi-sheet-url').val().match(pattern);
@@ -230,8 +230,8 @@ class FabulousTime {
    */
   dateWithNulls(year,month,day,time){
     var date = new Date([1,'01','01','00:00'])
-    if (year  && year.trim())  { date.setYear(year) }
-    if (month && month.trim()) { date.setMonth(month); }
+    if (year  && year.trim())  { date.setYear(year); }
+    if (month) { date.setMonth(month); }
     if (day   && day.trim())   { date.setDate(day); }
     if (time  && time.trim())  { date.setHours(timeParse(time)[0]); date.setMinutes(timeParse(time)[1]); }
     if (date.getTime() != new Date([1,'01','01','00:00']).getTime()) {
@@ -255,7 +255,7 @@ class FabulousTime {
    */
   get_datetime(datum,year_column,month_column,day_column,time_column,callback) {
     var year  = datum[year_column];
-    var month = datum[month_column];
+    var month = parseInt(datum[month_column])-1;
     var day   = datum[day_column];
     var time  = datum[time_column];
     var output = callback(year,month,day,time);
