@@ -28,7 +28,7 @@ function get_url_params() {
 }
 
 function timeParse(timestring) {
-  var ampm_match = timestring.match(/[AP]M$/);
+  var ampm_match = timestring.match(/(.*)[AP]M$/);
   if (ampm_match) {
     var pm_match = timestring.match(/(.*)pm\s*$/i);
     if (pm_match) {
