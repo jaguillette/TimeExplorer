@@ -316,7 +316,6 @@ class FabulousTime {
         // set the end date to null to make it display as a point.
         item['end'] = null;
       }
-      console.log(item['start']);
       if (self.tag_col in sheet_data[i]) {
         var tags = sheet_data[i][self.tag_col].split(',').map(function(x) {
           return x.trim();
@@ -379,12 +378,13 @@ class FabulousTime {
      var tags = [];
      for (var i = 0; i < self.items.length; i++) {
        if (self.items[i]['tags']) {
-         var these_tags = self.items[i]['tags'].map(self.slugify);
+         var these_tags = self.items[i]['tags'];
+         var slugs = these_tags.map(self.slugify);
          tags = tags.concat(these_tags);
          if (self.items[i]['className']) {
-           self.items[i]['className'] = self.items[i]['className'] + ' ' + these_tags.join(' ');
+           self.items[i]['className'] = self.items[i]['className'] + ' ' + slugs.join(' ');
          } else {
-           self.items[i]['className'] = these_tags.join(' ');
+           self.items[i]['className'] = slugs.join(' ');
          }
        }
      }
@@ -458,7 +458,8 @@ class FabulousTime {
    */
   slugify(text) {
     var output = text.trim()
-    output = output.replace(' ','_')
+    var pattern = /[\s~!@$%^&*()+=,./';:"?><[\] \\{}|`#]+/g
+    output = output.replace(pattern,'_')
     return output
   }
 
