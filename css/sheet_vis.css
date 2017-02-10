@@ -41,6 +41,7 @@ body, html {
   width: 10%;
   height: 100vh;
   float: left;
+  overflow-y: scroll;
 }
 .filter-group {
   border-width: 2px;
