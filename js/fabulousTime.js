@@ -35,12 +35,18 @@ function timeParse(timestring) {
       var timeArray = pm_match[1].split(':');
       var hour = parseInt(timeArray[0])+12;
       var minute = parseInt(timeArray[1]);
+      if (hour == 24) {
+        hour = 12;
+      }
       var theTime = [hour,minute];
       return theTime
     } else {
       var timeArray = ampm_match[1].split(':');
       var hour = parseInt(timeArray[0]);
       var minute = parseInt(timeArray[1]);
+      if (hour == 12) {
+        hour = 24;
+      }
       var theTime = [hour,minute];
       return theTime
     }
@@ -72,6 +78,8 @@ class FabulousTime {
     this.sheet_data = [];
     this.timeline = timeline;
 
+    this.tag_col = this.get_tag_col();
+
     var self = this;
 
     this.getting_sheet_ids = this.get_sheet_ids(self,sheet_ids);
@@ -85,6 +93,15 @@ class FabulousTime {
       self.groups = self.set_groups(self);
       self.tags = self.set_tags(self);
     });
+  }
+
+  get_tag_col() {
+    var url_params = get_url_params();
+    if ('tag_col' in url_params) {
+      return url_params['tag_col'];
+    } else {
+      return 'Tags';
+    }
   }
 
   /**
@@ -111,7 +128,7 @@ class FabulousTime {
         $.getJSON("https://sheets.googleapis.com/v4/spreadsheets/"+master_id_sheet+"/values/A:A?key="+self.api_key).done(function(data) {
           for (var i = 0; i < data.values.length; i++) {
             var url = data.values[i][0];
-            var the_id = url.match(pattern)[0]
+            var the_id = url.match(pattern)[0];
             sheet_ids.push(the_id);
           }
           self.sheet_ids = sheet_ids;
@@ -127,12 +144,22 @@ class FabulousTime {
           function redirect_multi() {
             var list_sheet_id = $('#multi-sheet-url').val().match(pattern);
             var page_height = $('#page-height').val();
-            window.location.replace(`${baseurl}?tl_list=${list_sheet_id}&height=${page_height}`);
+            var tag_col = $('#tag-column').val();
+            var url = `${baseurl}?tl_list=${list_sheet_id}&height=${page_height}`;
+            if (tag_col != '') {
+              url += `&tag_col=${tag_col}`;
+            }
+            window.location.replace(url);
           }
           function redirect_single() {
             var single_sheet_id = $('#single-sheet-url').val().match(pattern);
             var page_height = $('#page-height').val();
-            window.location.replace(`${baseurl}?tl_sheet=${single_sheet_id}&height=${page_height}`);
+            var tag_col = $('#tag-column').val();
+            var url = `${baseurl}?tl_sheet=${single_sheet_id}&height=${page_height}`;
+            if (tag_col != '') {
+              url += `&tag_col=${tag_col}`;
+            }
+            window.location.replace(url);
           }
           var tl_single_entry = $('#timeline-single-entry').dialog({
             autoOpen: false,
@@ -289,8 +316,9 @@ class FabulousTime {
         // set the end date to null to make it display as a point.
         item['end'] = null;
       }
-      if ('Tags' in sheet_data[i]) {
-        var tags = sheet_data[i]['Tags'].split(',').map(function(x) {
+      console.log(item['start']);
+      if (self.tag_col in sheet_data[i]) {
+        var tags = sheet_data[i][self.tag_col].split(',').map(function(x) {
           return x.trim();
         });
         item['tags'] = tags;
