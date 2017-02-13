@@ -334,9 +334,10 @@ class FabulousTime {
     var groups = [];
     for (var i = 0; i < self.items.length; i++) {
       if (self.items[i]['sheet_group']) {
-        var slug = self.slugify(self.items[i]['sheet_group']);
-        if ($.inArray(slug,groups) == -1) {
-          groups.push(slug);
+        var group = self.items[i]['sheet_group'];
+        var slug = self.slugify(group);
+        if ($.inArray(group,groups) == -1) {
+          groups.push(group);
         }
         self.items[i]['className'] = slug;
       } else {
