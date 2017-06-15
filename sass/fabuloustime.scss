@@ -1,0 +1,108 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+
+@import "compass/reset";
+
+@import "fonts";
+
+body, html {
+  font-family: sans-serif;
+  margin: 0;
+}
+.ui-form {
+  display: none;
+}
+#container {
+}
+#item-data {
+  width: 90%;
+  float: right;
+  position: relative;
+}
+#item-media {
+  float: right;
+  height: inherit;
+  overflow-y: scroll;
+}
+.tl-media-content {
+  text-align: center;
+  margin-top: 25px;
+  margin-bottom: 5px;
+}
+.tl-caption, .tl-credit {
+  margin: auto;
+}
+#item-media img {
+  max-height: inherit;
+  max-width: 100%;
+}
+#item-text {
+  overflow-y: scroll;
+  height: inherit;
+  h1 {
+    font-size: 22pt;
+    margin-bottom: 0.75em;
+    margin-top: 0.5em;
+  }
+  p {
+    line-height: 125%;
+  }
+}
+#visualization {
+  width: 90%;
+  float: right;
+}
+$filter-border-style: 1px solid #111;
+#filters {
+  width: 10%;
+  height: 100vh;
+  float: left;
+  overflow-y: scroll;
+  &>div:first-of-type {
+    border-top: $filter-border-style;
+    margin-top: 10px;
+  }
+  &>div {
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 2px 5px;
+  }
+  &>div:last-of-type {
+    border-top: $filter-border-style;
+    border-bottom: $filter-border-style;
+  }
+}
+#filters .filter,
+#filters .meta-filter {
+  background-color: #f2f2f2;
+  margin: 0.25em 0;
+  text-align: center;
+  border-radius: 3px;
+  padding: 1px 2px;
+}
+
+.vis-item {
+  font-size: 10pt;
+}
+.vis-item.hidden { display: none; }
+.vis-item .vis-item-content {
+  padding: 3px;
+}
+.vis-item.vis-box {
+  border-style: none;
+  padding: 1px 3px;
+  width: 175px;
+  p {
+    white-space: normal;
+    line-height: 115%;
+  }
+}
+
+.cols-2 {
+  display: inline-block;
+  width: 48%;
+  padding-left: 1%;
+  padding-right: 1%;
+}

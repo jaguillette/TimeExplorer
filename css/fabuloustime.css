@@ -1,0 +1,213 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+@import url("https://fonts.googleapis.com/css?family=Oxygen|Quicksand");
+/* line 5, ../../../../../Users/jguillette/.rvm/gems/ruby-2.3.1/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+
+/* line 22, ../../../../../Users/jguillette/.rvm/gems/ruby-2.3.1/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+html {
+  line-height: 1;
+}
+
+/* line 24, ../../../../../Users/jguillette/.rvm/gems/ruby-2.3.1/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+ol, ul {
+  list-style: none;
+}
+
+/* line 26, ../../../../../Users/jguillette/.rvm/gems/ruby-2.3.1/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* line 28, ../../../../../Users/jguillette/.rvm/gems/ruby-2.3.1/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+/* line 30, ../../../../../Users/jguillette/.rvm/gems/ruby-2.3.1/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+q, blockquote {
+  quotes: none;
+}
+/* line 103, ../../../../../Users/jguillette/.rvm/gems/ruby-2.3.1/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+q:before, q:after, blockquote:before, blockquote:after {
+  content: "";
+  content: none;
+}
+
+/* line 32, ../../../../../Users/jguillette/.rvm/gems/ruby-2.3.1/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+a img {
+  border: none;
+}
+
+/* line 116, ../../../../../Users/jguillette/.rvm/gems/ruby-2.3.1/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
+  display: block;
+}
+
+/* line 3, ../sass/_fonts.scss */
+body, p, label {
+  font-family: "Oxygen", sans-serif;
+}
+
+/* line 7, ../sass/_fonts.scss */
+h1 {
+  font-family: "Quicksand", serif;
+}
+
+/* line 10, ../sass/fabuloustime.scss */
+body, html {
+  font-family: sans-serif;
+  margin: 0;
+}
+
+/* line 14, ../sass/fabuloustime.scss */
+.ui-form {
+  display: none;
+}
+
+/* line 19, ../sass/fabuloustime.scss */
+#item-data {
+  width: 90%;
+  float: right;
+  position: relative;
+}
+
+/* line 24, ../sass/fabuloustime.scss */
+#item-media {
+  float: right;
+  height: inherit;
+  overflow-y: scroll;
+}
+
+/* line 29, ../sass/fabuloustime.scss */
+.tl-media-content {
+  text-align: center;
+  margin-top: 25px;
+  margin-bottom: 5px;
+}
+
+/* line 34, ../sass/fabuloustime.scss */
+.tl-caption, .tl-credit {
+  margin: auto;
+}
+
+/* line 37, ../sass/fabuloustime.scss */
+#item-media img {
+  max-height: inherit;
+  max-width: 100%;
+}
+
+/* line 41, ../sass/fabuloustime.scss */
+#item-text {
+  overflow-y: scroll;
+  height: inherit;
+}
+/* line 44, ../sass/fabuloustime.scss */
+#item-text h1 {
+  font-size: 22pt;
+  margin-bottom: 0.75em;
+  margin-top: 0.5em;
+}
+/* line 49, ../sass/fabuloustime.scss */
+#item-text p {
+  line-height: 125%;
+}
+
+/* line 53, ../sass/fabuloustime.scss */
+#visualization {
+  width: 90%;
+  float: right;
+}
+
+/* line 58, ../sass/fabuloustime.scss */
+#filters {
+  width: 10%;
+  height: 100vh;
+  float: left;
+  overflow-y: scroll;
+}
+/* line 63, ../sass/fabuloustime.scss */
+#filters > div:first-of-type {
+  border-top: 1px solid #111;
+  margin-top: 10px;
+}
+/* line 67, ../sass/fabuloustime.scss */
+#filters > div {
+  margin-left: 5px;
+  margin-right: 5px;
+  padding: 2px 5px;
+}
+/* line 72, ../sass/fabuloustime.scss */
+#filters > div:last-of-type {
+  border-top: 1px solid #111;
+  border-bottom: 1px solid #111;
+}
+
+/* line 77, ../sass/fabuloustime.scss */
+#filters .filter,
+#filters .meta-filter {
+  background-color: #f2f2f2;
+  margin: 0.25em 0;
+  text-align: center;
+  border-radius: 3px;
+  padding: 1px 2px;
+}
+
+/* line 86, ../sass/fabuloustime.scss */
+.vis-item {
+  font-size: 10pt;
+}
+
+/* line 89, ../sass/fabuloustime.scss */
+.vis-item.hidden {
+  display: none;
+}
+
+/* line 90, ../sass/fabuloustime.scss */
+.vis-item .vis-item-content {
+  padding: 3px;
+}
+
+/* line 93, ../sass/fabuloustime.scss */
+.vis-item.vis-box {
+  border-style: none;
+  padding: 1px 3px;
+  width: 175px;
+}
+/* line 97, ../sass/fabuloustime.scss */
+.vis-item.vis-box p {
+  white-space: normal;
+  line-height: 115%;
+}
+
+/* line 103, ../sass/fabuloustime.scss */
+.cols-2 {
+  display: inline-block;
+  width: 48%;
+  padding-left: 1%;
+  padding-right: 1%;
+}

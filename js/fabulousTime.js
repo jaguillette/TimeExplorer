@@ -358,15 +358,14 @@ class FabulousTime {
   setup_group_ui(self, groups) {
     self.setup_filters(self,groups,"Groups");
     var scheme = palette.listSchemes('rainbow')[0];
-    var colors = scheme.apply(scheme, [groups.length, 0.3]);
-    var darkColors = scheme.apply(scheme, [groups.length, 0.8]);
+    var colors = scheme.apply(scheme, [groups.length, 0.4]);
     var theStyle = $("#docstyle");
     for (var i = 0; i < groups.length; i++) {
       var slug = self.slugify(groups[i]);
       var style = `.${slug}.vis-item,\
-      .${slug}.filter {\
+      #filters .${slug}.filter {\
         background-color: #${colors[i]};\
-        border-color: #${darkColors[i]};\
+        border-color: #${colors[i]};\
       }\n`;
       theStyle.append(style);
     }
