@@ -30,8 +30,12 @@
 
   <script id="item-data-template" type="text/x-handlebars-template">
     <div id="item-text">
-      <h1>{{headline}}</h1>
-      <p>{{{text}}}</p>
+      <div id="item-text-middle">
+        <div id="item-text-inner">
+          <h1>{{headline}}</h1>
+          <p>{{{text}}}</p>
+        </div>
+      </div>
     </div>
 
   </script>
@@ -105,7 +109,7 @@
     var timeline = new vis.Timeline(container);
 
     var api_key = "AIzaSyDkbD0QpwfTfpMSWBE4get0Mqt17uV4mv0"
-    test = new FabulousTime(api_key,timeline);
+    FabTimeline = new FabulousTime(api_key,timeline);
 
     $(document).ready(function() {
 
@@ -155,28 +159,28 @@
 
       var item_data_source = $('#item-data-template').html();
       var item_data_template = Handlebars.compile(item_data_source);
+      console.log(item_data_template);
 
-      test.ready.done(function() {
+      FabTimeline.ready.done(function() {
+        $('#item-data').empty();
+        if (FabTimeline.title_entry) {
+          RenderItem(FabTimeline.title_entry,item_data_template);
+        }
+        var contents = item_data_template(FabTimeline.title_entry)
         container = document.getElementById('visualization');
-        var the_items = new vis.DataSet(test.items);
+        var the_items = new vis.DataSet(FabTimeline.items);
         timeline.setItems(the_items);
         timeline.setOptions(options);
         timeline.on('select',function(properties) {
-          $('#item-data').empty();
-          if (properties.items.length > 0){
-            var contents = item_data_template(the_items._getItem(properties.items[0]));
-            $('#item-data').append(contents);
-            var item_media_dict = the_items._getItem(properties.items[0])['media'];
-            if (item_media_dict['url'] && item_media_dict['url']!="") {
-              $('#item-data').append('<div id="item-media" class="cols-2"></div>');
-              $('#item-text').attr('class','cols-2');
-              var item_media_type = TL.MediaType(item_media_dict);
-              var item_media = new item_media_type.cls(item_media_dict);
-              item_media.addTo(document.getElementById('item-media'));
-              item_media.loadMedia();
-            }
+          selected_item = the_items._getItem(properties.items[0]);
+          if (selected_item) {
+            RenderItem(selected_item,item_data_template);
+          } else if (FabTimeline.title_entry) {
+            RenderItem(FabTimeline.title_entry,item_data_template);
+          } else {
+            $("#item-data").empty();
           }
-        })
+        });
       });
     });
   </script>

@@ -59,6 +59,48 @@ function timeParse(timestring) {
 }
 
 /**
+ * Takes an ID string for a div, and removes leading #, if any
+ * @param {string} id_string - string to be modified
+ */
+function plainId(id_string) {
+  if (id_string.startswith('#')) {
+    return id_string.slice(1);
+  } else {
+    return id_string;
+  }
+}
+
+/**
+ * Render the given item according to the given template, adding to elements
+ * identified by selectors
+ * @param {array} item - Array representing a timeline item
+ * @param {Handlebars.compile} template - Handlebars templating function to apply to item
+ * @param {string} data_id - ID tag for the parent element for the entire item
+ * @param {string} text_id - ID tag for the item's text div
+ * @param {string} media_id - ID tag for the item's media div
+ */
+function RenderItem(item,template,data_id="item-data",text_id="item-text",media_id="item-media") {
+  data_id = plainID(data_id);
+  text_id = plainID(text_id);
+  media_id = plainID(media_id);
+  $("#"+data_selector).empty();
+  var contents = template(item);
+  $("#"+data_selector).append(contents);
+  var item_media_dict = item['media'];
+  if (item_media_dict['url'] && item_media_dict['url']!="") {
+    $("#"+data_selector).append('<div id="'+ media_id +'" class="cols-2"></div>');
+    $("#"+text_selector).attr('class','cols-2');
+    var item_media_type = TL.MediaType(item_media_dict);
+    var item_media = new item_media_type.cls(item_media_dict);
+    item_media.addTo(document.getElementById(media_id));
+    item_media.loadMedia();
+  } else {
+    $("#"+text_selector).attr('class','cols-1');
+  }
+  return true;
+}
+
+/**
  * Class loading data from one or more Google Sheets formatted for use in Knight
  * Lab's Timeline JS. Prepares data for use in visjs timeline. Uses jquery.
  * Data is loaded asynchronously, so should be loaded in FabulousTime.promise.done()
@@ -322,7 +364,11 @@ class FabulousTime {
         });
         item['tags'] = tags;
       }
-      if (item['start']) { items.push(item); }
+      if (item['start']) {
+        items.push(item);
+      } else if (item['sheet_type']=="title") {
+        self.title_entry = item;
+      }
     }
     return items;
   }

@@ -106,3 +106,25 @@ $filter-border-style: 1px solid #111;
   padding-left: 1%;
   padding-right: 1%;
 }
+
+.cols-1 {
+  width: 98%;
+  padding-right: 1%;
+  padding-left: 1%;
+}
+#item-text.cols-1 {
+  display: table;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  #item-text-middle {
+    display: table-cell;
+    vertical-align: middle;
+    #item-text-inner {
+      margin-left: 0;
+      margin-right: 0;
+      width: 98%;
+      text-align: center;
+    }
+  }
+}
