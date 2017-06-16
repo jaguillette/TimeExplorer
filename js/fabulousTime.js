@@ -101,6 +101,29 @@ function RenderItem(item,template,data_id="item-data",text_id="item-text",media_
 }
 
 /**
+ *
+ */
+function GetDisplayDate(row,startDate,endDate) {
+  if (startDate == null) {
+    return null;
+  }
+  var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  displayDate = "";
+  if (row['Month'] && row['Month'] != "") { displayDate += months[startDate.getMonth()]+" "; }
+  if (row['Day']   && row['Day'] != "")   { displayDate += startDate.getDate()+", "; }
+  if (row['Year']  && row['Year'] != "")  { displayDate += startDate.getFullYear(); }
+  if (row['Time']  && row['Time'] != "")  { displayDate += " at " + startDate.getHours() + ":" + startDate.getMinutes(); }
+  if (endDate) {
+    displayDate += " - ";
+    if (row['End Month'] && row['End Month'] != "") { displayDate += months[endDate.getMonth()]+" "; }
+    if (row['End Day']   && row['End Day'] != "")   { displayDate += endDate.getDate()+", "; }
+    if (row['End Year']  && row['End Year'] != "")  { displayDate += endDate.getFullYear(); }
+    if (row['End Time']  && row['End Time'] != "")  { displayDate += " at " + endDate.getHours() + ":" + endDate.getMinutes(); }
+  }
+  return displayDate;
+}
+
+/**
  * Class loading data from one or more Google Sheets formatted for use in Knight
  * Lab's Timeline JS. Prepares data for use in visjs timeline. Uses jquery.
  * Data is loaded asynchronously, so should be loaded in FabulousTime.promise.done()
@@ -342,7 +365,6 @@ class FabulousTime {
       var item = {};
       item['start'] = self.get_datetime(sheet_data[i],'Year','Month','Day','Time',self.dateWithNulls);
       item['end']   = self.get_datetime(sheet_data[i],'End Year','End Month','End Day','End Time',self.dateWithNulls);
-      item['display_date']    = sheet_data[i]['Display Date']
       item['headline']        = sheet_data[i]['Headline'];
       item['text']            = sheet_data[i]['Text'];
       item['media']           = {};
@@ -357,6 +379,11 @@ class FabulousTime {
         // or less than zero (end before start),
         // set the end date to null to make it display as a point.
         item['end'] = null;
+      }
+      if (sheet_data[i]['Display Date'] && sheet_data[i]['Display Date'] != "") {
+        item['display_date'] = sheet_data[i]['Display Date'];
+      } else {
+        item['display_date'] = GetDisplayDate(sheet_data[i],item['start'],item['end']);
       }
       if (self.tag_col in sheet_data[i]) {
         var tags = sheet_data[i][self.tag_col].split(',').map(function(x) {

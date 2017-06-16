@@ -33,6 +33,7 @@
       <div id="item-text-middle">
         <div id="item-text-inner">
           <h1>{{headline}}</h1>
+          <p class="display-date">{{display_date}}</p>
           <p>{{{text}}}</p>
         </div>
       </div>
@@ -159,7 +160,6 @@
 
       var item_data_source = $('#item-data-template').html();
       var item_data_template = Handlebars.compile(item_data_source);
-      console.log(item_data_template);
 
       FabTimeline.ready.done(function() {
         $('#item-data').empty();

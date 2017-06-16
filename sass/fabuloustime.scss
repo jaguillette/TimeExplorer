@@ -49,6 +49,10 @@ body, html {
   p {
     line-height: 125%;
   }
+  p.display-date {
+    font-style: italic;
+    padding-bottom: 0.5em;
+  }
 }
 #visualization {
   width: 90%;
@@ -116,7 +120,7 @@ $filter-border-style: 1px solid #111;
   display: table;
   position: absolute;
   height: 100%;
-  width: 100%;
+  width: 98%;
   #item-text-middle {
     display: table-cell;
     vertical-align: middle;

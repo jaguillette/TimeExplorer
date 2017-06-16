@@ -136,38 +136,43 @@ body, html {
 #item-text p {
   line-height: 125%;
 }
+/* line 52, ../sass/fabuloustime.scss */
+#item-text p.display-date {
+  font-style: italic;
+  padding-bottom: 0.5em;
+}
 
-/* line 53, ../sass/fabuloustime.scss */
+/* line 57, ../sass/fabuloustime.scss */
 #visualization {
   width: 90%;
   float: right;
 }
 
-/* line 58, ../sass/fabuloustime.scss */
+/* line 62, ../sass/fabuloustime.scss */
 #filters {
   width: 10%;
   height: 100vh;
   float: left;
   overflow-y: scroll;
 }
-/* line 63, ../sass/fabuloustime.scss */
+/* line 67, ../sass/fabuloustime.scss */
 #filters > div:first-of-type {
   border-top: 1px solid #111;
   margin-top: 10px;
 }
-/* line 67, ../sass/fabuloustime.scss */
+/* line 71, ../sass/fabuloustime.scss */
 #filters > div {
   margin-left: 5px;
   margin-right: 5px;
   padding: 2px 5px;
 }
-/* line 72, ../sass/fabuloustime.scss */
+/* line 76, ../sass/fabuloustime.scss */
 #filters > div:last-of-type {
   border-top: 1px solid #111;
   border-bottom: 1px solid #111;
 }
 
-/* line 77, ../sass/fabuloustime.scss */
+/* line 81, ../sass/fabuloustime.scss */
 #filters .filter,
 #filters .meta-filter {
   background-color: #f2f2f2;
@@ -177,34 +182,34 @@ body, html {
   padding: 1px 2px;
 }
 
-/* line 86, ../sass/fabuloustime.scss */
+/* line 90, ../sass/fabuloustime.scss */
 .vis-item {
   font-size: 10pt;
 }
 
-/* line 89, ../sass/fabuloustime.scss */
+/* line 93, ../sass/fabuloustime.scss */
 .vis-item.hidden {
   display: none;
 }
 
-/* line 90, ../sass/fabuloustime.scss */
+/* line 94, ../sass/fabuloustime.scss */
 .vis-item .vis-item-content {
   padding: 3px;
 }
 
-/* line 93, ../sass/fabuloustime.scss */
+/* line 97, ../sass/fabuloustime.scss */
 .vis-item.vis-box {
   border-style: none;
   padding: 1px 3px;
   width: 175px;
 }
-/* line 97, ../sass/fabuloustime.scss */
+/* line 101, ../sass/fabuloustime.scss */
 .vis-item.vis-box p {
   white-space: normal;
   line-height: 115%;
 }
 
-/* line 103, ../sass/fabuloustime.scss */
+/* line 107, ../sass/fabuloustime.scss */
 .cols-2 {
   display: inline-block;
   width: 48%;
@@ -212,26 +217,26 @@ body, html {
   padding-right: 1%;
 }
 
-/* line 110, ../sass/fabuloustime.scss */
+/* line 114, ../sass/fabuloustime.scss */
 .cols-1 {
   width: 98%;
   padding-right: 1%;
   padding-left: 1%;
 }
 
-/* line 115, ../sass/fabuloustime.scss */
+/* line 119, ../sass/fabuloustime.scss */
 #item-text.cols-1 {
   display: table;
   position: absolute;
   height: 100%;
-  width: 100%;
+  width: 98%;
 }
-/* line 120, ../sass/fabuloustime.scss */
+/* line 124, ../sass/fabuloustime.scss */
 #item-text.cols-1 #item-text-middle {
   display: table-cell;
   vertical-align: middle;
 }
-/* line 123, ../sass/fabuloustime.scss */
+/* line 127, ../sass/fabuloustime.scss */
 #item-text.cols-1 #item-text-middle #item-text-inner {
   margin-left: 0;
   margin-right: 0;
