@@ -17,14 +17,18 @@ body, html {
 #container {
 }
 #item-data {
-  width: 90%;
-  float: right;
-  position: relative;
+  width: 70%;
+  position: absolute;
+  z-index: 3;
+  background-color: whitesmoke;
+  left: 15%;
 }
-#item-media {
-  float: right;
+#item-media-container {
   height: inherit;
   overflow-y: scroll;
+  &>div {
+    width: 100%;
+  }
 }
 .tl-media-content {
   text-align: center;
@@ -96,8 +100,10 @@ $filter-border-style: 1px solid #111;
 }
 .vis-item.vis-box {
   border-style: none;
-  padding: 1px 3px;
-  width: 175px;
+  //padding: 1px 3px;
+  width: 15px;
+  height: 15px;
+  border-radius: 7.5px;
   p {
     white-space: normal;
     line-height: 115%;
@@ -109,6 +115,7 @@ $filter-border-style: 1px solid #111;
   width: 48%;
   padding-left: 1%;
   padding-right: 1%;
+  float: left;
 }
 
 .cols-1 {
@@ -116,19 +123,41 @@ $filter-border-style: 1px solid #111;
   padding-right: 1%;
   padding-left: 1%;
 }
-#item-text.cols-1 {
+
+.vcenter-outer {
   display: table;
+  height: 100%;
+  .vcenter-middle {
+    display: table-cell;
+    vertical-align: middle;
+    .vcenter-inner {}
+  }
+}
+
+.close-button {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: -13px;
+  right: 2px;
+  text-align: center;
+  background-color: #eee;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+#item-text.cols-1 {
   position: absolute;
   height: 100%;
   width: 98%;
-  #item-text-middle {
-    display: table-cell;
-    vertical-align: middle;
-    #item-text-inner {
-      margin-left: 0;
-      margin-right: 0;
-      width: 98%;
-      text-align: center;
-    }
+  text-align: center;
+}
+
+.item-tooltip {
+  max-width: 250px;
+  h1 {
+    font-weight: bold;
+    font-size: 130%;
+    white-space: normal;
   }
 }

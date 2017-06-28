@@ -91,88 +91,93 @@ body, html {
 
 /* line 19, ../sass/fabuloustime.scss */
 #item-data {
-  width: 90%;
-  float: right;
-  position: relative;
+  width: 70%;
+  position: absolute;
+  z-index: 3;
+  background-color: whitesmoke;
+  left: 15%;
 }
 
-/* line 24, ../sass/fabuloustime.scss */
-#item-media {
-  float: right;
+/* line 26, ../sass/fabuloustime.scss */
+#item-media-container {
   height: inherit;
   overflow-y: scroll;
 }
-
 /* line 29, ../sass/fabuloustime.scss */
+#item-media-container > div {
+  width: 100%;
+}
+
+/* line 33, ../sass/fabuloustime.scss */
 .tl-media-content {
   text-align: center;
   margin-top: 25px;
   margin-bottom: 5px;
 }
 
-/* line 34, ../sass/fabuloustime.scss */
+/* line 38, ../sass/fabuloustime.scss */
 .tl-caption, .tl-credit {
   margin: auto;
 }
 
-/* line 37, ../sass/fabuloustime.scss */
+/* line 41, ../sass/fabuloustime.scss */
 #item-media img {
   max-height: inherit;
   max-width: 100%;
 }
 
-/* line 41, ../sass/fabuloustime.scss */
+/* line 45, ../sass/fabuloustime.scss */
 #item-text {
   overflow-y: scroll;
   height: inherit;
 }
-/* line 44, ../sass/fabuloustime.scss */
+/* line 48, ../sass/fabuloustime.scss */
 #item-text h1 {
   font-size: 22pt;
   margin-bottom: 0.75em;
   margin-top: 0.5em;
 }
-/* line 49, ../sass/fabuloustime.scss */
+/* line 53, ../sass/fabuloustime.scss */
 #item-text p {
   line-height: 125%;
 }
-/* line 52, ../sass/fabuloustime.scss */
+/* line 56, ../sass/fabuloustime.scss */
 #item-text p.display-date {
   font-style: italic;
   padding-bottom: 0.5em;
 }
 
-/* line 57, ../sass/fabuloustime.scss */
+/* line 61, ../sass/fabuloustime.scss */
 #visualization {
   width: 90%;
   float: right;
 }
 
-/* line 62, ../sass/fabuloustime.scss */
+/* line 66, ../sass/fabuloustime.scss */
 #filters {
   width: 10%;
   height: 100vh;
   float: left;
   overflow-y: scroll;
 }
-/* line 67, ../sass/fabuloustime.scss */
+/* line 71, ../sass/fabuloustime.scss */
 #filters > div:first-of-type {
   border-top: 1px solid #111;
   margin-top: 10px;
 }
-/* line 71, ../sass/fabuloustime.scss */
+/* line 75, ../sass/fabuloustime.scss */
 #filters > div {
   margin-left: 5px;
   margin-right: 5px;
   padding: 2px 5px;
 }
-/* line 76, ../sass/fabuloustime.scss */
+/* line 80, ../sass/fabuloustime.scss */
 #filters > div:last-of-type {
   border-top: 1px solid #111;
   border-bottom: 1px solid #111;
 }
 
-/* line 81, ../sass/fabuloustime.scss */
+/* line 85, ../sass/fabuloustime.scss */
 #filters .filter,
 #filters .meta-filter {
   background-color: #f2f2f2;
@@ -182,64 +187,89 @@ body, html {
   padding: 1px 2px;
 }
 
-/* line 90, ../sass/fabuloustime.scss */
+/* line 94, ../sass/fabuloustime.scss */
 .vis-item {
   font-size: 10pt;
 }
 
-/* line 93, ../sass/fabuloustime.scss */
+/* line 97, ../sass/fabuloustime.scss */
 .vis-item.hidden {
   display: none;
 }
 
-/* line 94, ../sass/fabuloustime.scss */
+/* line 98, ../sass/fabuloustime.scss */
 .vis-item .vis-item-content {
   padding: 3px;
 }
 
-/* line 97, ../sass/fabuloustime.scss */
+/* line 101, ../sass/fabuloustime.scss */
 .vis-item.vis-box {
   border-style: none;
-  padding: 1px 3px;
-  width: 175px;
+  width: 15px;
+  height: 15px;
+  border-radius: 7.5px;
 }
-/* line 101, ../sass/fabuloustime.scss */
+/* line 107, ../sass/fabuloustime.scss */
 .vis-item.vis-box p {
   white-space: normal;
   line-height: 115%;
 }
 
-/* line 107, ../sass/fabuloustime.scss */
+/* line 113, ../sass/fabuloustime.scss */
 .cols-2 {
   display: inline-block;
   width: 48%;
   padding-left: 1%;
   padding-right: 1%;
+  float: left;
 }
 
-/* line 114, ../sass/fabuloustime.scss */
+/* line 121, ../sass/fabuloustime.scss */
 .cols-1 {
   width: 98%;
   padding-right: 1%;
   padding-left: 1%;
 }
 
-/* line 119, ../sass/fabuloustime.scss */
-#item-text.cols-1 {
+/* line 127, ../sass/fabuloustime.scss */
+.vcenter-outer {
   display: table;
-  position: absolute;
   height: 100%;
-  width: 98%;
 }
-/* line 124, ../sass/fabuloustime.scss */
-#item-text.cols-1 #item-text-middle {
+/* line 130, ../sass/fabuloustime.scss */
+.vcenter-outer .vcenter-middle {
   display: table-cell;
   vertical-align: middle;
 }
-/* line 127, ../sass/fabuloustime.scss */
-#item-text.cols-1 #item-text-middle #item-text-inner {
-  margin-left: 0;
-  margin-right: 0;
+
+/* line 137, ../sass/fabuloustime.scss */
+.close-button {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: -13px;
+  right: 2px;
+  text-align: center;
+  background-color: #eee;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+/* line 149, ../sass/fabuloustime.scss */
+#item-text.cols-1 {
+  position: absolute;
+  height: 100%;
   width: 98%;
   text-align: center;
+}
+
+/* line 156, ../sass/fabuloustime.scss */
+.item-tooltip {
+  max-width: 250px;
+}
+/* line 158, ../sass/fabuloustime.scss */
+.item-tooltip h1 {
+  font-weight: bold;
+  font-size: 130%;
+  white-space: normal;
 }

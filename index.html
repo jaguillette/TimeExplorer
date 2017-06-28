@@ -12,10 +12,11 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.4/handlebars.min.js"></script>
 
-  <script type="text/javascript" src="js/vis.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.20.0/vis.min.js"></script>
   <script type="text/javascript" src="js/palette.js"></script>
   <script type="text/javascript" src="js/fabulousTime.js"></script>
-  <script type="text/javascript" src="js/timeline.js"></script>
+  <!-- Timeline JS timeline script -->
+  <script type="text/javascript" src="js/timeline.js" charset="utf-8"></script>
 
   <!-- JQuery UI -->
   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css">
@@ -25,24 +26,30 @@
   </script>
 
   <script id="item-template" type="text/x-handlebars-template">
-    <p>{{headline}}</p>
+    <!-- <p>{{headline}}</p> -->
   </script>
 
   <script id="item-data-template" type="text/x-handlebars-template">
+    <div class="close-button vcenter-outer">
+      <div class="vcenter-middle">
+        <span class="vcenter-inner">X</span>
+      </div>
+    </div>
     <div id="item-text">
-      <div id="item-text-middle">
-        <div id="item-text-inner">
-          <h1>{{headline}}</h1>
-          <p class="display-date">{{display_date}}</p>
-          <p>{{{text}}}</p>
+      <div class="vcenter-outer cols-1">
+        <div class="vcenter-middle">
+          <div class="vcenter-inner">
+            <h1>{{headline}}</h1>
+            <p class="display-date">{{display_date}}</p>
+            <p>{{{text}}}</p>
+          </div>
         </div>
       </div>
     </div>
-
   </script>
 
   <link rel="stylesheet" type="text/css" href="css/timeline.css">
-  <link rel="stylesheet" type="text/css" href="css/vis.css"/>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.20.0/vis.min.css"/>
   <link rel="stylesheet" type="text/css" href="css/fabuloustime.css"/>
   <style media="screen" id="dynamicstyle"></style>
 </head>
@@ -50,7 +57,9 @@
   <div id="container">
     <div id="filters"></div>
 
-    <div id="item-data"></div>
+    <div id="item-data">
+      <span class="close">X</span>
+    </div>
 
     <div id="visualization"></div>
   </div>
@@ -120,19 +129,29 @@
       }
       $('#container').height(container_height);
       $('#filters').height(container_height);
-      $('#item-data').height(0.6*container_height);
-      $('#visualization').height(0.4*container_height);
-      $('#dynamicstyle').append(`.tl-media-content {max-height:${0.4*container_height}px;}`)
+      $('#item-data').height(0);
+      $('#visualization').height(container_height);
+      $('#dynamicstyle').append(
+        `.tl-media-content {max-height:${container_height}px;}`,
+        `#item-data {height:${0.7*container_height}px; top:${0.15*container_height}px;}`
+      )
 
       // create a handlebars template
       var source = document.getElementById('item-template').innerHTML;
       var template = Handlebars.compile(source);
       var options = {
         template: template,
-        height: 0.4*container_height,
+        height: 1000,
         dataAttributes: ['text','media'],
-        horizontalScroll: true,
-        zoomKey: 'ctrlKey',
+        // horizontalScroll: true,
+        // zoomKey: 'ctrlKey',
+        margin: {
+          item: 5,
+          axis: 10,
+        },
+        tooltip: {
+          followMouse: true,
+        },
         format: {
           minorLabels: {
             millisecond:'SSS',
@@ -178,7 +197,7 @@
           } else if (FabTimeline.title_entry) {
             RenderItem(FabTimeline.title_entry,item_data_template);
           } else {
-            $("#item-data").empty();
+            HideItemDetails();
           }
         });
       });

@@ -88,8 +88,17 @@ function RenderItem(item,template,data_id="item-data",text_id="item-text",media_
   $("#"+data_id).append(contents);
   var item_media_dict = item['media'];
   if (item_media_dict['url'] && item_media_dict['url']!="") {
-    $("#"+data_id).append('<div id="'+ media_id +'" class="cols-2"></div>');
+    $("#"+data_id).append(
+      '<div id="item-media-container" class="cols-2">\
+        <div class="vcenter-outer">\
+          <div class="vcenter-middle">\
+            <div id="'+ media_id +'"></div>\
+          </div>\
+        </div>\
+      </div>'
+    );
     $("#"+text_id).attr('class','cols-2');
+    $("#"+data_id).attr('style','display:block;');
     var item_media_type = TL.MediaType(item_media_dict);
     var item_media = new item_media_type.cls(item_media_dict);
     item_media.addTo(document.getElementById(media_id));
@@ -97,7 +106,12 @@ function RenderItem(item,template,data_id="item-data",text_id="item-text",media_
   } else {
     $("#"+text_id).attr('class','cols-1');
   }
-  return true;
+  $(".close-button").on('click',{item: item},HideItemDetails);
+  return null;
+}
+
+function HideItemDetails(event) {
+  $("#item-data").attr('style','display:none;');
 }
 
 /**
@@ -121,6 +135,15 @@ function GetDisplayDate(row,startDate,endDate) {
     if (row['End Time']  && row['End Time'] != "")  { displayDate += " at " + endDate.getHours() + ":" + endDate.getMinutes(); }
   }
   return displayDate;
+}
+
+/**
+ *
+ */
+function GetDisplayTitle(row,displayDate) {
+  var output = "<div class=\"item-tooltip\"><h1>"+row['Headline']+"</h1>";
+  output += "<p>"+displayDate+"</p></div>"
+  return output;
 }
 
 /**
@@ -385,6 +408,7 @@ class FabulousTime {
       } else {
         item['display_date'] = GetDisplayDate(sheet_data[i],item['start'],item['end']);
       }
+      item['title'] = GetDisplayTitle(sheet_data[i],item['display_date'])
       if (self.tag_col in sheet_data[i]) {
         var tags = sheet_data[i][self.tag_col].split(',').map(function(x) {
           return x.trim();
