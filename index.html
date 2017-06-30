@@ -57,7 +57,7 @@
   <div id="container">
     <div id="filters"></div>
 
-    <div id="item-data">
+    <div id="item-data" class="data-inactive">
       <span class="close">X</span>
     </div>
 
@@ -129,7 +129,7 @@
       }
       $('#container').height(container_height);
       $('#filters').height(container_height);
-      $('#item-data').height(0);
+      // $('#item-data').height(0);
       $('#visualization').height(container_height);
       $('#dynamicstyle').append(
         `.tl-media-content {max-height:${container_height}px;}`,
@@ -194,12 +194,13 @@
           selected_item = the_items._getItem(properties.items[0]);
           if (selected_item) {
             RenderItem(selected_item,item_data_template);
-          } else if (FabTimeline.title_entry) {
-            RenderItem(FabTimeline.title_entry,item_data_template);
           } else {
             HideItemDetails();
           }
         });
+        if (FabTimeline.title_entry) {
+          RenderItem(FabTimeline.title_entry,item_data_template);
+        }
       });
     });
   </script>

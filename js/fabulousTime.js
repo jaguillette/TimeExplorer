@@ -98,20 +98,21 @@ function RenderItem(item,template,data_id="item-data",text_id="item-text",media_
       </div>'
     );
     $("#"+text_id).attr('class','cols-2');
-    $("#"+data_id).attr('style','display:block;');
+    $("#"+data_id).attr('class','data-active');
     var item_media_type = TL.MediaType(item_media_dict);
     var item_media = new item_media_type.cls(item_media_dict);
     item_media.addTo(document.getElementById(media_id));
     item_media.loadMedia();
   } else {
     $("#"+text_id).attr('class','cols-1');
+    $("#"+data_id).attr('class','data-active');
   }
   $(".close-button").on('click',{item: item},HideItemDetails);
   return null;
 }
 
 function HideItemDetails(event) {
-  $("#item-data").attr('style','display:none;');
+  $("#item-data").attr('class','data-inactive');
 }
 
 /**

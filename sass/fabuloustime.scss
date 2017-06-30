@@ -19,9 +19,9 @@ body, html {
 #item-data {
   width: 70%;
   position: absolute;
-  z-index: 3;
   background-color: whitesmoke;
   left: 15%;
+  z-index: 3;
 }
 #item-media-container {
   height: inherit;
@@ -144,6 +144,7 @@ $filter-border-style: 1px solid #111;
   background-color: #eee;
   border-radius: 15px;
   cursor: pointer;
+  z-index: 10;
 }
 
 #item-text.cols-1 {
@@ -160,4 +161,18 @@ $filter-border-style: 1px solid #111;
     font-size: 130%;
     white-space: normal;
   }
+}
+
+.data-active {
+  visibility: visible;
+  -webkit-filter: blur(0px);
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+
+.data-inactive {
+  visibility: hidden;
+  -webkit-filter: blur(20px);
+  opacity: 0;
+  transition: all 0.5s ease;
 }

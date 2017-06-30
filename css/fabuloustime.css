@@ -93,9 +93,9 @@ body, html {
 #item-data {
   width: 70%;
   position: absolute;
-  z-index: 3;
   background-color: whitesmoke;
   left: 15%;
+  z-index: 3;
 }
 
 /* line 26, ../sass/fabuloustime.scss */
@@ -253,9 +253,10 @@ body, html {
   background-color: #eee;
   border-radius: 15px;
   cursor: pointer;
+  z-index: 10;
 }
 
-/* line 149, ../sass/fabuloustime.scss */
+/* line 150, ../sass/fabuloustime.scss */
 #item-text.cols-1 {
   position: absolute;
   height: 100%;
@@ -263,13 +264,29 @@ body, html {
   text-align: center;
 }
 
-/* line 156, ../sass/fabuloustime.scss */
+/* line 157, ../sass/fabuloustime.scss */
 .item-tooltip {
   max-width: 250px;
 }
-/* line 158, ../sass/fabuloustime.scss */
+/* line 159, ../sass/fabuloustime.scss */
 .item-tooltip h1 {
   font-weight: bold;
   font-size: 130%;
   white-space: normal;
+}
+
+/* line 166, ../sass/fabuloustime.scss */
+.data-active {
+  visibility: visible;
+  -webkit-filter: blur(0px);
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+
+/* line 173, ../sass/fabuloustime.scss */
+.data-inactive {
+  visibility: hidden;
+  -webkit-filter: blur(20px);
+  opacity: 0;
+  transition: all 0.5s ease;
 }
