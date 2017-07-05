@@ -33,3 +33,12 @@ Once you've set up your spreadsheet, you can bookmark it like you would any
 other website. If you're loading from a file, that bookmark will only work on
 your computer, but if you're serving this tool from a web server, you can link
 to your timeline from anywhere.
+
+Licenses
+-----
+
+This software uses code from [Timeline JS](https://timeline.knightlab.com/), which is licensed under a [Mozilla Public License](https://timeline.knightlab.com/docs/license.html)
+
+It also uses code from [vis.js](http://visjs.org/), which is dual licensed under both Apache 2.0 and MIT.
+
+This software is licensed under an MIT license, which means that you can use the code however you like, as long as you provide attribution and include the original license (although that statement is not legal advice).
