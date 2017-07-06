@@ -169,6 +169,12 @@ class FabulousTime {
 
     this.tag_col = this.get_tag_col();
 
+    this.filters = {
+      "activeGroups": [],
+      "activeTags": [],
+      "tagOptions": "any",
+    }
+
     var self = this;
 
     this.getting_sheet_ids = this.get_sheet_ids(self,sheet_ids);
@@ -398,6 +404,7 @@ class FabulousTime {
       item['media']['thumbnail'] = sheet_data[i]['Media Thumbnail'];
       item['sheet_type']      = sheet_data[i]['Type'];
       item['sheet_group']     = sheet_data[i]['Group'];
+      item['group_slug']      = self.slugify(sheet_data[i]['Group']);
       if (item['end'] && item['start'] && item['end']-item['start']<=0) {
         // If there is both a start date and an end date, but they are equal,
         // or less than zero (end before start),
@@ -415,6 +422,7 @@ class FabulousTime {
           return x.trim();
         });
         item['tags'] = tags;
+        item['tag_slugs'] = tags.map(function(x) { return self.slugify(x); });
       }
       if (item['start']) {
         items.push(item);
@@ -498,34 +506,54 @@ class FabulousTime {
   setup_filters(self, filter_names, filter_class) {
     if (filter_names.length > 0) {
       var html = `<div class="${filter_class} filter-group">`;
+      html += `<h1>${filter_class} Filters</h1>`
       for (var i = 0; i < filter_names.length; i++) {
-        var slug = self.slugify(filter_names[i]);
         var name = filter_names[i];
+        if (name == "") {
+          name = `[No ${filter_class}]`;
+        }
+        var slug = self.slugify(name);
         var HTMLtemplate = `<div class="filter ${slug} ${filter_class}"><label for="${slug}">${name}</label>\
-        <input id="${slug}" type="checkbox" class="tagFilter" value="${slug}" checked></div>`;
-        var CSSTemplate = `<style id="${slug}-style">.vis-item.${slug}{display:inline-block !important;}</style>`
+        <input id="${slug}" type="checkbox" class="filter-checkbox" value="${slug}"></div>`;
+        // var CSSTemplate = `<style id="${slug}-style">.vis-item.${slug}{display:inline-block !important;}</style>`
         html += HTMLtemplate;
-        $("head").append(CSSTemplate);
+        // $("head").append(CSSTemplate);
       }
-      var all_name = "All " + filter_class;
-      var all_slug = self.slugify(all_name);
-      var template = `<div class="meta-filter ${all_slug} ${filter_class}"><label for="${all_slug}">${all_name}</label>\
-      <input id="${all_slug}" type="checkbox" class="tagFilter" value="${all_slug}" checked></input></div>`;
-      html += template;
-      html += "</div>";
+      // var clear_name = "All " + filter_class;
+      // var clear_slug = self.slugify(clear_name);
+      // var template = `<div class="meta-filter ${clear_slug} ${filter_class}"><label for="${clear_slug}">${clear_name}</label>\
+      // <input id="${clear_slug}" type="checkbox" class="tagFilter" value="${clear_slug}" checked></input></div>`;
+      // html += template;
+      // html += "</div>";
+      if (filter_class == "Tags") {
+        html += '<div id="tag-options">\
+          <input type="radio" name="tag-options" id="tag-option-any" checked>\
+          <label for="tag-option-any">OR</label>\
+          <input type="radio" name="tag-options" id="tag-option-all">\
+          <label for="tag-option-all">AND</label></div>';
+      }
+      html += `<div class="${filter_class} clear-filters">Clear all filters</div>`;
+      html += '</div>';
       $("#filters").append(html);
-      $('.filter input').on('click',{self:self},self.filter_items);
-      $(`.${all_slug} input`).on('click',function() {
-        var is_checked = $(this).prop('checked');
-        var selector = `.filter.${filter_class} input`;
-        $(selector).each(function() {
-          if ($(this).prop('checked')!=is_checked) {
-            $(this).click();
-          }
-        });
+      $(`.${filter_class}.filter input`).on('click',{self:self},self.filter_items);
+      $("#tag-options input").on('click',{self:self},self.filter_items);
+      $(`.${filter_class}.clear-filters`).on('click', {self:self}, function() {
+        $(".filter input").prop('checked',false);
+        self.set_filters('none',self);
+        self.apply_filters(self);
+      })
+      // $(`.${clear_slug} input`).on('click',function() {
+        // Clear all group filters
+        // var is_checked = $(this).prop('checked');
+        // var selector = `.filter.${filter_class} input`;
+        // $(selector).each(function() {
+        //   if ($(this).prop('checked')!=is_checked) {
+        //     $(this).click();
+        //   }
+        // });
         // .prop('checked',$(this).prop('checked'));
         // self.filter_items();
-      });
+      // });
     }
   }
 
@@ -539,14 +567,83 @@ class FabulousTime {
    */
   filter_items(event) {
     var slug = $(this).attr('id');
-    var style_block = $(`#${slug}-style`);
-    style_block.empty();
-    if ($(this).prop('checked')) {
-      style_block.append(`.vis-item.${slug}{display:inline-block !important;}`)
-    } else {
-      style_block.append(`.vis-item.${slug}{display:none;}`);
+    event.data.self.set_filters(slug, event.data.self);
+    event.data.self.apply_filters(event.data.self);
+    // var style_block = $(`#${slug}-style`);
+    // style_block.empty();
+    // if ($(this).prop('checked')) {
+    //   style_block.append(`.vis-item.${slug}{display:inline-block !important;}`)
+    // } else {
+    //   style_block.append(`.vis-item.${slug}{display:none;}`);
+    // }
+    // event.data.self.timeline.redraw();
+  }
+
+  /*
+   *
+   */
+  set_filters(slug, self) {
+    // Set Group filters
+    var activeGroups = [];
+    var groupCheckboxes = $(".Groups input.filter-checkbox");
+    for (var i = 0; i < groupCheckboxes.length; i++) {
+      if (groupCheckboxes[i].checked) {
+        activeGroups.push(groupCheckboxes[i].value);
+      }
     }
-    event.data.self.timeline.redraw();
+    self.filters.activeGroups = activeGroups;
+    // Set Tag filters
+    var activeTags = [];
+    var tagCheckboxes = $(".Tags input.filter-checkbox");
+    for (var i = 0; i < tagCheckboxes.length; i++) {
+      if (tagCheckboxes[i].checked) {
+        activeTags.push(tagCheckboxes[i].value);
+      }
+    }
+    self.filters.activeTags = activeTags;
+    if ($("#tag-options").length > 0) {
+      if ($("#tag-option-any")[0].checked) {
+        self.filters.tagOptions = "any";
+      } else if ($("#tag-option-all")[0].checked) {
+        self.filters.tagOptions = "all";
+      } else {
+        self.filters.tagOptions = "any";
+        $("#tag-option-any")[0].checked = true;
+        console.log("Tag options div exists, but radio input is unset. That's weird.");
+      }
+    }
+  }
+
+  apply_filters(self) {
+    // add/remove items according to current filters
+    if (self.filters.activeGroups.length == 0 && self.filters.activeTags.length == 0) {
+      // No group or tag filters
+      self.timeline.itemsData.clear();
+      self.timeline.itemsData.add(self.items);
+      return 0;
+    } else if(self.filters.activeGroups.length > 0 && self.filters.activeTags.length == 0) {
+      // Only active Groups are set as filters
+      self.timeline.itemsData.clear();
+      self.timeline.itemsData.add(self.items.filter(function(item) {
+        return $.inArray(item.group_slug,self.filters.activeGroups) != -1;
+      }));
+    } else if (self.filters.activeGroups.length == 0 && self.filters.activeTags.length > 0) {
+      // Only active Tags are set as filters
+      self.timeline.itemsData.clear();
+      if (self.filters.tagOptions == "all") {
+        self.timeline.itemsData.add(self.items.filter(function(item) {
+          return self.filters.activeTags.every(function(element, index, array) {
+            return $.inArray(element,item.tag_slugs) != -1;
+          });
+        }));
+      } else {
+        self.timeline.itemsData.add(self.items.filter(function(item) {
+          return self.filters.activeTags.some(function(element, index, array) {
+            return $.inArray(element,item.tag_slugs) != -1;
+          });
+        }));
+      }
+    }
   }
 
   /**
