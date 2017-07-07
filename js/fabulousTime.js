@@ -71,51 +71,6 @@ function plainId(id_string) {
 }
 
 /**
- * Render the given item according to the given template, adding to elements
- * identified by selectors
- * @param {array} item - Array representing a timeline item
- * @param {Handlebars.compile} template - Handlebars templating function to apply to item
- * @param {string} data_id - ID tag for the parent element for the entire item
- * @param {string} text_id - ID tag for the item's text div
- * @param {string} media_id - ID tag for the item's media div
- */
-function RenderItem(item,template,data_id="item-data",text_id="item-text",media_id="item-media") {
-  data_id = plainId(data_id);
-  text_id = plainId(text_id);
-  media_id = plainId(media_id);
-  $("#"+data_id).empty();
-  var contents = template(item);
-  $("#"+data_id).append(contents);
-  var item_media_dict = item['media'];
-  if (item_media_dict['url'] && item_media_dict['url']!="") {
-    $("#"+data_id).append(
-      '<div id="item-media-container" class="cols-2">\
-        <div class="vcenter-outer">\
-          <div class="vcenter-middle">\
-            <div id="'+ media_id +'"></div>\
-          </div>\
-        </div>\
-      </div>'
-    );
-    $("#"+text_id).attr('class','cols-2');
-    $("#"+data_id).attr('class','data-active');
-    var item_media_type = TL.MediaType(item_media_dict);
-    var item_media = new item_media_type.cls(item_media_dict);
-    item_media.addTo(document.getElementById(media_id));
-    item_media.loadMedia();
-  } else {
-    $("#"+text_id).attr('class','cols-1');
-    $("#"+data_id).attr('class','data-active');
-  }
-  $(".close-button").on('click',{item: item},HideItemDetails);
-  return null;
-}
-
-function HideItemDetails(event) {
-  $("#item-data").attr('class','data-inactive');
-}
-
-/**
  *
  */
 function GetDisplayDate(row,startDate,endDate) {
@@ -142,7 +97,7 @@ function GetDisplayDate(row,startDate,endDate) {
  *
  */
 function GetDisplayTitle(row,displayDate) {
-  var output = "<div class=\"item-tooltip\"><h1>"+row['Headline']+"</h1>";
+  var output = "<div class=\"ft-item-tooltip\"><h1>"+row['Headline']+"</h1>";
   output += "<p>"+displayDate+"</p></div>"
   return output;
 }
@@ -160,34 +115,123 @@ class FabulousTime {
    * @param {array} sheet_ids - Array with Google Sheet ids as strings. If
    * sheet_ids is a string, it is assumed to be a single sheet ID
    * @param {string} api_key - Google Sheets API key.
-   * @param {vis.Timeline} timeline - vis.js timeline object to contain the items
+   * @param {array} options - options for setting up timeline display
    */
-  constructor(api_key, timeline, sheet_ids=null) {
+  constructor(api_key, sheet_ids=null, options={}) {
+    // Set up initial static stuff
     this.api_key = api_key;
-    this.sheet_data = [];
-    this.timeline = timeline;
+    this.options = this.set_options(options);
 
-    this.tag_col = this.get_tag_col();
+    this.sheet_data = [];
 
     this.filters = {
       "activeGroups": [],
       "activeTags": [],
       "tagOptions": "any",
-    }
+    };
 
+    this.itemDataTemplate = Handlebars.compile('\
+      <div class="ft-close-button ft-vcenter-outer">\
+        <div class="ft-vcenter-middle">\
+          <span class="ft-vcenter-inner">X</span>\
+        </div>\
+      </div>\
+      <div id="ft-item-text">\
+        <div class="ft-vcenter-outer ft-cols-1">\
+          <div class="ft-vcenter-middle">\
+            <div class="ft-vcenter-inner">\
+              <h1>{{headline}}</h1>\
+              <p class="ft-display-date">{{display_date}}</p>\
+              <p>{{{text}}}</p>\
+            </div>\
+          </div>\
+        </div>\
+      </div>');
+
+    this.tag_col = this.get_tag_col();
+
+    // Create a context-agnostic way to refer back to this parent object
     var self = this;
 
+    // Set up page skeleton for the addition of content
+    this.setup_dom(self, options);
+
+    $(window).resize(function() {
+      self.timeline.options.height = window.innerHeight;
+      self.timeline.redraw();
+      var windowHeight = window.innerHeight;
+      // var creditHeight =
+      $("#ft-dynamic-style").html(`
+        #ft-item-data {
+          height: ${0.7 * windowHeight}px;
+          top: ${0.15 * windowHeight}px;
+        }
+        .tl-media-content {
+          // max-height:
+        }
+      `);
+    });
+
+    // Set up vis.js timeline object
+    this.timeline = this.create_timeline(options);
+
+    // Get the IDs of Google sheets to draw data from.
+    // Returns a promise, so subsequent functions have to make sure it's done.
     this.getting_sheet_ids = this.get_sheet_ids(self,sheet_ids);
 
+    // When sheet IDs have been retrieved, get the data from relevant sheets.
     this.getting_sheet_data = this.getting_sheet_ids.then(function() {
       return self.get_all_sheet_data();
     });
 
+    // Run data setup functions once data has been retrieved
     self.ready = self.getting_sheet_data.then(function() {
       self.items = self.set_items(self, self.sheet_data);
       self.groups = self.set_groups(self);
       self.tags = self.set_tags(self);
     });
+
+    // When data has been retrieved and massaged into shape, render the visualization.
+    self.ready.done(function() {
+      $("#ft-item-data").empty();
+      if (self.title_entry) {
+        self.RenderItem(self,self.title_entry,self.itemDataTemplate);
+      }
+      var dataset = new vis.DataSet(self.items);
+      self.timeline.setItems(dataset);
+      self.timeline.setOptions(self.options.timelineOptions);
+      self.timeline.on('select', function(properties) {
+        var selected_item = dataset._getItem(properties.items[0]);
+        if (selected_item) {
+          self.RenderItem(self, selected_item, self.itemDataTemplate);
+        } else {
+          self.HideItemDetails();
+        }
+      })
+    })
+  }
+
+  /**
+   * Sets up options using initial default set of options, which is extended by user input
+   * @param {array} supplied_options - The user-defined options to overwrite defaults
+   */
+  set_options(supplied_options) {
+    var defaults = {
+      timelineOptions: {
+        height: window.innerHeight,
+        dataAttributes: ['text','media'],
+        margin: {
+          item: 5,
+          axis: 10,
+        },
+        tooltip: {
+          followMouse: true,
+        },
+        template: Handlebars.compile(""),
+      }
+    }
+    $.extend(defaults,supplied_options);
+    return defaults;
   }
 
   get_tag_col() {
@@ -196,6 +240,81 @@ class FabulousTime {
       return url_params['tag_col'];
     } else {
       return 'Tags';
+    }
+  }
+
+  /**
+   * Set up the DOM within the timeline div for use by the rest of the functions
+   * @param {array} options - A dictionary-like array of options to use in DOM creation
+   */
+  setup_dom(self, options) {
+    if ("divId" in options) {
+      var div_id = plainId(options['divId']);
+    } else {
+      var div_id = "timeline";
+    }
+    var container = $("#"+div_id);
+    var windowHeight = window.innerHeight;
+    container.append(`<div id="ft-filters"></div>`);
+    container.append(`<div id="ft-item-data" class="ft-data-inactive"><span class="ft-close">X</span></div>`);
+    container.append(`<div id="ft-visualization"></div>`);
+    container.append(`<style id="ft-dynamic-style">
+        #ft-item-data {height: ${0.7 * windowHeight}px; top: ${0.15 * windowHeight}px;}
+      </style>`)
+    return true;
+  }
+
+  /**
+   *
+   */
+  create_timeline(options) {
+    var container = document.getElementById('ft-visualization');
+    var timeline = new vis.Timeline(container,options.timelineOptions);
+    return timeline;
+  }
+
+  /**
+   * Render the given item according to the given template, adding to elements
+   * identified by selectors
+   * @param {array} item - Array representing a timeline item
+   * @param {Handlebars.compile} template - Handlebars templating function to apply to item
+   */
+  RenderItem(self,item,template) {
+    var data_id = "ft-item-data";
+    var text_id = "ft-item-text";
+    var media_id = "ft-item-media";
+    $("#"+data_id).empty();
+    var contents = template(item);
+    $("#"+data_id).append(contents);
+    var item_media_dict = item['media'];
+    if (item_media_dict['url'] && item_media_dict['url']!="") {
+      $("#"+data_id).append(
+        '<div id="ft-item-media-container" class="ft-cols-2">\
+          <div class="ft-vcenter-outer">\
+            <div class="ft-vcenter-middle">\
+              <div id="'+ media_id +'"></div>\
+            </div>\
+          </div>\
+        </div>'
+      );
+      $("#"+text_id).attr('class','ft-cols-2');
+      $("#"+data_id).attr('class','ft-data-active');
+      var item_media_type = TL.MediaType(item_media_dict);
+      var item_media = new item_media_type.cls(item_media_dict);
+      item_media.addTo(document.getElementById(media_id));
+      item_media.loadMedia();
+    } else {
+      $("#"+text_id).attr('class','ft-cols-1');
+      $("#"+data_id).attr('class','ft-data-active');
+    }
+    $(".ft-close-button").on('click',{item: item, self: self},self.HideItemDetails);
+    return null;
+  }
+
+  HideItemDetails(event) {
+    $("#ft-item-data").attr('class','ft-data-inactive');
+    if (event) {
+      event.data.self.timeline.setSelection();
     }
   }
 
@@ -469,7 +588,7 @@ class FabulousTime {
     for (var i = 0; i < groups.length; i++) {
       var slug = self.slugify(groups[i]);
       var style = `.${slug}.vis-item,\
-      #filters .${slug}.filter {\
+      #ft-filters .${slug}.filter {\
         background-color: #${colors[i]};\
         border-color: #${colors[i]};\
       }\n`;
@@ -534,7 +653,7 @@ class FabulousTime {
       }
       html += `<div class="${filter_class} clear-filters">Clear all filters</div>`;
       html += '</div>';
-      $("#filters").append(html);
+      $("#ft-filters").append(html);
       $(`.${filter_class}.filter input`).on('click',{self:self},self.filter_items);
       $("#tag-options input").on('click',{self:self},self.filter_items);
       $(`.${filter_class}.clear-filters`).on('click', {self:self}, function() {
@@ -652,10 +771,14 @@ class FabulousTime {
    * @param {string} text - the text to be made into a slug.
    */
   slugify(text) {
-    var output = text.trim()
-    var pattern = /[\s~!@$%^&*()+=,./';:"?><[\] \\{}|`#]+/g
-    output = output.replace(pattern,'_')
-    return output
+    if (typeof(text) == "string") {
+      var output = text.trim()
+      var pattern = /[\s~!@$%^&*()+=,./';:"?><[\] \\{}|`#]+/g
+      output = output.replace(pattern,'_')
+      return output
+    } else {
+      return "";
+    }
   }
 
   /**

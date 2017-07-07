@@ -16,14 +16,14 @@ body, html {
 }
 #container {
 }
-#item-data {
+#ft-item-data {
   width: 70%;
   position: absolute;
   background-color: whitesmoke;
   left: 15%;
   z-index: 3;
 }
-#item-media-container {
+#ft-item-media-container {
   height: inherit;
   overflow-y: scroll;
   &>div {
@@ -38,11 +38,11 @@ body, html {
 .tl-caption, .tl-credit {
   margin: auto;
 }
-#item-media img {
+#ft-item-media img {
   max-height: inherit;
   max-width: 100%;
 }
-#item-text {
+#ft-item-text {
   overflow-y: scroll;
   height: inherit;
   h1 {
@@ -52,18 +52,19 @@ body, html {
   }
   p {
     line-height: 125%;
+    word-break: break-word;
   }
-  p.display-date {
+  p.ft-display-date {
     font-style: italic;
     padding-bottom: 0.5em;
   }
 }
-#visualization {
+#ft-visualization {
   width: 90%;
   float: right;
 }
 $filter-border-style: 1px solid #111;
-#filters {
+#ft-filters {
   width: 10%;
   height: 100vh;
   float: left;
@@ -82,8 +83,8 @@ $filter-border-style: 1px solid #111;
     border-bottom: $filter-border-style;
   }
 }
-#filters .filter,
-#filters .meta-filter {
+#ft-filters .filter,
+#ft-filters .meta-filter {
   background-color: #f2f2f2;
   margin: 0.25em 0;
   text-align: center;
@@ -110,7 +111,7 @@ $filter-border-style: 1px solid #111;
   }
 }
 
-.cols-2 {
+.ft-cols-2 {
   display: inline-block;
   width: 48%;
   padding-left: 1%;
@@ -118,23 +119,23 @@ $filter-border-style: 1px solid #111;
   float: left;
 }
 
-.cols-1 {
+.ft-cols-1 {
   width: 98%;
   padding-right: 1%;
   padding-left: 1%;
 }
 
-.vcenter-outer {
+.ft-vcenter-outer {
   display: table;
   height: 100%;
-  .vcenter-middle {
+  .ft-vcenter-middle {
     display: table-cell;
     vertical-align: middle;
-    .vcenter-inner {}
+    .ft-vcenter-inner {}
   }
 }
 
-.close-button {
+.ft-close-button {
   width: 30px;
   height: 30px;
   position: absolute;
@@ -147,14 +148,14 @@ $filter-border-style: 1px solid #111;
   z-index: 10;
 }
 
-#item-text.cols-1 {
+#ft-item-text.cols-1 {
   position: absolute;
   height: 100%;
   width: 98%;
   text-align: center;
 }
 
-.item-tooltip {
+.ft-item-tooltip {
   max-width: 250px;
   h1 {
     font-weight: bold;
@@ -163,14 +164,14 @@ $filter-border-style: 1px solid #111;
   }
 }
 
-.data-active {
+.ft-data-active {
   visibility: visible;
   -webkit-filter: blur(0px);
   opacity: 1;
   transition: all 0.3s ease;
 }
 
-.data-inactive {
+.ft-data-inactive {
   visibility: hidden;
   -webkit-filter: blur(20px);
   opacity: 0;
