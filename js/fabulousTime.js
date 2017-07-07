@@ -93,6 +93,20 @@ function GetDisplayDate(row,startDate,endDate) {
   return displayDate;
 }
 
+function testFilter(self) {
+  if (self.filters.tagOptions == "all") {
+    return function(item) {
+      console.log("filter run because all");
+      return true;
+    }
+  } else {
+    return function(item) {
+      console.log("filter run because any");
+      return true;
+    }
+  }
+}
+
 /**
  *
  */
@@ -198,7 +212,12 @@ class FabulousTime {
         self.RenderItem(self,self.title_entry,self.itemDataTemplate);
       }
       var dataset = new vis.DataSet(self.items);
-      self.timeline.setItems(dataset);
+      var view = new vis.DataView(dataset, {
+        // filter: self.item_filter(self),
+        filter: self.item_filter(self),
+      });
+      self.view = view;
+      self.timeline.setItems(view);
       var dataRange = self.timeline.getDataRange();
       var padding = 0.01 * (dataRange.max - dataRange.min);
       var timelineMin = new Date(dataRange.min.getTime() - padding);
@@ -234,6 +253,7 @@ class FabulousTime {
           followMouse: true,
         },
         template: Handlebars.compile(""),
+        order: function(a, b) { return (a.end - a.start) < (b.end - b.start); }
       }
     }
     $.extend(defaults,supplied_options);
@@ -295,13 +315,13 @@ class FabulousTime {
     var item_media_dict = item['media'];
     if (item_media_dict['url'] && item_media_dict['url']!="") {
       $("#"+data_id).append(
-        '<div id="ft-item-media-container" class="ft-cols-2">\
+        `<div id="ft-item-media-container" class="ft-cols-2">\
           <div class="ft-vcenter-outer">\
             <div class="ft-vcenter-middle">\
-              <div id="'+ media_id +'"></div>\
+              <div id="${media_id}"></div>\
             </div>\
           </div>\
-        </div>'
+        </div>`
       );
       $("#"+text_id).attr('class','ft-cols-2');
       $("#"+data_id).attr('class','ft-data-active');
@@ -693,7 +713,8 @@ class FabulousTime {
   filter_items(event) {
     var slug = $(this).attr('id');
     event.data.self.set_filters(slug, event.data.self);
-    event.data.self.apply_filters(event.data.self);
+    event.data.self.view.refresh();
+    // event.data.self.apply_filters(event.data.self);
     // var style_block = $(`#${slug}-style`);
     // style_block.empty();
     // if ($(this).prop('checked')) {
@@ -735,6 +756,63 @@ class FabulousTime {
         self.filters.tagOptions = "any";
         $("#tag-option-any")[0].checked = true;
         console.log("Tag options div exists, but radio input is unset. That's weird.");
+      }
+    }
+  }
+
+  /**
+   * Function to be applied directly to the data view that backs the timeline
+   */
+  item_filter(self) {
+    return function(item) {
+      if (self.filters.activeGroups.length == 0 && self.filters.activeTags.length == 0) {
+        // If neither group nor tag filters are set, return a filter function that
+        // always returns true.
+        return true;
+      } else if (self.filters.activeGroups.length > 0 && self.filters.activeTags.length == 0) {
+        // If only the group filter is set, return a function to check if the
+        // group of an item is active
+        return $.inArray(item.group_slug,self.filters.activeGroups) > -1;
+      } else if (self.filters.activeGroups.length == 0 && self.filters.activeTags.length > 0) {
+        // If only the tag filter is set...
+        if (self.filters.tagOptions == "all") {
+          // ...and tag options are set to match all tags, return a function to
+          // filter to only items with all of the active tags applied.
+          return self.filters.activeTags.every(function(element, index, array) {
+            return $.inArray(element,item.tag_slugs) > -1;
+          });
+        } else {
+          // ...and tag options are set to match any active tag, return a function
+          // to filter to only items with any active tag applied.
+          return self.filters.activeTags.some(function(element, index, array) {
+            return $.inArray(element,item.tag_slugs) > -1;
+          });
+        };
+      } else {
+        // Both tag filters and group filters are set. Items should be filtered to
+        // only those with an active group and any/all active tags, depending on
+        // active tag behavior.
+        var hasActiveGroup = $.inArray(item.group_slug,self.filters.activeGroups) > -1;
+        if (hasActiveGroup) {
+          // If the group is active, do the tag checks.
+          if (self.filters.tagOptions == "all") {
+            // Check if all tags are active
+            var hasAllTags = self.filters.activeTags.every(function(element, index, array) {
+              return $.inArray(element,item.tag_slugs) > -1;
+            });
+            return hasAllTags;
+          } else {
+            // Check if any tags are active
+            var hasAnyTag = self.filters.activeTags.some(function(element, index, array) {
+              return $.inArray(element,item.tag_slugs) > -1;
+            });
+            return hasAnyTag;
+          }
+        } else {
+          // If the group is not active, don't bother with the tag checks, just
+          // return false
+          return false;
+        }
       }
     }
   }
