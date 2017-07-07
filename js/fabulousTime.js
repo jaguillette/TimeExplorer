@@ -199,6 +199,12 @@ class FabulousTime {
       }
       var dataset = new vis.DataSet(self.items);
       self.timeline.setItems(dataset);
+      var dataRange = self.timeline.getDataRange();
+      var padding = 0.01 * (dataRange.max - dataRange.min);
+      var timelineMin = new Date(dataRange.min.getTime() - padding);
+      var timelineMax = new Date(dataRange.max.getTime() + padding);
+      self.options.timelineOptions.min = timelineMin;
+      self.options.timelineOptions.max = timelineMax;
       self.timeline.setOptions(self.options.timelineOptions);
       self.timeline.on('select', function(properties) {
         var selected_item = dataset._getItem(properties.items[0]);
