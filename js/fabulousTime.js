@@ -622,15 +622,40 @@ class FabulousTime {
    */
   setup_group_ui(self, groups) {
     self.setup_filters(self,groups,"Groups");
-    var scheme = palette.listSchemes('rainbow')[0];
-    var colors = scheme.apply(scheme, [groups.length, 0.4]);
+    var defaultScheme = { hmin: 0, hmax: 360, cmin: 30, cmax: 80, lmin: 35, lmax: 80  };
+    var fancyLight    = { hmin: 0, hmax: 360, cmin: 15, cmax: 40, lmin: 70, lmax: 100 };
+    var checkColor = function(hcl, params) {
+      var hCond = params.hmin < params.hmax ?
+        hcl[0]>=params.hmin && hcl[0]<=params.hmax :
+        hcl[0]>=params.hmin || hcl[0]<=params.hmax;
+      if (hCond) {
+        var cCond = hcl[1]>=params.cmin && hcl[1]<=params.cmax;
+        if (cCond) {
+          var lCond = hcl[2]>=params.lmin && hcl[2]<=params.lmax;
+          return lCond;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    }
+    var raw_colors = paletteGenerator.generate(groups.length, function(color) {
+      var hcl = color.hcl();
+      return checkColor(hcl, defaultScheme);
+    });
+    var colors = [];
+    for (var i = 0; i < raw_colors.length; i++) {
+      colors.push(raw_colors[i].hex());
+    }
+    console.log(colors);
     var theStyle = $("#docstyle");
     for (var i = 0; i < groups.length; i++) {
       var slug = self.slugify(groups[i]);
       var style = `.${slug}.vis-item,\
       #ft-filters .${slug}.filter {\
-        background-color: #${colors[i]};\
-        border-color: #${colors[i]};\
+        background-color: ${colors[i]};\
+        border-color: ${colors[i]};\
       }\n`;
       theStyle.append(style);
     }
@@ -699,7 +724,7 @@ class FabulousTime {
       $(`.${filter_class}.clear-filters`).on('click', {self:self}, function() {
         $(".filter input").prop('checked',false);
         self.set_filters('none',self);
-        self.apply_filters(self);
+        self.view.refresh();
       })
       // $(`.${clear_slug} input`).on('click',function() {
         // Clear all group filters
