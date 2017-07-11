@@ -174,14 +174,15 @@ class FabulousTime {
       self.timeline.options.height = window.innerHeight;
       self.timeline.redraw();
       var windowHeight = window.innerHeight;
+      var bylineHeight = $(".tl-caption").height() + $(".tl-credit").height() || 0;
       // var creditHeight =
       $("#ft-dynamic-style").html(`
         #ft-item-data {
           height: ${0.7 * windowHeight}px;
           top: ${0.15 * windowHeight}px;
         }
-        .tl-media-content {
-          // max-height:
+        .tl-media-image {
+          max-height: ${0.7 * windowHeight - bylineHeight - 70}px !important;
         }
       `);
     });
@@ -232,7 +233,8 @@ class FabulousTime {
         } else {
           self.HideItemDetails();
         }
-      })
+      });
+      $("#ft-loading").addClass("ft-inactive");
     })
   }
 
@@ -253,7 +255,8 @@ class FabulousTime {
           followMouse: true,
         },
         template: Handlebars.compile(""),
-        order: function(a, b) { return (a.end - a.start) < (b.end - b.start); }
+        // order: function(a, b) { return (a.end - a.start) < (b.end - b.start); },
+        order: function(a, b) { return a.group_slug < b.group_slug; },
       }
     }
     $.extend(defaults,supplied_options);
@@ -281,12 +284,15 @@ class FabulousTime {
     }
     var container = $("#"+div_id);
     var windowHeight = window.innerHeight;
+    var bylineHeight = $(".tl-caption").height() + $(".tl-credit").height() || 0;
+    container.append(`<div id="ft-loading" class="ft-vcenter-outer"><div class="ft-vcenter-middle"><div class="ft-vcenter-inner"><p>Loading...</p></div></div></div>`);
     container.append(`<div id="ft-filters"></div>`);
     container.append(`<div id="ft-item-data" class="ft-data-inactive"><span class="ft-close">X</span></div>`);
     container.append(`<div id="ft-visualization"></div>`);
     container.append(`<style id="ft-dynamic-style">
-        #ft-item-data {height: ${0.7 * windowHeight}px; top: ${0.15 * windowHeight}px;}
-      </style>`)
+        #ft-item-data { height: ${0.7 * windowHeight}px; top: ${0.15 * windowHeight}px; }
+        .tl-media-image { max-height: ${0.7 * windowHeight - bylineHeight - 70}px !important; }
+      </style>`);
     return true;
   }
 
@@ -318,7 +324,7 @@ class FabulousTime {
         `<div id="ft-item-media-container" class="ft-cols-2">\
           <div class="ft-vcenter-outer">\
             <div class="ft-vcenter-middle">\
-              <div id="${media_id}"></div>\
+              <div id="${media_id}" class="ft-vcenter-inner"></div>\
             </div>\
           </div>\
         </div>`
@@ -329,6 +335,14 @@ class FabulousTime {
       var item_media = new item_media_type.cls(item_media_dict);
       item_media.addTo(document.getElementById(media_id));
       item_media.loadMedia();
+      item_media.options['width'] = $("#ft-item-media-container").width() - 10;
+      window.item_media = item_media;
+      $(".tl-caption").attr('style',"");
+      $(window).on("resize", function() {
+        var target_width = $("#ft-item-media-container").width() - 10;
+        item_media._el.content_item.style.height = TL.Util.ratio.r16_9({w:target_width}) + "px";
+        item_media._el.content_item.style.width = target_width + "px";
+      });
     } else {
       $("#"+text_id).attr('class','ft-cols-1');
       $("#"+data_id).attr('class','ft-data-active');

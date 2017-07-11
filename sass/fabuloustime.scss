@@ -128,6 +128,7 @@ $filter-border-style: 1px solid #111;
 .ft-vcenter-outer {
   display: table;
   height: 100%;
+  table-layout: fixed;
   .ft-vcenter-middle {
     display: table-cell;
     vertical-align: middle;
@@ -176,4 +177,16 @@ $filter-border-style: 1px solid #111;
   -webkit-filter: blur(20px);
   opacity: 0;
   transition: all 0.5s ease;
+}
+
+#ft-loading {
+  width: 100%;
+  height: 100vh;
+  z-index: 9999;
+  position: absolute;
+  background-color: #fff;
+  text-align: center;
+  &.ft-inactive {
+    display: none;
+  }
 }
