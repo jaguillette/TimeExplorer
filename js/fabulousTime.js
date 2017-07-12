@@ -145,6 +145,13 @@ class FabulousTime {
     };
 
     this.itemDataTemplate = Handlebars.compile('\
+      <style>\
+        #ft-item-data { background: {{background}}; }\
+        {{#if background}}\
+        #ft-item-text .ft-vcenter-inner { background-color: rgba(255,255,255,0.7); padding: 1em;}\
+        #ft-item-media-container .ft-vcenter-inner { background-color: rgba(255,255,255,0.7); padding: 1em; overflow: hidden; }\
+        {{/if}}\
+      </style>\
       <div class="ft-close-button ft-vcenter-outer">\
         <div class="ft-vcenter-middle">\
           <span class="ft-vcenter-inner">X</span>\
@@ -563,16 +570,17 @@ class FabulousTime {
       var item = {};
       item['start'] = self.get_datetime(sheet_data[i],'Year','Month','Day','Time',self.dateWithNulls);
       item['end']   = self.get_datetime(sheet_data[i],'End Year','End Month','End Day','End Time',self.dateWithNulls);
-      item['headline']        = sheet_data[i]['Headline'];
-      item['text']            = sheet_data[i]['Text'];
-      item['media']           = {};
+      item['headline']           = sheet_data[i]['Headline'];
+      item['text']               = sheet_data[i]['Text'];
+      item['media']              = {};
       item['media']['url']       = sheet_data[i]['Media'];
       item['media']['credit']    = sheet_data[i]['Media Credit'];
       item['media']['caption']   = sheet_data[i]['Media Caption'];
       item['media']['thumbnail'] = sheet_data[i]['Media Thumbnail'];
-      item['sheet_type']      = sheet_data[i]['Type'];
-      item['sheet_group']     = sheet_data[i]['Group'];
-      item['group_slug']      = self.slugify(sheet_data[i]['Group']);
+      item['sheet_type']         = sheet_data[i]['Type'];
+      item['sheet_group']        = sheet_data[i]['Group'];
+      item['group_slug']         = self.slugify(sheet_data[i]['Group']);
+      item['background']         = ((sheet_data[i]['Background'].startsWith('http')) ? 'url('+sheet_data[i]['Background']+")" : sheet_data[i]['Background'])
       if (item['end'] && item['start'] && item['end']-item['start']<=0) {
         // If there is both a start date and an end date, but they are equal,
         // or less than zero (end before start),
