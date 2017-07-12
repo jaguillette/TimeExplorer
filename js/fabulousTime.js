@@ -285,14 +285,23 @@ class FabulousTime {
     var container = $("#"+div_id);
     var windowHeight = window.innerHeight;
     var bylineHeight = $(".tl-caption").height() + $(".tl-credit").height() || 0;
-    container.append(`<div id="ft-loading" class="ft-vcenter-outer"><div class="ft-vcenter-middle"><div class="ft-vcenter-inner"><p>Loading...</p></div></div></div>`);
-    container.append(`<div id="ft-filters"></div>`);
-    container.append(`<div id="ft-item-data" class="ft-data-inactive"><span class="ft-close">X</span></div>`);
-    container.append(`<div id="ft-visualization"></div>`);
-    container.append(`<style id="ft-dynamic-style">
+    var html = "";
+    html += `<div id="ft-loading" class="ft-vcenter-outer"><div class="ft-vcenter-middle"><div class="ft-vcenter-inner"><p>Loading...</p></div></div></div>`;
+    html += `<div id="ft-filter-container"><h1>Filter Timeline</h1>`;
+    html += `<div id="ft-filters"></div>`;
+    html += `<div class="clear-filters"><p>Clear all filters</p></div></div>`
+    html += `<div id="ft-item-data" class="ft-data-inactive"><span class="ft-close">X</span></div>`;
+    html += `<div id="ft-visualization"></div>`;
+    html += `<style id="ft-dynamic-style">
         #ft-item-data { height: ${0.7 * windowHeight}px; top: ${0.15 * windowHeight}px; }
         .tl-media-image { max-height: ${0.7 * windowHeight - bylineHeight - 70}px !important; }
-      </style>`);
+      </style>`;
+    container.append(html);
+    $(`.clear-filters`).on('click', {self:self}, function() {
+      $(".filter input").prop('checked',false);
+      self.set_filters('none',self);
+      self.view.refresh();
+    });
     return true;
   }
 
@@ -648,7 +657,6 @@ class FabulousTime {
     for (var i = 0; i < raw_colors.length; i++) {
       colors.push(raw_colors[i].hex());
     }
-    console.log(colors);
     var theStyle = $("#docstyle");
     for (var i = 0; i < groups.length; i++) {
       var slug = self.slugify(groups[i]);
@@ -690,7 +698,7 @@ class FabulousTime {
   setup_filters(self, filter_names, filter_class) {
     if (filter_names.length > 0) {
       var html = `<div class="${filter_class} filter-group">`;
-      html += `<h1>${filter_class} Filters</h1>`
+      html += `<h1>Filter ${filter_class}</h1>`
       for (var i = 0; i < filter_names.length; i++) {
         var name = filter_names[i];
         if (name == "") {
@@ -716,16 +724,11 @@ class FabulousTime {
           <input type="radio" name="tag-options" id="tag-option-all">\
           <label for="tag-option-all">AND</label></div>';
       }
-      html += `<div class="${filter_class} clear-filters">Clear all filters</div>`;
+      // html += `<div class="${filter_class} clear-filters">Clear all filters</div>`;
       html += '</div>';
       $("#ft-filters").append(html);
       $(`.${filter_class}.filter input`).on('click',{self:self},self.filter_items);
       $("#tag-options input").on('click',{self:self},self.filter_items);
-      $(`.${filter_class}.clear-filters`).on('click', {self:self}, function() {
-        $(".filter input").prop('checked',false);
-        self.set_filters('none',self);
-        self.view.refresh();
-      })
       // $(`.${clear_slug} input`).on('click',function() {
         // Clear all group filters
         // var is_checked = $(this).prop('checked');
