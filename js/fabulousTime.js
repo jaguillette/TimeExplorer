@@ -354,11 +354,15 @@ class FabulousTime {
       item_media.options['width'] = $("#ft-item-media-container").width() - 10;
       window.item_media = item_media;
       $(".tl-caption").attr('style',"");
-      $(window).on("resize", function() {
-        var target_width = $("#ft-item-media-container").width() - 10;
-        item_media._el.content_item.style.height = TL.Util.ratio.r16_9({w:target_width}) + "px";
-        item_media._el.content_item.style.width = target_width + "px";
-      });
+      console.log(item_media.data.url);
+      if (item_media.data.url.indexOf('youtube') > -1) {
+        $(window).on("resize", function() {
+          var target_width = $("#ft-item-media-container").width() - 10;
+          item_media._el.content_item.style.height = TL.Util.ratio.r16_9({w:target_width}) + "px";
+          item_media._el.content_item.style.width = target_width + "px";
+          $(".tl-caption").attr('style',"");
+        });
+      }
     } else {
       $("#"+text_id).attr('class','ft-cols-1');
       $("#"+data_id).attr('class','ft-data-active');
@@ -580,7 +584,7 @@ class FabulousTime {
       item['sheet_type']         = sheet_data[i]['Type'];
       item['sheet_group']        = sheet_data[i]['Group'];
       item['group_slug']         = self.slugify(sheet_data[i]['Group']);
-      item['background']         = ((sheet_data[i]['Background'].startsWith('http')) ? 'url('+sheet_data[i]['Background']+")" : sheet_data[i]['Background'])
+      item['background']         = ((sheet_data[i]['Background'] && sheet_data[i]['Background'].startsWith('http')) ? 'url('+sheet_data[i]['Background']+")" : sheet_data[i]['Background'])
       if (item['end'] && item['start'] && item['end']-item['start']<=0) {
         // If there is both a start date and an end date, but they are equal,
         // or less than zero (end before start),
