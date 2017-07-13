@@ -354,7 +354,6 @@ class FabulousTime {
       item_media.options['width'] = $("#ft-item-media-container").width() - 10;
       window.item_media = item_media;
       $(".tl-caption").attr('style',"");
-      console.log(item_media.data.url);
       if (item_media.data.url.indexOf('youtube') > -1) {
         $(window).on("resize", function() {
           var target_width = $("#ft-item-media-container").width() - 10;
