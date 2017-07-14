@@ -203,6 +203,7 @@ class FabulousTime {
 
     // When sheet IDs have been retrieved, get the data from relevant sheets.
     this.getting_sheet_data = this.getting_sheet_ids.then(function() {
+      self.getting_title = self.get_sheet_title(self.sheet_ids[0]);
       return self.get_all_sheet_data();
     });
 
@@ -490,7 +491,8 @@ class FabulousTime {
   get_sheet_data(sheet_id) {
     var self = this;
     var dfd = $.Deferred();
-    $.getJSON("https://sheets.googleapis.com/v4/spreadsheets/"+sheet_id+"/values/A:ZZZ?key="+this.api_key).done(function(data) {
+    var request_url = `https://sheets.googleapis.com/v4/spreadsheets/${sheet_id}/values/A:ZZZ?key=${this.api_key}`;
+    $.getJSON(request_url).done(function(data) {
       var columns = data.values[0];
       for (var i = 1; i < data.values.length; i++) {
         var values = zip_arrays(columns, data.values[i]);
@@ -500,6 +502,18 @@ class FabulousTime {
     });
     return dfd.promise();
   };
+
+  get_sheet_title(sheet_id) {
+    var self = this;
+    var dfd = $.Deferred();
+    var request_url = `https://sheets.googleapis.com/v4/spreadsheets/${sheet_id}?key=${this.api_key}`;
+    $.getJSON(request_url).done(function(data) {
+      var title = data.properties.title;
+      document.title = title;
+      dfd.resolve();
+    });
+    return dfd.promise();
+  }
 
   /**
    * Gets data from multiple spreadsheets, returns it all in the same array.
