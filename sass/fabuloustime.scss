@@ -212,32 +212,26 @@ $filter-border-style: 1px solid #111;
   z-index: 10;
   div.ft-nav-button {
      cursor: pointer;
-    //  background-color: rgba(0,0,0,0.7);
      padding: 3px;
      position: absolute;
      height: 20px;
      width: 20px;
      text-align: center;
-     border-radius: 50%
   }
   #ft-nav-zoom-in {
     top: 0;
     left: 26px;
-    // border-radius: 3px 3px 0 0;
   }
   #ft-nav-zoom-out {
     top: 52px;
     left: 26px;
-    // border-radius: 0 0 3px 3px;
   }
   #ft-nav-right {
     top: 26px;
     left: 52px;
-    // border-radius: 0 3px 3px 0;
   }
   #ft-nav-left {
     top: 26px;
     left: 0px;
-    // border-radius: 3px 0 0 3px;
   }
 }

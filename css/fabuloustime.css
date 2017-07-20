@@ -335,24 +335,23 @@ body, html {
   height: 20px;
   width: 20px;
   text-align: center;
-  border-radius: 50%;
 }
-/* line 223, ../sass/fabuloustime.scss */
+/* line 221, ../sass/fabuloustime.scss */
 #ft-nav-buttons #ft-nav-zoom-in {
   top: 0;
   left: 26px;
 }
-/* line 228, ../sass/fabuloustime.scss */
+/* line 225, ../sass/fabuloustime.scss */
 #ft-nav-buttons #ft-nav-zoom-out {
   top: 52px;
   left: 26px;
 }
-/* line 233, ../sass/fabuloustime.scss */
+/* line 229, ../sass/fabuloustime.scss */
 #ft-nav-buttons #ft-nav-right {
   top: 26px;
   left: 52px;
 }
-/* line 238, ../sass/fabuloustime.scss */
+/* line 233, ../sass/fabuloustime.scss */
 #ft-nav-buttons #ft-nav-left {
   top: 26px;
   left: 0px;
