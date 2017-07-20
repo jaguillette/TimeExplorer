@@ -1,0 +1,65 @@
+/* Adapted from Craig Harshbarger's CodePen: https://codepen.io/craigh/pen/WQvyGV */
+
+.click-to-use {
+	cursor: pointer;
+	position: relative;
+	padding-bottom: 56.25%; /* 16:9 */
+	padding-top: 25px;
+	height: 0;
+
+	iframe {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+  &:before, &:after {
+		transition: all 0.25s ease;
+		position: absolute;
+		display: block;
+  }
+
+  &:before {
+		content: '';
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		background: #000;
+		opacity: 0;
+		z-index: 10;
+	}
+
+	&:after {
+		content: 'Click to Interact';
+		background: #00adee;
+		color: #fff;
+		width: 200px;
+		height: 30px;
+		line-height: 30px;
+		border-radius: 15px;
+		text-align: center;
+		top: 50%;
+		margin-top: -15px;
+		left: 50%;
+		margin-left: -100px;
+		z-index: 11;
+		opacity: 0;
+	}
+
+	&:hover:before {
+		opacity: 0.2;
+	}
+
+	&:hover:after {
+		opacity: 1;
+	}
+
+  &.interact {
+    &:before, &:after {
+      display: none;
+    }
+  }
+}
