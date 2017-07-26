@@ -263,8 +263,7 @@ class FabulousTime {
           followMouse: true,
         },
         template: Handlebars.compile(""),
-        // order: function(a, b) { return (a.end - a.start) < (b.end - b.start); },
-        order: function(a, b) { return a.group_slug < b.group_slug; },
+        order: function(a, b) { return b.duration - a.duration; },
       }
     }
     $.extend(defaults,supplied_options);
@@ -298,6 +297,12 @@ class FabulousTime {
     html += `<div id="ft-filter-container"><h1>Filter Timeline</h1>`;
     html += `<div id="ft-filters"></div>`;
     html += `<div class="clear-filters"><p>Clear all filters</p></div></div>`
+    html += `<div id="ft-nav-buttons">\
+              <div id="ft-nav-zoom-in" class="ft-nav-button ft-vcenter-outer"><div class="ft-vcenter-middle"><div class="ft-vcenter-inner"><i class="fa fa-2x fa-plus-circle" aria-hidden="true"></i></div></div></div>\
+              <div id="ft-nav-zoom-out" class="ft-nav-button ft-vcenter-outer"><div class="ft-vcenter-middle"><div class="ft-vcenter-inner"><i class="fa fa-2x fa-minus-circle" aria-hidden="true"></i></div></div></div>\
+              <div id="ft-nav-left" class="ft-nav-button ft-vcenter-outer"><div class="ft-vcenter-middle"><div class="ft-vcenter-inner"><i class="fa fa-2x fa-arrow-circle-left" aria-hidden="true"></i></div></div></div>\
+              <div id="ft-nav-right" class="ft-nav-button ft-vcenter-outer"><div class="ft-vcenter-middle"><div class="ft-vcenter-inner"><i class="fa fa-2x fa-arrow-circle-right" aria-hidden="true"></i></div></div></div>\
+              </div>`
     html += `<div id="ft-item-data" class="ft-data-inactive"><span class="ft-close">X</span></div>`;
     html += `<div id="ft-visualization"></div>`;
     html += `<style id="ft-dynamic-style">
@@ -309,6 +314,26 @@ class FabulousTime {
       $(".filter input").prop('checked',false);
       self.set_filters('none',self);
       self.view.refresh();
+    });
+    $("#ft-nav-zoom-in").on("click", {self:self}, function() { self.timeline.zoomIn(0.2); });
+    $("#ft-nav-zoom-out").on("click",function() { self.timeline.zoomOut(0.2); });
+    $("#ft-nav-left").on("click",function() {
+      var range = self.timeline.getWindow();
+      var interval = range.end - range.start;
+      var percentage = 0.2
+      self.timeline.setWindow({
+        start: range.start.valueOf() - interval * percentage,
+        end:   range.end.valueOf() - interval * percentage
+      });
+    });
+    $("#ft-nav-right").on("click",function() {
+      var range = self.timeline.getWindow();
+      var interval = range.end - range.start;
+      var percentage = -0.2
+      self.timeline.setWindow({
+        start: range.start.valueOf() - interval * percentage,
+        end: range.end.valueOf() - interval * percentage
+      });
     });
     return true;
   }
@@ -604,6 +629,7 @@ class FabulousTime {
         // set the end date to null to make it display as a point.
         item['end'] = null;
       }
+      item['duration'] = (item['end'] == null) ? 0 : (item['end'] - item['start'])
       if (sheet_data[i]['Display Date'] && sheet_data[i]['Display Date'] != "") {
         item['display_date'] = sheet_data[i]['Display Date'];
       } else {
@@ -682,6 +708,7 @@ class FabulousTime {
     for (var i = 0; i < raw_colors.length; i++) {
       colors.push(raw_colors[i].hex());
     }
+    colors.sort();
     var theStyle = $("#docstyle");
     for (var i = 0; i < groups.length; i++) {
       var slug = self.slugify(groups[i]);
