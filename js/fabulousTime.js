@@ -316,7 +316,7 @@ class FabulousTime {
       self.set_filters('none',self);
       self.view.refresh();
     });
-    $("#ft-nav-zoom-in").on("click", {self:self}, function() { self.timeline.zoomIn(0.2); console.log("i;ve been clicked"); });
+    $("#ft-nav-zoom-in").on("click", {self:self}, function() { self.timeline.zoomIn(0.2); });
     $("#ft-nav-zoom-out").on("click",function() { self.timeline.zoomOut(0.2); });
     $("#ft-nav-left").on("click",function() {
       var range = self.timeline.getWindow();
