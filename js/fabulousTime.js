@@ -708,6 +708,7 @@ class FabulousTime {
     for (var i = 0; i < raw_colors.length; i++) {
       colors.push(raw_colors[i].hex());
     }
+    colors.sort();
     var theStyle = $("#docstyle");
     for (var i = 0; i < groups.length; i++) {
       var slug = self.slugify(groups[i]);
