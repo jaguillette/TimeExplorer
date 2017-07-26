@@ -263,8 +263,7 @@ class FabulousTime {
           followMouse: true,
         },
         template: Handlebars.compile(""),
-        // order: function(a, b) { return (a.end - a.start) < (b.end - b.start); },
-        order: function(a, b) { return a.group_slug < b.group_slug; },
+        order: function(a, b) { return b.duration - a.duration; },
       }
     }
     $.extend(defaults,supplied_options);
@@ -630,6 +629,7 @@ class FabulousTime {
         // set the end date to null to make it display as a point.
         item['end'] = null;
       }
+      item['duration'] = (item['end'] == null) ? 0 : (item['end'] - item['start'])
       if (sheet_data[i]['Display Date'] && sheet_data[i]['Display Date'] != "") {
         item['display_date'] = sheet_data[i]['Display Date'];
       } else {
