@@ -752,7 +752,8 @@ class FabulousTime {
         }
         self.items[i]['className'] = slug;
       } else {
-        self.items[i]['className'] = "Ungrouped"
+        self.items[i]['className'] = "Ungrouped";
+        self.items[i]['group_slug'] = "Ungrouped";
         if ($.inArray('Ungrouped',groups) == -1) {
           groups.push("Ungrouped");
         }
