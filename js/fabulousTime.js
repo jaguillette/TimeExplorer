@@ -303,7 +303,7 @@ class FabulousTime {
     var windowHeight = window.innerHeight;
     var bylineHeight = $(".tl-caption").height() + $(".tl-credit").height() || 0;
     var html = "";
-    html += `<div id="ft-loading" class="ft-vcenter-outer"><div class="ft-vcenter-middle"><div class="ft-vcenter-inner"><p>Loading...</p></div></div></div>`;
+    html += `<div id="ft-loading" class="ft-vcenter-outer"><div class="ft-vcenter-middle"><div class="ft-vcenter-inner"><p><i class="fa fa-spinner fa-pulse fa-fw"></i>Loading...</p></div></div></div>`;
     html += `<div id="ft-filter-container"><h1>Filter Timeline</h1>`;
     html += `<div id="ft-filters"></div>`;
     html += `<div class="clear-filters"><p>Clear all filters</p></div></div>`
