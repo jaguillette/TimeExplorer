@@ -681,6 +681,9 @@ class FabulousTime {
   set_items(self, sheet_data) {
     var items = [];
     for (var i = 0; i < sheet_data.length; i++) {
+      if (Object.keys(sheet_data[i]).length == 0) {
+        break
+      }
       var item = {};
       var start = self.get_datetime(sheet_data[i],'Year','Month','Day','Time',self.constructDate);
       if (typeof(start) == "string") {
