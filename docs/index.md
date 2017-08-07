@@ -9,7 +9,7 @@ that can accommodate hundreds of entries. The goal is to provide a high-level
 overview of large and complex timelines, without sacrificing detail and context.
 
 <div class="click-to-use page-width" style="height:800px;">
-  <iframe class="embedded-timeline" src="https://jaguillette.github.io/timeline?tl_sheet=1IaXt5MT0CcFZkiyasZXHDzh80cdVMmfhQYhYjUYgKTM" height="800px" width="100%"></iframe>
+  <iframe class="embedded-timeline" src="https://jaguillette.github.io/fabulousTime/timeline?tl_sheet=1hkZCGEEIeNusMHSHPOT30VgsgMVFQoTb0scEJixeEF4" height="800px" width="100%"></iframe>
 </div>
 
 <a href="https://jaguillette.github.io/fabulousTime/timeline?tl_sheet=1hkZCGEEIeNusMHSHPOT30VgsgMVFQoTb0scEJixeEF4" target="_blank">View in new window</a>
