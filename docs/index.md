@@ -12,7 +12,7 @@ overview of large and complex timelines, without sacrificing detail and context.
   <iframe class="embedded-timeline" src="https://jaguillette.github.io/timeline?tl_sheet=1IaXt5MT0CcFZkiyasZXHDzh80cdVMmfhQYhYjUYgKTM" height="800px" width="100%"></iframe>
 </div>
 
-<a href="http://localhost/fabuloustime/?tl_sheet=1IaXt5MT0CcFZkiyasZXHDzh80cdVMmfhQYhYjUYgKTM" target="_blank">View in new window</a>
+<a href="https://jaguillette.github.io/fabulousTime/timeline?tl_sheet=1hkZCGEEIeNusMHSHPOT30VgsgMVFQoTb0scEJixeEF4" target="_blank">View in new window</a>
 
 Your data is stored in a Google Sheet, and displayed on the web with Javascript.
 The following tutorials will get you up and running with a new timeline, so that
