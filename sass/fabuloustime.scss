@@ -23,10 +23,13 @@ body, html {
   left: 20%;
   z-index: 3;
   background-size: cover;
+  background-position: center;
+  display: flex;
 }
 #ft-item-media-container {
   height: inherit;
   overflow-y: scroll;
+  align-items: stretch;
   &>div {
     width: 100%;
   }
@@ -46,6 +49,7 @@ body, html {
 #ft-item-text {
   overflow-y: scroll;
   height: inherit;
+  align-items: stretch;
   h1 {
     font-size: 22pt;
     margin-bottom: 0.75em;
@@ -130,13 +134,17 @@ $filter-border-style: 1px solid #111;
   width: 48%;
   padding-left: 1%;
   padding-right: 1%;
+  padding-top: 1em;
+  padding-bottom: 1em;
   float: left;
 }
 
 .ft-cols-1 {
   width: 98%;
-  padding-right: 1%;
   padding-left: 1%;
+  padding-right: 1%;
+  padding-top: 1em;
+  padding-bottom: 1em;
 }
 
 .ft-vcenter-outer {

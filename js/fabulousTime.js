@@ -395,7 +395,13 @@ class FabulousTime {
           var target_width = $("#ft-item-media-container").width() - 10;
           item_media._el.content_item.style.height = TL.Util.ratio.r16_9({w:target_width}) + "px";
           item_media._el.content_item.style.width = target_width + "px";
-          $(".tl-caption").attr('style',"");
+          $(".tl-caption").attr('style','');
+          $(".tl-credit").attr('style','');
+        });
+      } else if (item_media.data.url.indexOf('vimeo') > -1) {
+        $(window).on("resize", function() {
+          $(".tl-caption").attr('style','');
+          $(".tl-credit").attr('style','');
         });
       }
     } else {
