@@ -1,43 +1,1216 @@
-/*
-Error: Invalid CSS after "...l-theme-cayman'": expected "{", was ";"
-        on line 4 of /Library/WebServer/Documents/fabuloustime/docs/_sass/style.scss
+/*! normalize.css v3.0.2 | MIT License | git.io/normalize */
+/**
+ * 1. Set default font family to sans-serif.
+ * 2. Prevent iOS text size adjust after orientation change, without disabling
+ *    user zoom.
+ */
+@import url("https://fonts.googleapis.com/css?family=Oxygen|Quicksand");
+/* line 9, ../../_sass/_normalize.scss */
+html {
+  font-family: sans-serif;
+  /* 1 */
+  -ms-text-size-adjust: 100%;
+  /* 2 */
+  -webkit-text-size-adjust: 100%;
+  /* 2 */
+}
 
-1: ---
-2: ---
-3: 
-4: @import 'jekyll-theme-cayman';
+/**
+ * Remove default margin.
+ */
+/* line 19, ../../_sass/_normalize.scss */
+body {
+  margin: 0;
+}
 
-Backtrace:
-/Library/WebServer/Documents/fabuloustime/docs/_sass/style.scss:4
-/Users/jguillette/.rvm/gems/ruby-2.3.1/gems/sass-3.4.25/lib/sass/scss/parser.rb:1207:in `expected'
-/Users/jguillette/.rvm/gems/ruby-2.3.1/gems/sass-3.4.25/lib/sass/scss/parser.rb:1137:in `expected'
-/Users/jguillette/.rvm/gems/ruby-2.3.1/gems/sass-3.4.25/lib/sass/scss/parser.rb:1132:in `tok!'
-/Users/jguillette/.rvm/gems/ruby-2.3.1/gems/sass-3.4.25/lib/sass/scss/parser.rb:665:in `block'
-/Users/jguillette/.rvm/gems/ruby-2.3.1/gems/sass-3.4.25/lib/sass/scss/parser.rb:658:in `ruleset'
-/Users/jguillette/.rvm/gems/ruby-2.3.1/gems/sass-3.4.25/lib/sass/scss/parser.rb:684:in `block_child'
-/Users/jguillette/.rvm/gems/ruby-2.3.1/gems/sass-3.4.25/lib/sass/scss/parser.rb:674:in `block_contents'
-/Users/jguillette/.rvm/gems/ruby-2.3.1/gems/sass-3.4.25/lib/sass/scss/parser.rb:125:in `stylesheet'
-/Users/jguillette/.rvm/gems/ruby-2.3.1/gems/sass-3.4.25/lib/sass/scss/parser.rb:41:in `parse'
-/Users/jguillette/.rvm/gems/ruby-2.3.1/gems/sass-3.4.25/lib/sass/engine.rb:409:in `_to_tree'
-/Users/jguillette/.rvm/gems/ruby-2.3.1/gems/sass-3.4.25/lib/sass/engine.rb:284:in `render'
-/Users/jguillette/.rvm/gems/ruby-2.3.1/gems/sass-3.4.25/lib/sass/plugin/compiler.rb:494:in `update_stylesheet'
-/Users/jguillette/.rvm/gems/ruby-2.3.1/gems/sass-3.4.25/lib/sass/plugin/compiler.rb:215:in `block in update_stylesheets'
-/Users/jguillette/.rvm/gems/ruby-2.3.1/gems/sass-3.4.25/lib/sass/plugin/compiler.rb:209:in `each'
-/Users/jguillette/.rvm/gems/ruby-2.3.1/gems/sass-3.4.25/lib/sass/plugin/compiler.rb:209:in `update_stylesheets'
-/Users/jguillette/.rvm/gems/ruby-2.3.1/gems/compass-1.0.3/lib/compass/sass_compiler.rb:40:in `compile!'
-/Users/jguillette/.rvm/gems/ruby-2.3.1/gems/compass-1.0.3/lib/compass/commands/update_project.rb:49:in `perform'
-/Users/jguillette/.rvm/gems/ruby-2.3.1/gems/compass-1.0.3/lib/compass/commands/base.rb:18:in `execute'
-/Users/jguillette/.rvm/gems/ruby-2.3.1/gems/compass-1.0.3/lib/compass/commands/project_base.rb:19:in `execute'
-/Users/jguillette/.rvm/gems/ruby-2.3.1/gems/compass-1.0.3/lib/compass/exec/sub_command_ui.rb:43:in `perform!'
-/Users/jguillette/.rvm/gems/ruby-2.3.1/gems/compass-1.0.3/lib/compass/exec/sub_command_ui.rb:15:in `run!'
-/Users/jguillette/.rvm/gems/ruby-2.3.1/gems/compass-1.0.3/bin/compass:30:in `block in <top (required)>'
-/Users/jguillette/.rvm/gems/ruby-2.3.1/gems/compass-1.0.3/bin/compass:44:in `<top (required)>'
-/Users/jguillette/.rvm/gems/ruby-2.3.1/bin/compass:22:in `load'
-/Users/jguillette/.rvm/gems/ruby-2.3.1/bin/compass:22:in `<main>'
-/Users/jguillette/.rvm/gems/ruby-2.3.1/bin/ruby_executable_hooks:15:in `eval'
-/Users/jguillette/.rvm/gems/ruby-2.3.1/bin/ruby_executable_hooks:15:in `<main>'
-*/
-body:before {
+/* HTML5 display definitions
+   ========================================================================== */
+/**
+ * Correct `block` display not defined for any HTML5 element in IE 8/9.
+ * Correct `block` display not defined for `details` or `summary` in IE 10/11
+ * and Firefox.
+ * Correct `block` display not defined for `main` in IE 11.
+ */
+/* line 33, ../../_sass/_normalize.scss */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+menu,
+nav,
+section,
+summary {
+  display: block;
+}
+
+/**
+ * 1. Correct `inline-block` display not defined in IE 8/9.
+ * 2. Normalize vertical alignment of `progress` in Chrome, Firefox, and Opera.
+ */
+/* line 54, ../../_sass/_normalize.scss */
+audio,
+canvas,
+progress,
+video {
+  display: inline-block;
+  /* 1 */
+  vertical-align: baseline;
+  /* 2 */
+}
+
+/**
+ * Prevent modern browsers from displaying `audio` without controls.
+ * Remove excess height in iOS 5 devices.
+ */
+/* line 67, ../../_sass/_normalize.scss */
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+
+/**
+ * Address `[hidden]` styling not present in IE 8/9/10.
+ * Hide the `template` element in IE 8/9/11, Safari, and Firefox < 22.
+ */
+/* line 77, ../../_sass/_normalize.scss */
+[hidden],
+template {
+  display: none;
+}
+
+/* Links
+   ========================================================================== */
+/**
+ * Remove the gray background color from active links in IE 10.
+ */
+/* line 89, ../../_sass/_normalize.scss */
+a {
+  background-color: transparent;
+}
+
+/**
+ * Improve readability when focused and also mouse hovered in all browsers.
+ */
+/* line 97, ../../_sass/_normalize.scss */
+a:active,
+a:hover {
+  outline: 0;
+}
+
+/* Text-level semantics
+   ========================================================================== */
+/**
+ * Address styling not present in IE 8/9/10/11, Safari, and Chrome.
+ */
+/* line 109, ../../_sass/_normalize.scss */
+abbr[title] {
+  border-bottom: 1px dotted;
+}
+
+/**
+ * Address style set to `bolder` in Firefox 4+, Safari, and Chrome.
+ */
+/* line 117, ../../_sass/_normalize.scss */
+b,
+strong {
+  font-weight: bold;
+}
+
+/**
+ * Address styling not present in Safari and Chrome.
+ */
+/* line 126, ../../_sass/_normalize.scss */
+dfn {
+  font-style: italic;
+}
+
+/**
+ * Address variable `h1` font-size and margin within `section` and `article`
+ * contexts in Firefox 4+, Safari, and Chrome.
+ */
+/* line 135, ../../_sass/_normalize.scss */
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+/**
+ * Address styling not present in IE 8/9.
+ */
+/* line 144, ../../_sass/_normalize.scss */
+mark {
+  background: #ff0;
+  color: #000;
+}
+
+/**
+ * Address inconsistent and variable font size in all browsers.
+ */
+/* line 153, ../../_sass/_normalize.scss */
+small {
+  font-size: 80%;
+}
+
+/**
+ * Prevent `sub` and `sup` affecting `line-height` in all browsers.
+ */
+/* line 161, ../../_sass/_normalize.scss */
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+/* line 169, ../../_sass/_normalize.scss */
+sup {
+  top: -0.5em;
+}
+
+/* line 173, ../../_sass/_normalize.scss */
+sub {
+  bottom: -0.25em;
+}
+
+/* Embedded content
+   ========================================================================== */
+/**
+ * Remove border when inside `a` element in IE 8/9/10.
+ */
+/* line 184, ../../_sass/_normalize.scss */
+img {
+  border: 0;
+}
+
+/**
+ * Correct overflow not hidden in IE 9/10/11.
+ */
+/* line 192, ../../_sass/_normalize.scss */
+svg:not(:root) {
+  overflow: hidden;
+}
+
+/* Grouping content
+   ========================================================================== */
+/**
+ * Address margin not present in IE 8/9 and Safari.
+ */
+/* line 203, ../../_sass/_normalize.scss */
+figure {
+  margin: 1em 40px;
+}
+
+/**
+ * Address differences between Firefox and other browsers.
+ */
+/* line 211, ../../_sass/_normalize.scss */
+hr {
+  box-sizing: content-box;
+  height: 0;
+}
+
+/**
+ * Contain overflow in all browsers.
+ */
+/* line 220, ../../_sass/_normalize.scss */
+pre {
+  overflow: auto;
+}
+
+/**
+ * Address odd `em`-unit font size rendering in all browsers.
+ */
+/* line 228, ../../_sass/_normalize.scss */
+code,
+kbd,
+pre,
+samp {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+
+/* Forms
+   ========================================================================== */
+/**
+ * Known limitation: by default, Chrome and Safari on OS X allow very limited
+ * styling of `select`, unless a `border` property is set.
+ */
+/**
+ * 1. Correct color not being inherited.
+ *    Known issue: affects color of disabled elements.
+ * 2. Correct font properties not being inherited.
+ * 3. Address margins set differently in Firefox 4+, Safari, and Chrome.
+ */
+/* line 251, ../../_sass/_normalize.scss */
+button,
+input,
+optgroup,
+select,
+textarea {
+  color: inherit;
+  /* 1 */
+  font: inherit;
+  /* 2 */
+  margin: 0;
+  /* 3 */
+}
+
+/**
+ * Address `overflow` set to `hidden` in IE 8/9/10/11.
+ */
+/* line 265, ../../_sass/_normalize.scss */
+button {
+  overflow: visible;
+}
+
+/**
+ * Address inconsistent `text-transform` inheritance for `button` and `select`.
+ * All other form control elements do not inherit `text-transform` values.
+ * Correct `button` style inheritance in Firefox, IE 8/9/10/11, and Opera.
+ * Correct `select` style inheritance in Firefox.
+ */
+/* line 276, ../../_sass/_normalize.scss */
+button,
+select {
+  text-transform: none;
+}
+
+/**
+ * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`
+ *    and `video` controls.
+ * 2. Correct inability to style clickable `input` types in iOS.
+ * 3. Improve usability and consistency of cursor style between image-type
+ *    `input` and others.
+ */
+/* line 289, ../../_sass/_normalize.scss */
+button,
+html input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  -webkit-appearance: button;
+  /* 2 */
+  cursor: pointer;
+  /* 3 */
+}
+
+/**
+ * Re-set default cursor for disabled elements.
+ */
+/* line 301, ../../_sass/_normalize.scss */
+button[disabled],
+html input[disabled] {
+  cursor: default;
+}
+
+/**
+ * Remove inner padding and border in Firefox 4+.
+ */
+/* line 310, ../../_sass/_normalize.scss */
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
+/**
+ * Address Firefox 4+ setting `line-height` on `input` using `!important` in
+ * the UA stylesheet.
+ */
+/* line 321, ../../_sass/_normalize.scss */
+input {
+  line-height: normal;
+}
+
+/**
+ * It's recommended that you don't attempt to style these elements.
+ * Firefox's implementation doesn't respect box-sizing, padding, or width.
+ *
+ * 1. Address box sizing set to `content-box` in IE 8/9/10.
+ * 2. Remove excess padding in IE 8/9/10.
+ */
+/* line 333, ../../_sass/_normalize.scss */
+input[type="checkbox"],
+input[type="radio"] {
+  box-sizing: border-box;
+  /* 1 */
+  padding: 0;
+  /* 2 */
+}
+
+/**
+ * Fix the cursor style for Chrome's increment/decrement buttons. For certain
+ * `font-size` values of the `input`, it causes the cursor style of the
+ * decrement button to change from `default` to `text`.
+ */
+/* line 345, ../../_sass/_normalize.scss */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  height: auto;
+}
+
+/**
+ * 1. Address `appearance` set to `searchfield` in Safari and Chrome.
+ * 2. Address `box-sizing` set to `border-box` in Safari and Chrome
+ *    (include `-moz` to future-proof).
+ */
+/* line 356, ../../_sass/_normalize.scss */
+input[type="search"] {
+  -webkit-appearance: textfield;
+  /* 1 */
+  /* 2 */
+  box-sizing: content-box;
+}
+
+/**
+ * Remove inner padding and search cancel button in Safari and Chrome on OS X.
+ * Safari (but not Chrome) clips the cancel button when the search input has
+ * padding (and `textfield` appearance).
+ */
+/* line 367, ../../_sass/_normalize.scss */
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+/**
+ * Define consistent border, margin, and padding.
+ */
+/* line 376, ../../_sass/_normalize.scss */
+fieldset {
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em;
+}
+
+/**
+ * 1. Correct `color` not being inherited in IE 8/9/10/11.
+ * 2. Remove padding so people aren't caught out if they zero out fieldsets.
+ */
+/* line 387, ../../_sass/_normalize.scss */
+legend {
+  border: 0;
+  /* 1 */
+  padding: 0;
+  /* 2 */
+}
+
+/**
+ * Remove default vertical scrollbar in IE 8/9/10/11.
+ */
+/* line 396, ../../_sass/_normalize.scss */
+textarea {
+  overflow: auto;
+}
+
+/**
+ * Don't inherit the `font-weight` (applied by a rule above).
+ * NOTE: the default cannot safely be changed in Chrome and Safari on OS X.
+ */
+/* line 405, ../../_sass/_normalize.scss */
+optgroup {
+  font-weight: bold;
+}
+
+/* Tables
+   ========================================================================== */
+/**
+ * Remove most spacing between table cells.
+ */
+/* line 416, ../../_sass/_normalize.scss */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* line 421, ../../_sass/_normalize.scss */
+td,
+th {
+  padding: 0;
+}
+
+/* line 1, ../../_sass/_rouge-github.scss */
+.highlight table td {
+  padding: 5px;
+}
+
+/* line 2, ../../_sass/_rouge-github.scss */
+.highlight table pre {
+  margin: 0;
+}
+
+/* line 3, ../../_sass/_rouge-github.scss */
+.highlight .cm {
+  color: #999988;
+  font-style: italic;
+}
+
+/* line 7, ../../_sass/_rouge-github.scss */
+.highlight .cp {
+  color: #999999;
+  font-weight: bold;
+}
+
+/* line 11, ../../_sass/_rouge-github.scss */
+.highlight .c1 {
+  color: #999988;
+  font-style: italic;
+}
+
+/* line 15, ../../_sass/_rouge-github.scss */
+.highlight .cs {
+  color: #999999;
+  font-weight: bold;
+  font-style: italic;
+}
+
+/* line 20, ../../_sass/_rouge-github.scss */
+.highlight .c, .highlight .cd {
+  color: #999988;
+  font-style: italic;
+}
+
+/* line 24, ../../_sass/_rouge-github.scss */
+.highlight .err {
+  color: #a61717;
+  background-color: #e3d2d2;
+}
+
+/* line 28, ../../_sass/_rouge-github.scss */
+.highlight .gd {
+  color: #000000;
+  background-color: #ffdddd;
+}
+
+/* line 32, ../../_sass/_rouge-github.scss */
+.highlight .ge {
+  color: #000000;
+  font-style: italic;
+}
+
+/* line 36, ../../_sass/_rouge-github.scss */
+.highlight .gr {
+  color: #aa0000;
+}
+
+/* line 39, ../../_sass/_rouge-github.scss */
+.highlight .gh {
+  color: #999999;
+}
+
+/* line 42, ../../_sass/_rouge-github.scss */
+.highlight .gi {
+  color: #000000;
+  background-color: #ddffdd;
+}
+
+/* line 46, ../../_sass/_rouge-github.scss */
+.highlight .go {
+  color: #888888;
+}
+
+/* line 49, ../../_sass/_rouge-github.scss */
+.highlight .gp {
+  color: #555555;
+}
+
+/* line 52, ../../_sass/_rouge-github.scss */
+.highlight .gs {
+  font-weight: bold;
+}
+
+/* line 55, ../../_sass/_rouge-github.scss */
+.highlight .gu {
+  color: #aaaaaa;
+}
+
+/* line 58, ../../_sass/_rouge-github.scss */
+.highlight .gt {
+  color: #aa0000;
+}
+
+/* line 61, ../../_sass/_rouge-github.scss */
+.highlight .kc {
+  color: #000000;
+  font-weight: bold;
+}
+
+/* line 65, ../../_sass/_rouge-github.scss */
+.highlight .kd {
+  color: #000000;
+  font-weight: bold;
+}
+
+/* line 69, ../../_sass/_rouge-github.scss */
+.highlight .kn {
+  color: #000000;
+  font-weight: bold;
+}
+
+/* line 73, ../../_sass/_rouge-github.scss */
+.highlight .kp {
+  color: #000000;
+  font-weight: bold;
+}
+
+/* line 77, ../../_sass/_rouge-github.scss */
+.highlight .kr {
+  color: #000000;
+  font-weight: bold;
+}
+
+/* line 81, ../../_sass/_rouge-github.scss */
+.highlight .kt {
+  color: #445588;
+  font-weight: bold;
+}
+
+/* line 85, ../../_sass/_rouge-github.scss */
+.highlight .k, .highlight .kv {
+  color: #000000;
+  font-weight: bold;
+}
+
+/* line 89, ../../_sass/_rouge-github.scss */
+.highlight .mf {
+  color: #009999;
+}
+
+/* line 92, ../../_sass/_rouge-github.scss */
+.highlight .mh {
+  color: #009999;
+}
+
+/* line 95, ../../_sass/_rouge-github.scss */
+.highlight .il {
+  color: #009999;
+}
+
+/* line 98, ../../_sass/_rouge-github.scss */
+.highlight .mi {
+  color: #009999;
+}
+
+/* line 101, ../../_sass/_rouge-github.scss */
+.highlight .mo {
+  color: #009999;
+}
+
+/* line 104, ../../_sass/_rouge-github.scss */
+.highlight .m, .highlight .mb, .highlight .mx {
+  color: #009999;
+}
+
+/* line 107, ../../_sass/_rouge-github.scss */
+.highlight .sb {
+  color: #d14;
+}
+
+/* line 110, ../../_sass/_rouge-github.scss */
+.highlight .sc {
+  color: #d14;
+}
+
+/* line 113, ../../_sass/_rouge-github.scss */
+.highlight .sd {
+  color: #d14;
+}
+
+/* line 116, ../../_sass/_rouge-github.scss */
+.highlight .s2 {
+  color: #d14;
+}
+
+/* line 119, ../../_sass/_rouge-github.scss */
+.highlight .se {
+  color: #d14;
+}
+
+/* line 122, ../../_sass/_rouge-github.scss */
+.highlight .sh {
+  color: #d14;
+}
+
+/* line 125, ../../_sass/_rouge-github.scss */
+.highlight .si {
+  color: #d14;
+}
+
+/* line 128, ../../_sass/_rouge-github.scss */
+.highlight .sx {
+  color: #d14;
+}
+
+/* line 131, ../../_sass/_rouge-github.scss */
+.highlight .sr {
+  color: #009926;
+}
+
+/* line 134, ../../_sass/_rouge-github.scss */
+.highlight .s1 {
+  color: #d14;
+}
+
+/* line 137, ../../_sass/_rouge-github.scss */
+.highlight .ss {
+  color: #990073;
+}
+
+/* line 140, ../../_sass/_rouge-github.scss */
+.highlight .s {
+  color: #d14;
+}
+
+/* line 143, ../../_sass/_rouge-github.scss */
+.highlight .na {
+  color: #008080;
+}
+
+/* line 146, ../../_sass/_rouge-github.scss */
+.highlight .bp {
+  color: #999999;
+}
+
+/* line 149, ../../_sass/_rouge-github.scss */
+.highlight .nb {
+  color: #0086B3;
+}
+
+/* line 152, ../../_sass/_rouge-github.scss */
+.highlight .nc {
+  color: #445588;
+  font-weight: bold;
+}
+
+/* line 156, ../../_sass/_rouge-github.scss */
+.highlight .no {
+  color: #008080;
+}
+
+/* line 159, ../../_sass/_rouge-github.scss */
+.highlight .nd {
+  color: #3c5d5d;
+  font-weight: bold;
+}
+
+/* line 163, ../../_sass/_rouge-github.scss */
+.highlight .ni {
+  color: #800080;
+}
+
+/* line 166, ../../_sass/_rouge-github.scss */
+.highlight .ne {
+  color: #990000;
+  font-weight: bold;
+}
+
+/* line 170, ../../_sass/_rouge-github.scss */
+.highlight .nf {
+  color: #990000;
+  font-weight: bold;
+}
+
+/* line 174, ../../_sass/_rouge-github.scss */
+.highlight .nl {
+  color: #990000;
+  font-weight: bold;
+}
+
+/* line 178, ../../_sass/_rouge-github.scss */
+.highlight .nn {
+  color: #555555;
+}
+
+/* line 181, ../../_sass/_rouge-github.scss */
+.highlight .nt {
+  color: #000080;
+}
+
+/* line 184, ../../_sass/_rouge-github.scss */
+.highlight .vc {
+  color: #008080;
+}
+
+/* line 187, ../../_sass/_rouge-github.scss */
+.highlight .vg {
+  color: #008080;
+}
+
+/* line 190, ../../_sass/_rouge-github.scss */
+.highlight .vi {
+  color: #008080;
+}
+
+/* line 193, ../../_sass/_rouge-github.scss */
+.highlight .nv {
+  color: #008080;
+}
+
+/* line 196, ../../_sass/_rouge-github.scss */
+.highlight .ow {
+  color: #000000;
+  font-weight: bold;
+}
+
+/* line 200, ../../_sass/_rouge-github.scss */
+.highlight .o {
+  color: #000000;
+  font-weight: bold;
+}
+
+/* line 204, ../../_sass/_rouge-github.scss */
+.highlight .w {
+  color: #bbbbbb;
+}
+
+/* line 207, ../../_sass/_rouge-github.scss */
+.highlight {
+  background-color: #f8f8f8;
+}
+
+/* Adapted from Craig Harshbarger's CodePen: https://codepen.io/craigh/pen/WQvyGV */
+/* line 3, ../../_sass/_click-to-use.scss */
+.click-to-use {
+  cursor: pointer;
+  position: relative;
+  padding-bottom: 56.25%;
+  /* 16:9 */
+  padding-top: 25px;
+  height: 0;
+}
+/* line 10, ../../_sass/_click-to-use.scss */
+.click-to-use iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+/* line 18, ../../_sass/_click-to-use.scss */
+.click-to-use:before, .click-to-use:after {
+  transition: all 0.25s ease;
+  position: absolute;
+  display: block;
+}
+/* line 24, ../../_sass/_click-to-use.scss */
+.click-to-use:before {
+  content: '';
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: #000;
+  opacity: 0;
+  z-index: 10;
+}
+/* line 35, ../../_sass/_click-to-use.scss */
+.click-to-use:after {
+  content: 'Click to Interact';
+  background: #00adee;
+  color: #fff;
+  width: 200px;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 15px;
+  text-align: center;
+  top: 50%;
+  margin-top: -15px;
+  left: 50%;
+  margin-left: -100px;
+  z-index: 11;
+  opacity: 0;
+}
+/* line 52, ../../_sass/_click-to-use.scss */
+.click-to-use:hover:before {
+  opacity: 0.2;
+}
+/* line 56, ../../_sass/_click-to-use.scss */
+.click-to-use:hover:after {
+  opacity: 1;
+}
+/* line 61, ../../_sass/_click-to-use.scss */
+.click-to-use.interact:before, .click-to-use.interact:after {
+  display: none;
+}
+
+/* line 27, ../../_sass/_jekyll-theme-cayman.scss */
+* {
+  box-sizing: border-box;
+}
+
+/* line 31, ../../_sass/_jekyll-theme-cayman.scss */
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Oxygen", sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #606c71;
+}
+
+/* line 40, ../../_sass/_jekyll-theme-cayman.scss */
+a {
+  color: #1e6bb8;
+  text-decoration: none;
+}
+/* line 44, ../../_sass/_jekyll-theme-cayman.scss */
+a:hover {
+  text-decoration: underline;
+}
+
+/* line 49, ../../_sass/_jekyll-theme-cayman.scss */
+h1, h2, h3 {
+  font-family: "Quicksand", serif;
+}
+
+/* line 53, ../../_sass/_jekyll-theme-cayman.scss */
+.btn {
+  display: inline-block;
+  margin-bottom: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 0.3rem;
+  transition: color 0.2s, background-color 0.2s, border-color 0.2s;
+}
+/* line 64, ../../_sass/_jekyll-theme-cayman.scss */
+.btn:hover {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+/* line 71, ../../_sass/_jekyll-theme-cayman.scss */
+.btn + .btn {
+  margin-left: 1rem;
+}
+@media screen and (min-width: 64em) {
+  /* line 53, ../../_sass/_jekyll-theme-cayman.scss */
+  .btn {
+    padding: 0.75rem 1rem;
+  }
+}
+@media screen and (min-width: 42em) and (max-width: 64em) {
+  /* line 53, ../../_sass/_jekyll-theme-cayman.scss */
+  .btn {
+    padding: 0.6rem 0.9rem;
+    font-size: 0.9rem;
+  }
+}
+@media screen and (max-width: 42em) {
+  /* line 53, ../../_sass/_jekyll-theme-cayman.scss */
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+  /* line 90, ../../_sass/_jekyll-theme-cayman.scss */
+  .btn + .btn {
+    margin-top: 1rem;
+    margin-left: 0;
+  }
+}
+
+/* line 97, ../../_sass/_jekyll-theme-cayman.scss */
+.page-header {
+  color: #fff;
+  text-align: center;
+  background-color: #159957;
+  background-image: linear-gradient(120deg, #155799, #159957);
+}
+@media screen and (min-width: 64em) {
+  /* line 97, ../../_sass/_jekyll-theme-cayman.scss */
+  .page-header {
+    padding: 5rem 6rem;
+  }
+}
+@media screen and (min-width: 42em) and (max-width: 64em) {
+  /* line 97, ../../_sass/_jekyll-theme-cayman.scss */
+  .page-header {
+    padding: 3rem 4rem;
+  }
+}
+@media screen and (max-width: 42em) {
+  /* line 97, ../../_sass/_jekyll-theme-cayman.scss */
+  .page-header {
+    padding: 2rem 1rem;
+  }
+}
+
+/* line 116, ../../_sass/_jekyll-theme-cayman.scss */
+.project-name {
+  margin-top: 0;
+  margin-bottom: 0.1rem;
+}
+@media screen and (min-width: 64em) {
+  /* line 116, ../../_sass/_jekyll-theme-cayman.scss */
+  .project-name {
+    font-size: 3.25rem;
+  }
+}
+@media screen and (min-width: 42em) and (max-width: 64em) {
+  /* line 116, ../../_sass/_jekyll-theme-cayman.scss */
+  .project-name {
+    font-size: 2.25rem;
+  }
+}
+@media screen and (max-width: 42em) {
+  /* line 116, ../../_sass/_jekyll-theme-cayman.scss */
+  .project-name {
+    font-size: 1.75rem;
+  }
+}
+
+/* line 133, ../../_sass/_jekyll-theme-cayman.scss */
+.project-tagline {
+  margin-bottom: 2rem;
+  font-weight: normal;
+  opacity: 0.7;
+}
+@media screen and (min-width: 64em) {
+  /* line 133, ../../_sass/_jekyll-theme-cayman.scss */
+  .project-tagline {
+    font-size: 1.25rem;
+  }
+}
+@media screen and (min-width: 42em) and (max-width: 64em) {
+  /* line 133, ../../_sass/_jekyll-theme-cayman.scss */
+  .project-tagline {
+    font-size: 1.15rem;
+  }
+}
+@media screen and (max-width: 42em) {
+  /* line 133, ../../_sass/_jekyll-theme-cayman.scss */
+  .project-tagline {
+    font-size: 1rem;
+  }
+}
+
+/* line 151, ../../_sass/_jekyll-theme-cayman.scss */
+.main-content {
+  word-wrap: break-word;
+}
+/* line 154, ../../_sass/_jekyll-theme-cayman.scss */
+.main-content :first-child {
+  margin-top: 0;
+}
+@media screen and (min-width: 64em) {
+  /* line 151, ../../_sass/_jekyll-theme-cayman.scss */
+  .main-content {
+    max-width: 64rem;
+    padding: 2rem 6rem;
+    margin: 0 auto;
+    font-size: 1.1rem;
+  }
+}
+@media screen and (min-width: 42em) and (max-width: 64em) {
+  /* line 151, ../../_sass/_jekyll-theme-cayman.scss */
+  .main-content {
+    padding: 2rem 4rem;
+    font-size: 1.1rem;
+  }
+}
+@media screen and (max-width: 42em) {
+  /* line 151, ../../_sass/_jekyll-theme-cayman.scss */
+  .main-content {
+    padding: 2rem 1rem;
+    font-size: 1rem;
+  }
+}
+/* line 175, ../../_sass/_jekyll-theme-cayman.scss */
+.main-content img {
+  max-width: 100%;
+}
+/* line 179, ../../_sass/_jekyll-theme-cayman.scss */
+.main-content h1,
+.main-content h2,
+.main-content h3,
+.main-content h4,
+.main-content h5,
+.main-content h6 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-weight: normal;
+  color: #159957;
+}
+/* line 191, ../../_sass/_jekyll-theme-cayman.scss */
+.main-content p {
+  margin-bottom: 1em;
+}
+/* line 195, ../../_sass/_jekyll-theme-cayman.scss */
+.main-content code {
+  padding: 2px 4px;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-size: 0.9rem;
+  color: #567482;
+  background-color: #f3f6fa;
+  border-radius: 0.3rem;
+}
+/* line 204, ../../_sass/_jekyll-theme-cayman.scss */
+.main-content pre {
+  padding: 0.8rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font: 1rem Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  color: #567482;
+  word-wrap: normal;
+  background-color: #f3f6fa;
+  border: solid 1px #dce6f0;
+  border-radius: 0.3rem;
+}
+/* line 215, ../../_sass/_jekyll-theme-cayman.scss */
+.main-content pre > code {
+  padding: 0;
+  margin: 0;
+  font-size: 0.9rem;
+  color: #567482;
+  word-break: normal;
   white-space: pre;
-  font-family: monospace;
-  content: "Error: Invalid CSS after \"...l-theme-cayman'\": expected \"{\", was \";\"\A         on line 4 of /Library/WebServer/Documents/fabuloustime/docs/_sass/style.scss\A \A 1: ---\A 2: ---\A 3: \A 4: @import 'jekyll-theme-cayman';"; }
+  background: transparent;
+  border: 0;
+}
+/* line 227, ../../_sass/_jekyll-theme-cayman.scss */
+.main-content .highlight {
+  margin-bottom: 1rem;
+}
+/* line 230, ../../_sass/_jekyll-theme-cayman.scss */
+.main-content .highlight pre {
+  margin-bottom: 0;
+  word-break: normal;
+}
+/* line 236, ../../_sass/_jekyll-theme-cayman.scss */
+.main-content .highlight pre,
+.main-content pre {
+  padding: 0.8rem;
+  overflow: auto;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  border-radius: 0.3rem;
+  -webkit-overflow-scrolling: touch;
+}
+/* line 246, ../../_sass/_jekyll-theme-cayman.scss */
+.main-content pre code,
+.main-content pre tt {
+  display: inline;
+  max-width: initial;
+  padding: 0;
+  margin: 0;
+  overflow: initial;
+  line-height: inherit;
+  word-wrap: normal;
+  background-color: transparent;
+  border: 0;
+}
+/* line 258, ../../_sass/_jekyll-theme-cayman.scss */
+.main-content pre code:before, .main-content pre code:after,
+.main-content pre tt:before,
+.main-content pre tt:after {
+  content: normal;
+}
+/* line 264, ../../_sass/_jekyll-theme-cayman.scss */
+.main-content ul,
+.main-content ol {
+  margin-top: 0;
+}
+/* line 269, ../../_sass/_jekyll-theme-cayman.scss */
+.main-content blockquote {
+  padding: 0 1rem;
+  margin-left: 0;
+  color: #819198;
+  border-left: 0.3rem solid #dce6f0;
+}
+/* line 275, ../../_sass/_jekyll-theme-cayman.scss */
+.main-content blockquote > :first-child {
+  margin-top: 0;
+}
+/* line 279, ../../_sass/_jekyll-theme-cayman.scss */
+.main-content blockquote > :last-child {
+  margin-bottom: 0;
+}
+/* line 284, ../../_sass/_jekyll-theme-cayman.scss */
+.main-content table {
+  display: block;
+  width: 100%;
+  overflow: auto;
+  word-break: normal;
+  word-break: keep-all;
+  -webkit-overflow-scrolling: touch;
+}
+/* line 292, ../../_sass/_jekyll-theme-cayman.scss */
+.main-content table th {
+  font-weight: bold;
+}
+/* line 296, ../../_sass/_jekyll-theme-cayman.scss */
+.main-content table th,
+.main-content table td {
+  padding: 0.5rem 1rem;
+  border: 1px solid #e9ebec;
+}
+/* line 303, ../../_sass/_jekyll-theme-cayman.scss */
+.main-content dl {
+  padding: 0;
+}
+/* line 306, ../../_sass/_jekyll-theme-cayman.scss */
+.main-content dl dt {
+  padding: 0;
+  margin-top: 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+}
+/* line 313, ../../_sass/_jekyll-theme-cayman.scss */
+.main-content dl dd {
+  padding: 0;
+  margin-bottom: 1rem;
+}
+/* line 319, ../../_sass/_jekyll-theme-cayman.scss */
+.main-content hr {
+  height: 2px;
+  padding: 0;
+  margin: 1rem 0;
+  background-color: #eff0f1;
+  border: 0;
+}
+
+/* line 328, ../../_sass/_jekyll-theme-cayman.scss */
+.site-footer {
+  padding-top: 2rem;
+  margin-top: 2rem;
+  border-top: solid 1px #eff0f1;
+}
+@media screen and (min-width: 64em) {
+  /* line 328, ../../_sass/_jekyll-theme-cayman.scss */
+  .site-footer {
+    font-size: 1rem;
+  }
+}
+@media screen and (min-width: 42em) and (max-width: 64em) {
+  /* line 328, ../../_sass/_jekyll-theme-cayman.scss */
+  .site-footer {
+    font-size: 1rem;
+  }
+}
+@media screen and (max-width: 42em) {
+  /* line 328, ../../_sass/_jekyll-theme-cayman.scss */
+  .site-footer {
+    font-size: 0.9rem;
+  }
+}
+
+/* line 346, ../../_sass/_jekyll-theme-cayman.scss */
+.site-footer-owner {
+  display: block;
+  font-weight: bold;
+}
+
+/* line 351, ../../_sass/_jekyll-theme-cayman.scss */
+.site-footer-credits {
+  color: #819198;
+}
