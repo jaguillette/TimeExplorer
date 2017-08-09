@@ -385,6 +385,7 @@ class FabulousTime {
       $("#"+data_id).attr('class','ft-data-active');
       var item_media_type = TL.MediaType(item_media_dict);
       var item_media = new item_media_type.cls(item_media_dict);
+      item_media.data.mediatype = item_media_type;
       item_media.addTo(document.getElementById(media_id));
       item_media.loadMedia();
       item_media.options['width'] = $("#ft-item-media-container").width() - 10;
@@ -395,7 +396,13 @@ class FabulousTime {
           var target_width = $("#ft-item-media-container").width() - 10;
           item_media._el.content_item.style.height = TL.Util.ratio.r16_9({w:target_width}) + "px";
           item_media._el.content_item.style.width = target_width + "px";
-          $(".tl-caption").attr('style',"");
+          $(".tl-caption").attr('style','');
+          $(".tl-credit").attr('style','');
+        });
+      } else if (item_media.data.url.indexOf('vimeo') > -1) {
+        $(window).on("resize", function() {
+          $(".tl-caption").attr('style','');
+          $(".tl-credit").attr('style','');
         });
       }
     } else {
