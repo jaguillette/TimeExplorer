@@ -17,10 +17,11 @@ body, html {
 #container {
 }
 #ft-item-data {
-  width: 70%;
+  width: auto;
   position: absolute;
   background-color: whitesmoke;
-  left: 20%;
+  left: 300px;
+  right: 125px;
   z-index: 3;
   background-size: cover;
   background-position: center;
@@ -92,13 +93,12 @@ body, html {
   }
 }
 #ft-visualization {
-  width: 90%;
-  float: right;
+  overflow: auto;
 }
 $filter-border-style: 1px solid #111;
 #ft-filter-container {
   height: 100vh;
-  width: 10%;
+  width: 175px;
   float: left;
   overflow-y: scroll;
   #ft-filters {
@@ -161,9 +161,11 @@ $filter-border-style: 1px solid #111;
   width: 48%;
   padding-left: 1%;
   padding-right: 1%;
-  padding-top: 1em;
-  padding-bottom: 1em;
   float: left;
+  &>div {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
 }
 
 .ft-cols-1 {
@@ -243,7 +245,7 @@ $filter-border-style: 1px solid #111;
 #ft-nav-buttons {
   position: absolute;
   top: 0;
-  left: 11%;
+  left: 175px;
   z-index: 10;
   div.ft-nav-button {
      cursor: pointer;

@@ -91,108 +91,108 @@ body, html {
 
 /* line 19, ../sass/fabuloustime.scss */
 #ft-item-data {
-  width: 70%;
+  width: auto;
   position: absolute;
   background-color: whitesmoke;
-  left: 20%;
+  left: 300px;
+  right: 125px;
   z-index: 3;
   background-size: cover;
   background-position: center;
   display: flex;
 }
 
-/* line 29, ../sass/fabuloustime.scss */
+/* line 30, ../sass/fabuloustime.scss */
 #ft-item-media-container {
   height: inherit;
   overflow-y: scroll;
   align-items: stretch;
 }
-/* line 33, ../sass/fabuloustime.scss */
+/* line 34, ../sass/fabuloustime.scss */
 #ft-item-media-container > div {
   width: 100%;
 }
 
-/* line 37, ../sass/fabuloustime.scss */
+/* line 38, ../sass/fabuloustime.scss */
 .tl-media-content {
   text-align: center;
   margin-top: 25px;
   margin-bottom: 5px;
 }
 
-/* line 42, ../sass/fabuloustime.scss */
+/* line 43, ../sass/fabuloustime.scss */
 .tl-caption, .tl-credit {
   margin: auto;
 }
 
-/* line 46, ../sass/fabuloustime.scss */
+/* line 47, ../sass/fabuloustime.scss */
 .tl-media .tl-media-iframe.tl-media-spotify {
   height: 500px;
   max-width: 500px;
   margin: auto;
 }
-/* line 52, ../sass/fabuloustime.scss */
+/* line 53, ../sass/fabuloustime.scss */
 .tl-media .tl-media-twitter blockquote.twitter-tweet {
   margin-bottom: 1em;
 }
-/* line 55, ../sass/fabuloustime.scss */
+/* line 56, ../sass/fabuloustime.scss */
 .tl-media .tl-media-twitter a {
   color: #000;
   text-decoration: none;
 }
-/* line 58, ../sass/fabuloustime.scss */
+/* line 59, ../sass/fabuloustime.scss */
 .tl-media .tl-media-twitter a:hover {
   color: #55ACEE;
 }
-/* line 61, ../sass/fabuloustime.scss */
+/* line 62, ../sass/fabuloustime.scss */
 .tl-media .tl-media-twitter a.twitter-date {
   padding-bottom: 0.5em;
   display: block;
 }
-/* line 66, ../sass/fabuloustime.scss */
+/* line 67, ../sass/fabuloustime.scss */
 .tl-media .tl-media-twitter span.fn {
   display: block;
   padding-bottom: 0.2em;
 }
 
-/* line 72, ../sass/fabuloustime.scss */
+/* line 73, ../sass/fabuloustime.scss */
 #ft-item-media img {
   max-height: inherit;
   max-width: 100%;
 }
 
-/* line 76, ../sass/fabuloustime.scss */
+/* line 77, ../sass/fabuloustime.scss */
 #ft-item-text {
   overflow-y: scroll;
   height: inherit;
   align-items: stretch;
 }
-/* line 80, ../sass/fabuloustime.scss */
+/* line 81, ../sass/fabuloustime.scss */
 #ft-item-text h1 {
   font-size: 22pt;
   margin-bottom: 0.75em;
   margin-top: 0.5em;
 }
-/* line 85, ../sass/fabuloustime.scss */
+/* line 86, ../sass/fabuloustime.scss */
 #ft-item-text p {
   line-height: 125%;
   word-break: break-word;
 }
-/* line 89, ../sass/fabuloustime.scss */
+/* line 90, ../sass/fabuloustime.scss */
 #ft-item-text p.ft-display-date {
   font-style: italic;
   padding-bottom: 0.5em;
 }
 
-/* line 94, ../sass/fabuloustime.scss */
+/* line 95, ../sass/fabuloustime.scss */
 #ft-visualization {
-  width: 90%;
-  float: right;
+  overflow: auto;
 }
 
 /* line 99, ../sass/fabuloustime.scss */
 #ft-filter-container {
   height: 100vh;
-  width: 10%;
+  width: 175px;
   float: left;
   overflow-y: scroll;
 }
@@ -269,12 +269,15 @@ body, html {
   width: 48%;
   padding-left: 1%;
   padding-right: 1%;
-  padding-top: 1em;
-  padding-bottom: 1em;
   float: left;
 }
+/* line 165, ../sass/fabuloustime.scss */
+.ft-cols-2 > div {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
 
-/* line 169, ../sass/fabuloustime.scss */
+/* line 171, ../sass/fabuloustime.scss */
 .ft-cols-1 {
   width: 98%;
   padding-left: 1%;
@@ -283,19 +286,19 @@ body, html {
   padding-bottom: 1em;
 }
 
-/* line 177, ../sass/fabuloustime.scss */
+/* line 179, ../sass/fabuloustime.scss */
 .ft-vcenter-outer {
   display: table;
   height: 100%;
   table-layout: fixed;
 }
-/* line 181, ../sass/fabuloustime.scss */
+/* line 183, ../sass/fabuloustime.scss */
 .ft-vcenter-outer .ft-vcenter-middle {
   display: table-cell;
   vertical-align: middle;
 }
 
-/* line 188, ../sass/fabuloustime.scss */
+/* line 190, ../sass/fabuloustime.scss */
 .ft-close-button {
   width: 30px;
   height: 30px;
@@ -309,7 +312,7 @@ body, html {
   z-index: 10;
 }
 
-/* line 201, ../sass/fabuloustime.scss */
+/* line 203, ../sass/fabuloustime.scss */
 #ft-item-text.cols-1 {
   position: absolute;
   height: 100%;
@@ -317,18 +320,18 @@ body, html {
   text-align: center;
 }
 
-/* line 208, ../sass/fabuloustime.scss */
+/* line 210, ../sass/fabuloustime.scss */
 .ft-item-tooltip {
   max-width: 250px;
 }
-/* line 210, ../sass/fabuloustime.scss */
+/* line 212, ../sass/fabuloustime.scss */
 .ft-item-tooltip h1 {
   font-weight: bold;
   font-size: 130%;
   white-space: normal;
 }
 
-/* line 217, ../sass/fabuloustime.scss */
+/* line 219, ../sass/fabuloustime.scss */
 .ft-data-active {
   visibility: visible;
   -webkit-filter: blur(0px);
@@ -336,7 +339,7 @@ body, html {
   transition: all 0.3s ease;
 }
 
-/* line 224, ../sass/fabuloustime.scss */
+/* line 226, ../sass/fabuloustime.scss */
 .ft-data-inactive {
   visibility: hidden;
   -webkit-filter: blur(20px);
@@ -344,7 +347,7 @@ body, html {
   transition: all 0.5s ease;
 }
 
-/* line 231, ../sass/fabuloustime.scss */
+/* line 233, ../sass/fabuloustime.scss */
 #ft-loading {
   width: 100%;
   height: 100vh;
@@ -353,19 +356,19 @@ body, html {
   background-color: #fff;
   text-align: center;
 }
-/* line 238, ../sass/fabuloustime.scss */
+/* line 240, ../sass/fabuloustime.scss */
 #ft-loading.ft-inactive {
   display: none;
 }
 
-/* line 243, ../sass/fabuloustime.scss */
+/* line 245, ../sass/fabuloustime.scss */
 #ft-nav-buttons {
   position: absolute;
   top: 0;
-  left: 11%;
+  left: 175px;
   z-index: 10;
 }
-/* line 248, ../sass/fabuloustime.scss */
+/* line 250, ../sass/fabuloustime.scss */
 #ft-nav-buttons div.ft-nav-button {
   cursor: pointer;
   padding: 3px;
@@ -374,22 +377,22 @@ body, html {
   width: 20px;
   text-align: center;
 }
-/* line 256, ../sass/fabuloustime.scss */
+/* line 258, ../sass/fabuloustime.scss */
 #ft-nav-buttons #ft-nav-zoom-in {
   top: 0;
   left: 26px;
 }
-/* line 260, ../sass/fabuloustime.scss */
+/* line 262, ../sass/fabuloustime.scss */
 #ft-nav-buttons #ft-nav-zoom-out {
   top: 52px;
   left: 26px;
 }
-/* line 264, ../sass/fabuloustime.scss */
+/* line 266, ../sass/fabuloustime.scss */
 #ft-nav-buttons #ft-nav-right {
   top: 26px;
   left: 52px;
 }
-/* line 268, ../sass/fabuloustime.scss */
+/* line 270, ../sass/fabuloustime.scss */
 #ft-nav-buttons #ft-nav-left {
   top: 26px;
   left: 0px;
