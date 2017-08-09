@@ -159,11 +159,11 @@ $(".timeline-setup-text-input").on('change', function() {
     var pattern = /([a-zA-Z0-9_-]{44})/g;
     var sheetId = sharingUrl.match(pattern);
     if (sheetId && tagColumn) {
-      var url = `${location.origin}/timeline?tl_sheet=${sheetId}&tag_col=&${tagColumn}`;
+      var url = `${location.href}timeline?tl_sheet=${sheetId}&tag_col=&${tagColumn}`;
       $("#display_link").attr("href",url);
       $("#display_link").html(url);
     } else if (sheetId) {
-      var url = `${location.origin}/timeline?tl_sheet=${sheetId}`;
+      var url = `${location.href}timeline?tl_sheet=${sheetId}`;
       $("#display_link").attr("href",url);
       $("#display_link").html(url);
     } else {
