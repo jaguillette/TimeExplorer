@@ -78,11 +78,11 @@ The first step is to make a copy of [this form template](https://docs.google.com
 
 Before you make any changes to the form, you need to make sure that the sheet for accepting responses is set up. While editing the form, click over to Responses...
 
-![Initial header on the Google Form edit page with "Responses" highlighted](/assets/images/form_1.png "Initial form editing page header")
+![Initial header on the Google Form edit page with "Responses" highlighted](assets/images/form_1.png "Initial form editing page header")
 
 ...and click the green Google Sheets icon to create a spreadsheet to contain the responses.
 
-![Header on Google Form edit page when "Responses" are selected with Google Sheet icon highlighted](/assets/images/form_2.png "Setting up form responses")
+![Header on Google Form edit page when "Responses" are selected with Google Sheet icon highlighted](assets/images/form_2.png "Setting up form responses")
 
 When you've created that spreadsheet, you'll need to set the sharing permissions so that anyone with a link can view the sheet.
 
