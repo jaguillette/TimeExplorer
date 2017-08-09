@@ -273,3 +273,24 @@ $filter-border-style: 1px solid #111;
     left: 0px;
   }
 }
+
+@media (max-width: 1400px) {
+  #ft-item-data {
+    left: 250px;
+    right: 75px;
+  }
+}
+
+@media (max-width: 1100px) {
+  #ft-item-data {
+    left: 225px;
+    right: 50px;
+  }
+}
+
+@media (max-width: 800px) {
+  #ft-item-data {
+    left: 200px;
+    right: 25px;
+  }
+}
