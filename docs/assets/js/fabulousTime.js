@@ -199,7 +199,7 @@ class FabulousTime {
           top: ${0.15 * windowHeight}px;
         }
         .tl-media-image {
-          max-height: ${0.7 * windowHeight - bylineHeight - 70}px !important;
+          max-height: ${0.7 * windowHeight - bylineHeight - 105}px !important;
         }
       `);
     });
