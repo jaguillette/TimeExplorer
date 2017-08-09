@@ -385,6 +385,7 @@ class FabulousTime {
       $("#"+data_id).attr('class','ft-data-active');
       var item_media_type = TL.MediaType(item_media_dict);
       var item_media = new item_media_type.cls(item_media_dict);
+      item_media.data.mediatype = item_media_type;
       item_media.addTo(document.getElementById(media_id));
       item_media.loadMedia();
       item_media.options['width'] = $("#ft-item-media-container").width() - 10;

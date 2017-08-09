@@ -42,6 +42,33 @@ body, html {
 .tl-caption, .tl-credit {
   margin: auto;
 }
+.tl-media {
+  .tl-media-iframe.tl-media-spotify {
+    height: 500px;
+    max-width: 500px;
+    margin: auto;
+  }
+  .tl-media-twitter {
+    blockquote.twitter-tweet {
+      margin-bottom: 1em;
+    }
+    a {
+      color: #000;
+      text-decoration: none;
+      &:hover {
+        color: #55ACEE;
+      }
+      &.twitter-date {
+        padding-bottom: 0.5em;
+        display: block;
+      }
+    }
+    span.fn {
+      display: block;
+      padding-bottom: 0.2em;
+    }
+  }
+}
 #ft-item-media img {
   max-height: inherit;
   max-width: 100%;
