@@ -92,13 +92,21 @@ function GetDisplayDate(row,startDate,endDate) {
   if (row['Month'] && row['Month'] != "") { displayDate += months[startDate.getMonth()]+" "; }
   if (row['Day']   && row['Day'] != "")   { displayDate += startDate.getDate()+", "; }
   if (row['Year']  && row['Year'] != "")  { displayDate += startDate.getFullYear(); }
-  if (row['Time']  && row['Time'] != "")  { displayDate += " at " + startDate.getHours() + ":" + startDate.getMinutes(); }
+  if (row['Time']  && row['Time'] != "")  {
+    displayDate += " at " + startDate.getHours() + ":";
+    var minutes = String(startDate.getMinutes()).length == 1 ? "0"+String(startDate.getMinutes()) : String(startDate.getMinutes());
+    displayDate += minutes;
+  }
   if (endDate) {
     displayDate += " - ";
     if (row['End Month'] && row['End Month'] != "") { displayDate += months[endDate.getMonth()]+" "; }
     if (row['End Day']   && row['End Day'] != "")   { displayDate += endDate.getDate()+", "; }
     if (row['End Year']  && row['End Year'] != "")  { displayDate += endDate.getFullYear(); }
-    if (row['End Time']  && row['End Time'] != "")  { displayDate += " at " + endDate.getHours() + ":" + endDate.getMinutes(); }
+    if (row['End Time']  && row['End Time'] != "")  {
+      displayDate += " at " + endDate.getHours() + ":";
+      var minutes = String(endDate.getMinutes()).length == 1 ? "0"+String(endDate.getMinutes()) : String(endDate.getMinutes());
+      displayDate += minutes;
+     }
   }
   return displayDate;
 }
@@ -594,7 +602,7 @@ class FabulousTime {
         date.setMonth(month);
         if (day)   {
           date.setDate(day);
-          if (hours && minutes)  {
+          if (hours !== null && minutes !== null)  {
             date.setHours(hours);
             date.setMinutes(minutes);
           }
