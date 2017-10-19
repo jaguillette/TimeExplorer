@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Timeline | Aggregated Timeline</title>
+
+  <style id="docstyle" type="text/css">
+  .vis-item.vis-background {
+    opacity: 0.6;
+  }
+  </style>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.4/handlebars.min.js"></script>
+
+  <script type="text/javascript" src="assets/js/vis.js"></script>
+  <script type="text/javascript" src="assets/js/chroma.min.js" charset="utf-8"></script>
+  <script type="text/javascript" src="assets/js/chroma.palette-gen.js" charset="utf-8"></script>
+  <script type="text/javascript" src="assets/js/fabulousTime.js"></script>
+
+  <!-- JQuery UI -->
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="assets/css/timeline.css">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.20.0/vis.min.css"/>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/fabuloustime.css"/>
+  <style media="screen" id="dynamicstyle"></style>
+</head>
+<body>
+  <div id="timeline"></div>
+
+  <div id="timeline-setup" title="How do you have your Timeline(s) set up?" class="ui-form">
+    <p>This application transforms Timeline JS timelines into a format that makes browsing the timeline easier, at the cost of some of the excellent aesthetics of Timeline JS.</p>
+    <p>You can enter the URL for a Google Sheet that defines a single timeline, or a Google Sheet that contains a list of other Google Sheets in the first column, which will aggregate the contents of all of those sheets.</p>
+    <p>For any setup, the spreadsheets must be set to "Anyone with the link can view" for this system to be able to access them.</p>
+    <p>How would you like to set up your timeline?</p>
+  </div>
+
+  <div id="timeline-single-entry" title="Single Sheet Timeline" class="ui-form">
+    <form>
+      <div>
+        <label for="single-sheet-url">Sheet URL: </label>
+        <input type="text" name="single-sheet-url" id="single-sheet-url">
+      </div>
+      <div>
+        <label for="page-height">Page Height: </label>
+        <input type="number" name="page-height" value="1000" id="page-height">
+      </div>
+      <div>
+        <label for="tag-column">Tag Column Name (Optional): </label>
+        <input type="text" name="tag-column" id="tag-column">
+      </div>
+    </form>
+  </div>
+
+  <div id="timeline-multi-entry" title="Aggregated Timeline" class="ui-form">
+    <form>
+      <div>
+        <label for="multi-sheet-url">Sheet URL: </label>
+        <input type="text" name="multi-sheet-url" id="multi-sheet-url">
+      </div>
+      <div>
+        <label for="page-height">Page Height: </label>
+        <input type="number" name="page-height" value="1000" id="page-height">
+      </div>
+      <div>
+        <label for="tag-column">Tag Column Name (Optional): </label>
+        <input type="text" name="tag-column" id="tag-column">
+      </div>
+    </form>
+  </div>
+
+  <!-- Timeline JS timeline script -->
+  <script type="text/javascript" src="https://cdn.knightlab.com/libs/timeline3/latest/js/timeline.js" charset="utf-8"></script>
+
+  <script type="text/javascript">
+
+    var api_key = "AIzaSyDP47Cz6NB7_B2FyZhYW0Np-OnD58GTV00"
+    FabTimeline = new FabulousTime(api_key,{"hiddendates":{"hiddenDates":{"start":"1880-01-01","end":"1950-01-01"}}});
+
+  </script>
+</body>
+</html>
