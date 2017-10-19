@@ -284,7 +284,7 @@ class FabulousTime {
         order: function(a, b) { return b.duration - a.duration; },
       }
     }
-    $.extend(defaults,supplied_options);
+    $.extend(defaults.timelineOptions,supplied_options);
     return defaults;
   }
 
