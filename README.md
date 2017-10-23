@@ -1,7 +1,7 @@
-Fabulous Time
+Time Explorer
 =====
 
-Fabulous Time is a timeline creation tool that combines the ease of use and
+Time Explorer is a timeline creation tool that combines the ease of use and
 multimedia focus of [Timeline JS](https://timeline.knightlab.com/) with the
 navigability of a timeline created by [vis.js](http://visjs.org/). It uses code
 from both of these excellent projects to create a timeline tool that can handle
@@ -11,7 +11,7 @@ This software is an alpha release, and as such it is subject to change and
 instability.
 
 If you just want to use the timeline, you can use the version hosted through
-GitHub Pages, which you can set up here: https://jaguillette.github.io/fabulousTime/.
+GitHub Pages, which you can set up here: https://jaguillette.github.io/TimeExplorer/.
 That page is intended to help you get started using the timeline.
 
 If you want to host your own instance of this timeline, you'll need to download
@@ -28,7 +28,7 @@ When you've added your own API key, you'll be able to use the tool. However,
 you'll have to add the ID of the Google sheet that you want to use manually. You
 can either use the `tl_sheet` GET parameter (e.g. ...?tl_sheet=your_sheet_id),
 or you can hard code the sheet ID in when creating the timeline with
-`new FabulousTime(api_key,sheet_ids=['your_sheet_id']);`. Using the GET
+`new TimeExplorer(api_key,sheet_ids=['your_sheet_id']);`. Using the GET
 parameter will allow you to use multiple timelines from the same setup, so
 that's what I recommend, but you do you.
 
@@ -40,7 +40,7 @@ actually the Timeline JS Template, so you can use it for testing, and make your
 own copy to edit and fill with your own content.
 
 With your own API key and Sheet ID specified, you should see the timeline
-rendered when you load the page. 
+rendered when you load the page.
 
 Licenses
 -----

@@ -13,23 +13,23 @@
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
-title: Fabulous Time
+title: Time Explorer
 email: digitalhistory@fas.harvard.edu
 description: >
   Easily build rich timelines with hundreds of entries
-baseurl: "/fabulousTime" # the subpath of your site, e.g. /blog
+baseurl: "/TimeExplorer" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 github_username:  jaguillette
 # show_downloads: true
 
 # GitHub stuff
 github:
-  repository_url: https://github.com/jaguillette/fabulousTime
-  repository_name: fabulousTime
+  repository_url: https://github.com/jaguillette/TimeExplorer
+  repository_name: TimeExplorer
   owner_url: https://github.com/jaguillette
   owner_name: Jeremy Guillette
-  zip_url: https://github.com/jaguillette/fabulousTime/archive/master.zip
-  tar_url: https://github.com/jaguillette/fabulousTime/archive/master.tar.gz
+  zip_url: https://github.com/jaguillette/TimeExplorer/archive/master.zip
+  tar_url: https://github.com/jaguillette/TimeExplorer/archive/master.tar.gz
   is_project_page: true
 
 # Build settings

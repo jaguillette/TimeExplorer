@@ -137,11 +137,11 @@ function GetDisplayTitle(row,displayDate) {
 /**
  * Class loading data from one or more Google Sheets formatted for use in Knight
  * Lab's Timeline JS. Prepares data for use in visjs timeline. Uses jquery.
- * Data is loaded asynchronously, so should be loaded in FabulousTime.promise.done()
+ * Data is loaded asynchronously, so should be loaded in TimeExplorer.promise.done()
  * function. Start and end dates are loaded, other properties are stored as item
  * properties to be loaded by templates or as part of the item dataset object.
  */
-class FabulousTime {
+class TimeExplorer {
   /**
    * Load data from Google Sheets by sheet IDs
    * @param {array} sheet_ids - Array with Google Sheet ids as strings. If
