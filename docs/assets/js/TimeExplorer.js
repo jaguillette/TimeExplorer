@@ -27,6 +27,10 @@ function get_url_params() {
   return $_GET;
 }
 
+/**
+ * Takes a string representing a time, and returns the hour and minute values in an array
+ * @param {string} timestring - A string representing a time, such as "10:30am"
+ */
 function timeParse(timestring) {
   var ampm_match = timestring.match(/(.*)[AP]M$/);
   if (ampm_match) {
@@ -69,6 +73,24 @@ function timeParse(timestring) {
 }
 
 /**
+ * Zero-pads a number to a 4-digit string
+ */
+function padToNDigit(number,nDigits) {
+  var str = "" + number
+  if (str[0] == "-" ){
+    str = str.slice(1);
+    var pad = Array(nDigits+1).join("0");
+    var ans = pad.substring(0, pad.length - str.length) + str;
+    ans = "-" + ans;
+    return ans
+  } else {
+    var pad = Array(nDigits+1).join("0");
+    var ans = pad.substring(0, pad.length - str.length) + str;
+    return ans
+  }
+}
+
+/**
  * Takes an ID string for a div, and removes leading #, if any
  * @param {string} id_string - string to be modified
  */
@@ -81,7 +103,12 @@ function plainId(id_string) {
 }
 
 /**
- *
+ * Constructs a display date based on a given data row, as well as start and end dates.
+ * Row data is used to determine the precision with which the date was defined
+ * startDate and endDate are used to determine the values in a standard way
+ * @param {object} row - Dictionary-like object representing a row of data from spreadsheet
+ * @param {datetime} startDate
+ * @param {datetime} endDate
  */
 function GetDisplayDate(row,startDate,endDate) {
   if (startDate == null) {
@@ -111,6 +138,9 @@ function GetDisplayDate(row,startDate,endDate) {
   return displayDate;
 }
 
+/**
+ * // TODO: What is this function for?
+ */
 function testFilter(self) {
   if (self.filters.tagOptions == "all") {
     return function(item) {
@@ -126,7 +156,9 @@ function testFilter(self) {
 }
 
 /**
- *
+ * Utility function to get the Headline and display date for an entry and render it in HTML
+ * @param {object} row - Row of data from spreadsheet, parsed as a dictionary-like object
+ * @param {string} displayDate - String representing date as it should be displayed
  */
 function GetDisplayTitle(row,displayDate) {
   var output = "<div class=\"ft-item-tooltip\"><h1>"+row['Headline']+"</h1>";
@@ -595,13 +627,19 @@ class TimeExplorer {
    * @param {integer} minutes - minutes for date constructor
    */
   constructDate(year,month,day,hours,minutes){
-    var date = new Date([1,'01','01','00:00'])
+    var date = new Date("0001-01-01T00:00");
+    var dateString = "0001-01-01T00:00"
     if (year)  {
-      date.setYear(year);
+      if (year < 0) {
+        date.setFullYear(year);
+      } else {
+        dateString = padToNDigit(year,4) + dateString.slice(4);
+        date = new Date(dateString);
+      }
       if (month) {
         date.setMonth(month);
         if (day)   {
-          date.setDate(day);
+          date.setDate(day)
           if (hours !== null && minutes !== null)  {
             date.setHours(hours);
             date.setMinutes(minutes);
@@ -609,7 +647,7 @@ class TimeExplorer {
         }
       }
     }
-    if (date.getTime() != new Date([1,'01','01','00:00']).getTime()) {
+    if (date.getTime() != new Date("0001-01-01T00:00").getTime()) {
       // If the date has changed from the initial value, return it
       return date;
     } else {
