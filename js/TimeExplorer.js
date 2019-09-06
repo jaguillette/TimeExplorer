@@ -627,18 +627,27 @@ class TimeExplorer {
    * @param {integer} minutes - minutes for date constructor
    */
   constructDate(year,month,day,hours,minutes){
+    // console.log("Constructing date: [Y:"+year+"] [M:"+month+"] [D:"+day+"] [hh:"+hours+"] [mm:"+minutes+"]");
     var date = new Date("0001-01-01T00:00");
+    // Set default date
+
     var dateString = "0001-01-01T00:00"
-    if (year)  {
+    // Set initial default date string
+
+    if (year != null)  {
       if (year < 0) {
+        // If BCE date, just set the year
         date.setFullYear(year);
       } else {
+        // If CE date, set year in dateString then re-create date
+        // This has to happen because setting years with low-digit years
+        // puts them all in the 1900s
         dateString = padToNDigit(year,4) + dateString.slice(4);
         date = new Date(dateString);
       }
-      if (month) {
+      if (month != null) {
         date.setMonth(month);
-        if (day)   {
+        if (day != null)   {
           date.setDate(day)
           if (hours !== null && minutes !== null)  {
             date.setHours(hours);
@@ -649,9 +658,14 @@ class TimeExplorer {
     }
     if (date.getTime() != new Date("0001-01-01T00:00").getTime()) {
       // If the date has changed from the initial value, return it
+      // console.log("returning date: "+date.toDateString());
+      return date;
+    } else if (year) {
+      // If there is a year, this is a date, and may be set to 1
       return date;
     } else {
       // Otherwise return null
+      // console.log("returning null");
       return null;
     }
   }
