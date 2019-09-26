@@ -4,11 +4,7 @@
  * @param {array} values - Array of values for output array
  */
 function zip_arrays(keys, values) {
-  var returnValues = {};
-  values.forEach(function(val, i) {
-    returnValues[keys[i]] = val;
-  });
-  return returnValues
+  return Object.assign(...keys.map((v,i) => ( {[v]: values[i]} )));
 }
 
 /**
@@ -32,62 +28,28 @@ function get_url_params() {
  * @param {string} timestring - A string representing a time, such as "10:30am"
  */
 function timeParse(timestring) {
-  var ampm_match = timestring.match(/(.*)[AP]M$/);
-  if (ampm_match) {
-    var pm_match = timestring.match(/(.*)pm\s*$/i);
-    if (pm_match) {
-      var timeArray = pm_match[1].split(':');
-      if (timeArray.length == 2) {
-        var hour = parseInt(timeArray[0])+12;
-        var minute = parseInt(timeArray[1]);
-        if (hour == 24) {
-          hour = 12;
-        }
-        return [hour,minute];
-      } else {
-        return null;
-      }
-    } else {
-      var timeArray = ampm_match[1].split(':');
-      if (timeArray.length == 2) {
-        var hour = parseInt(timeArray[0]);
-        var minute = parseInt(timeArray[1]);
-        if (hour == 12) {
-          hour = 24;
-        }
-        return [hour,minute];
-      } else {
-        return null;
-      }
+  let pmMatch = timestring.match(/(.*)pm\s*$/i);
+  let timeArray = pmMatch ? pmMatch[1].split(':') : timestring.split(':');
+  if (timeArray.length === 2) {
+    let hour = pmMatch ? parseInt(timeArray[0])+12 : parseInt(timeArray[0]);
+    let minute = parseInt(timeArray[1]);
+    if (pmMatch && hour == 12) {
+      hour = 24;
     }
+    return [hour,minute]
   } else {
-    var timeArray = timestring.split(':');
-    if (timeArray.length == 2) {
-      var hour = parseInt(timeArray[0]);
-      var minute = parseInt(timeArray[1]);
-      return [hour,minute];
-    } else {
-      return null;
-    }
+    return null;
   }
 }
 
 /**
  * Zero-pads a number to a 4-digit string
  */
-function padToNDigit(number,nDigits) {
-  var str = "" + number
-  if (str[0] == "-" ){
-    str = str.slice(1);
-    var pad = Array(nDigits+1).join("0");
-    var ans = pad.substring(0, pad.length - str.length) + str;
-    ans = "-" + ans;
-    return ans
-  } else {
-    var pad = Array(nDigits+1).join("0");
-    var ans = pad.substring(0, pad.length - str.length) + str;
-    return ans
-  }
+function padToNDigit(number, nDigits) {
+  let str = String(number);
+  let pad = Array(nDigits+1).join("0");
+  let insert = str[0] === "-" ? 1 : 0;
+  return str.slice(0, insert) + pad + str.slice(insert);
 }
 
 /**
@@ -95,11 +57,7 @@ function padToNDigit(number,nDigits) {
  * @param {string} id_string - string to be modified
  */
 function plainId(id_string) {
-  if (id_string.startsWith('#')) {
-    return id_string.slice(1);
-  } else {
-    return id_string;
-  }
+  return id_string.startsWith('#') ? id_string.slice(1) : id_string;
 }
 
 /**
