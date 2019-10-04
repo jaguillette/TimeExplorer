@@ -68,33 +68,27 @@ function plainId(id_string) {
  * @param {datetime} startDate
  * @param {datetime} endDate
  */
-function GetDisplayDate(row,startDate,endDate) {
-  if (startDate == null) {
-    return null;
-  }
-  var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-  displayDate = "";
-  if (row['Month'] && row['Month'] != "") { displayDate += months[startDate.getMonth()]+" "; }
-  if (row['Day']   && row['Day'] != "")   { displayDate += startDate.getDate()+", "; }
-  if (row['Year']  && row['Year'] != "")  { displayDate += startDate.getFullYear(); }
-  if (row['Time']  && row['Time'] != "")  {
-    displayDate += " at " + startDate.getHours() + ":";
-    var minutes = String(startDate.getMinutes()).length == 1 ? "0"+String(startDate.getMinutes()) : String(startDate.getMinutes());
-    displayDate += minutes;
-  }
-  if (endDate) {
-    displayDate += " - ";
-    if (row['End Month'] && row['End Month'] != "") { displayDate += months[endDate.getMonth()]+" "; }
-    if (row['End Day']   && row['End Day'] != "")   { displayDate += endDate.getDate()+", "; }
-    if (row['End Year']  && row['End Year'] != "")  { displayDate += endDate.getFullYear(); }
-    if (row['End Time']  && row['End Time'] != "")  {
-      displayDate += " at " + endDate.getHours() + ":";
-      var minutes = String(endDate.getMinutes()).length == 1 ? "0"+String(endDate.getMinutes()) : String(endDate.getMinutes());
-      displayDate += minutes;
-     }
-  }
-  return displayDate;
-}
+ function GetDisplayDate(row, startDate, endDate) {
+   if (startDate == null) {return null;}
+   let displayDate = "";
+   displayDate = appendDate(row, displayDate, startDate, "");
+   if(endDate != null) {displayDate = appendDate(row, displayDate, endDate, "End ");}
+   return displayDate;
+
+   function appendDate(row, displayDate, date, rowIndicator) {
+     const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+     if (rowIndicator === "End ") {displayDate += " - ";}
+     if (row[rowIndicator + 'Month'] && row[rowIndicator + 'Month'] != "") { displayDate += months[date.getMonth()]+" "; }
+     if (row[rowIndicator + 'Day']   && row[rowIndicator + 'Day'] != "")   { displayDate += date.getDate()+", "; }
+     if (row[rowIndicator + 'Year']  && row[rowIndicator + 'Year'] != "")  { displayDate += date.getFullYear(); }
+     if (row[rowIndicator + 'Time']  && row[rowIndicator + 'Time'] != "")  {
+       displayDate += " at " + date.getHours() + ":";
+       let minutes = String(date.getMinutes()).length == 1 ? "0"+String(date.getMinutes()) : String(date.getMinutes());
+       displayDate += minutes;
+      }
+     return displayDate;
+   }
+ }
 
 /**
  * // TODO: What is this function for?
