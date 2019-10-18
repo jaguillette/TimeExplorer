@@ -64,3 +64,39 @@ describe('Testing the functions of the TimeExplorer file', ()=>{
   })
 
 })
+
+describe('Testing the TimeExplorer class', () => {
+  let div;
+
+  beforeEach( ()=> {
+    div = document.createElement('div');
+    div.setAttribute("id", "timeline");
+    document.body.appendChild(div);
+  });
+
+  afterEach( ()=> {
+    div.remove();
+    div = null;
+  });
+
+  it('TimeExplorer should have options after initialization', ()=> {
+    const api_key = "AIzaSyCA8GIsjw-QL-CC1v6fgDWmDyyhRM_ZESE"
+    let explorer = new TimeExplorer(api_key);
+    expect(explorer.options.timelineOptions.height).toEqual(window.innerHeight);
+  })
+
+  it('TimeExplorer.get_tag_col() should return "Tags"', ()=> {
+    const api_key = "AIzaSyCA8GIsjw-QL-CC1v6fgDWmDyyhRM_ZESE"
+    let explorer = new TimeExplorer(api_key);
+    expect(explorer.get_tag_col()).toEqual('Tags');
+  })
+
+  it('TimeExplorer.set_options() should extend options', ()=> {
+    const api_key = "AIzaSyCA8GIsjw-QL-CC1v6fgDWmDyyhRM_ZESE"
+    let explorer = new TimeExplorer(api_key, options=["Joe"]);
+    let r = explorer.set_options(["Joe"])
+    expect(r.timelineOptions['0']).toEqual("Joe");
+  })
+
+
+})
