@@ -1,12 +1,12 @@
-describe('Testing the functions of the TimeExplorer file', ()=>{
+describe('Testing the functions of the TimeExplorer file', ()=> {
 
-  it('zip_arrays should zip two arrays of equal length', ()=>{
+  it('zip_arrays should zip two arrays of equal length', ()=> {
     const arr1 = ["Joan", "Bill", "Bob"];
     const arr2 = [1,2,3];
     expect(zip_arrays(arr1,arr2)).toEqual({"Joan": 1, "Bill": 2, "Bob": 3});
   })
 
-  it('timeParse should parse AM time', ()=>{
+  it('timeParse should parse AM time', ()=> {
     const times = [
       "10:20",
       "10:20am",
@@ -16,7 +16,7 @@ describe('Testing the functions of the TimeExplorer file', ()=>{
     times.forEach( time => expect(timeParse(time)).toEqual([10,20]));
   })
 
-  it('timeParse should parse PM time', ()=>{
+  it('timeParse should parse PM time', ()=> {
     const times = [
       "10:20pm",
       "10:20PM",
@@ -67,6 +67,10 @@ describe('Testing the functions of the TimeExplorer file', ()=>{
 
 describe('Testing the TimeExplorer class', () => {
   let div;
+  const api_key = "AIzaSyCA8GIsjw-QL-CC1v6fgDWmDyyhRM_ZESE";
+  const new_explorer = () => {
+    return new TimeExplorer(api_key);
+  }
 
   beforeEach( ()=> {
     div = document.createElement('div');
@@ -80,22 +84,26 @@ describe('Testing the TimeExplorer class', () => {
   });
 
   it('TimeExplorer should have options after initialization', ()=> {
-    const api_key = "AIzaSyCA8GIsjw-QL-CC1v6fgDWmDyyhRM_ZESE"
-    let explorer = new TimeExplorer(api_key);
+    explorer = new_explorer()
     expect(explorer.options.timelineOptions.height).toEqual(window.innerHeight);
   })
 
   it('TimeExplorer.get_tag_col() should return "Tags"', ()=> {
-    const api_key = "AIzaSyCA8GIsjw-QL-CC1v6fgDWmDyyhRM_ZESE"
-    let explorer = new TimeExplorer(api_key);
-    expect(explorer.get_tag_col()).toEqual('Tags');
+    explorer = new_explorer()
+    const tags = explorer.get_tag_col();
+    expect(tags).toEqual('Tags');
   })
 
   it('TimeExplorer.set_options() should extend options', ()=> {
-    const api_key = "AIzaSyCA8GIsjw-QL-CC1v6fgDWmDyyhRM_ZESE"
-    let explorer = new TimeExplorer(api_key, options=["Joe"]);
-    let r = explorer.set_options(["Joe"])
+    explorer = new_explorer()
+    const r = explorer.set_options(["Joe"])
     expect(r.timelineOptions['0']).toEqual("Joe");
+  })
+
+  it('TimeExplorer.slugify() should return a valid slug', ()=> {
+    explorer = new_explorer()
+    const slug = explorer.slugify("Let's make a slug");
+    expect(slug).toEqual("Let_s_make_a_slug");
   })
 
 
