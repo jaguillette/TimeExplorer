@@ -38,6 +38,14 @@ describe('Testing the functions of the TimeExplorer file', ()=> {
     ids.forEach( id => expect(plainId(id)).toEqual("m1id1sgreat"));
   })
 
+  it('GetDisplayTitle should return html with title', ()=> {
+    const row1 = {
+      'Headline': "HEADLINE",
+    }
+    const displayDate = "July 6th";
+    expect(GetDisplayTitle(row1, displayDate)).toBe('<div class="ft-item-tooltip"><h1>HEADLINE</h1><p>July 6th</p></div>');
+  })
+
   it('GetDisplayDate should return a formated timeframe', ()=> {
     const row1 = {
       'Month': 11,
@@ -105,6 +113,25 @@ describe('Testing the TimeExplorer class', () => {
     const slug = explorer.slugify("Let's make a slug");
     expect(slug).toEqual("Let_s_make_a_slug");
   })
+
+  it('TimeExplorer.set_tags() return all tags', ()=> {
+    explorer = new_explorer()
+    explorer.items = [{'tags': ["Joe"]}, {'tags': ["Mary", "Liam"]}];
+    const tag_return = explorer.set_tags(explorer)
+    expect(tag_return).toEqual([ 'Joe', 'Liam', 'Mary' ]);
+  })
+
+  it('TimeExplorer.set_groups() return all groups', ()=> {
+    explorer = new_explorer()
+    explorer.items = [{'sheet_group': 1}, {'sheet_group': 2}];
+    const group_return = explorer.set_groups(explorer)
+    expect(group_return).toEqual([1,2]);
+  })
+
+
+
+
+
 
 
 })
