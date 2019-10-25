@@ -38,6 +38,14 @@ describe('Testing the functions of the TimeExplorer file', ()=> {
     ids.forEach( id => expect(plainId(id)).toEqual("m1id1sgreat"));
   })
 
+  it('GetDisplayTitle should return html with title', ()=> {
+    const row1 = {
+      'Headline': "HEADLINE",
+    }
+    const displayDate = "July 6th";
+    expect(GetDisplayTitle(row1, displayDate)).toBe('<div class="ft-item-tooltip"><h1>HEADLINE</h1><p>July 6th</p></div>');
+  })
+
   it('GetDisplayDate should return a formated timeframe', ()=> {
     const row1 = {
       'Month': 11,
@@ -66,6 +74,7 @@ describe('Testing the functions of the TimeExplorer file', ()=> {
 })
 
 describe('Testing the TimeExplorer class', () => {
+  let el;
   let div;
   const api_key = "AIzaSyCA8GIsjw-QL-CC1v6fgDWmDyyhRM_ZESE";
   const new_explorer = () => {
@@ -73,14 +82,18 @@ describe('Testing the TimeExplorer class', () => {
   }
 
   beforeEach( ()=> {
+    el = document.createElement('html');
     div = document.createElement('div');
     div.setAttribute("id", "timeline");
-    document.body.appendChild(div);
+    document.body.appendChild(el);
+    el.appendChild(div);
   });
 
   afterEach( ()=> {
     div.remove();
     div = null;
+    el.remove();
+    el = null;
   });
 
   it('TimeExplorer should have options after initialization', ()=> {
@@ -106,5 +119,69 @@ describe('Testing the TimeExplorer class', () => {
     expect(slug).toEqual("Let_s_make_a_slug");
   })
 
+  it('TimeExplorer.set_tags() return all tags', ()=> {
+    explorer = new_explorer()
+    explorer.items = [{'tags': ["Joe"]}, {'tags': ["Mary", "Liam"]}];
+    const tag_return = explorer.set_tags(explorer)
+    expect(tag_return).toEqual([ 'Joe', 'Liam', 'Mary' ]);
+  })
+
+  it('TimeExplorer.set_groups() return all groups', ()=> {
+    explorer = new_explorer()
+    explorer.items = [{'sheet_group': 1}, {'sheet_group': 2}];
+    const group_return = explorer.set_groups(explorer)
+    expect(group_return).toEqual([1,2]);
+  })
+
+  it('TimeExplorer.set_filters() set filters some things checked', ()=> {
+    // groups
+    group = addTestElement('div', 'Groups');
+    inp1 = addTestElement('input', 'filter-checkbox', 'Event', true);
+    inp2 = addTestElement('input', 'filter-checkbox', 'Thing', true);
+    group.appendChild(inp1);
+    group.appendChild(inp2);
+
+    //tags
+    tag = addTestElement('div', 'Tags');
+    inp3 = addTestElement('input', 'filter-checkbox', 'TAG', true);
+    inp4 = addTestElement('input', 'filter-checkbox', 'Another', true);
+    tag.appendChild(inp3);
+    tag.appendChild(inp4);
+
+    // attach them to the html
+    el.appendChild(group);
+    el.appendChild(tag);
+
+    explorer = new_explorer()
+    explorer.set_filters('none', explorer)
+    expect(explorer.filters.tagOptions).toBe('any');
+    expect(explorer.filters.activeGroups).toEqual([ 'Event', 'Thing' ]);
+    expect(explorer.filters.activeTags).toEqual([ 'TAG', 'Another' ]);
+
+    // remove it all
+    inp1.remove();
+    inp2.remove();
+    inp3.remove();
+    inp4.remove();
+    group.remove();
+    tag.remove();
+  })
+
 
 })
+
+
+// Helper function to set up an element to add for testing
+const addTestElement = (elem, cls, val, checked) => {
+  item = document.createElement(elem);
+  if(cls) {
+    item.setAttribute("class", cls);
+  }
+  if(val) {
+    item.setAttribute("value", val);
+  }
+  if(checked) {
+    item.setAttribute("checked", true);
+  }
+  return item;
+}

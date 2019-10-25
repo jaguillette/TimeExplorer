@@ -113,9 +113,7 @@ function testFilter(self) {
  * @param {string} displayDate - String representing date as it should be displayed
  */
 function GetDisplayTitle(row,displayDate) {
-  var output = "<div class=\"ft-item-tooltip\"><h1>"+row['Headline']+"</h1>";
-  output += "<p>"+displayDate+"</p></div>"
-  return output;
+  return "<div class=\"ft-item-tooltip\"><h1>" + row['Headline'] + "</h1><p>"+displayDate+"</p></div>";
 }
 
 /**
@@ -273,12 +271,7 @@ class TimeExplorer {
   }
 
   get_tag_col() {
-    var url_params = get_url_params();
-    if ('tag_col' in url_params) {
-      return url_params['tag_col'];
-    } else {
-      return 'Tags';
-    }
+    return 'tag_col' in get_url_params() ? url_params['tag_col'] : 'Tags';
   }
 
   /**
@@ -344,9 +337,8 @@ class TimeExplorer {
    *
    */
   create_timeline(options) {
-    var container = document.getElementById('ft-visualization');
-    var timeline = new vis.Timeline(container,options.timelineOptions);
-    return timeline;
+    let container = document.getElementById('ft-visualization');
+    return new vis.Timeline(container,options.timelineOptions);
   }
 
   /**
@@ -559,12 +551,10 @@ class TimeExplorer {
    * @uses get_sheet_data
    */
   get_all_sheet_data() {
-    var self = this;
-    var promises = [];
-    for (var i = 0; i < this.sheet_ids.length; i++) {
-      var sheet_id = this.sheet_ids[i];
-      promises.push(this.get_sheet_data(sheet_id));
-    };
+    let self = this;
+    const promises = this.sheet_ids.map( (id) => {
+      return this.get_sheet_data(id);
+    });
     return $.when.apply($,promises);
   };
 
@@ -764,27 +754,23 @@ class TimeExplorer {
    * Uses groups from Timeline JS to color the timeline.
    */
   set_groups(self) {
-    var groups = [];
-    for (var i = 0; i < self.items.length; i++) {
-      if (self.items[i]['sheet_group']) {
-        var group = self.items[i]['sheet_group'];
-        var slug = self.slugify(group);
-        if ($.inArray(group,groups) == -1) {
-          groups.push(group);
-        }
-        self.items[i]['className'] = slug;
+    let groups = self.items.map( (item)=> {
+      if (item['sheet_group']) {
+        item['className'] = self.slugify(item['sheet_group']);
+        return item['sheet_group'];
       } else {
-        self.items[i]['className'] = "Ungrouped";
-        self.items[i]['group_slug'] = "Ungrouped";
-        if ($.inArray('Ungrouped',groups) == -1) {
-          groups.push("Ungrouped");
-        }
+        item['className'] = "Ungrouped";
+        item['group_slug'] = "Ungrouped";
+        return "Ungrouped";
       }
-    }
+    });
+    groups.filter(self.onlyUnique);
     groups.sort();
     self.setup_group_ui(self, groups);
     return groups;
   }
+
+
 
   /**
    * Sets up color scheme and filters for groups.
@@ -834,19 +820,15 @@ class TimeExplorer {
    * Sets up tags to be used as filters
    */
   set_tags(self) {
-     var tags = [];
-     for (var i = 0; i < self.items.length; i++) {
-       if (self.items[i]['tags']) {
-         var these_tags = self.items[i]['tags'];
-         var slugs = these_tags.map(self.slugify);
-         tags = tags.concat(these_tags);
-         if (self.items[i]['className']) {
-           self.items[i]['className'] = self.items[i]['className'] + ' ' + slugs.join(' ');
-         } else {
-           self.items[i]['className'] = slugs.join(' ');
-         }
+    let tags = [];
+    self.items.forEach( (item)=> {
+       if (item['tags']) {
+         let slugs = item['tags'].map(self.slugify);
+         let concatter = item['classname'] ? item['classname'] : '';
+         item['classname'] = concatter + ' ' + slugs.join(' ');
+         tags = tags.concat(item['tags']);
        }
-     }
+     });
      tags = tags.filter( self.onlyUnique );
      tags.sort();
      self.setup_filters(self,tags,"Tags");
@@ -933,23 +915,16 @@ class TimeExplorer {
    */
   set_filters(slug, self) {
     // Set Group filters
-    var activeGroups = [];
-    var groupCheckboxes = $(".Groups input.filter-checkbox");
-    for (var i = 0; i < groupCheckboxes.length; i++) {
-      if (groupCheckboxes[i].checked) {
-        activeGroups.push(groupCheckboxes[i].value);
-      }
-    }
-    self.filters.activeGroups = activeGroups;
+    const groupCheckboxes = $(".Groups input.filter-checkbox");
+    self.filters.activeGroups = Array.prototype.map.call(groupCheckboxes, (box)=> {
+      if (box.checked) {return box.value;}
+    });
     // Set Tag filters
-    var activeTags = [];
-    var tagCheckboxes = $(".Tags input.filter-checkbox");
-    for (var i = 0; i < tagCheckboxes.length; i++) {
-      if (tagCheckboxes[i].checked) {
-        activeTags.push(tagCheckboxes[i].value);
-      }
-    }
-    self.filters.activeTags = activeTags;
+    const tagCheckboxes = $(".Tags input.filter-checkbox");
+    self.filters.activeTags = Array.prototype.map.call(tagCheckboxes, (box)=> {
+      if(box.checked) {return box.value;}
+    });
+
     if ($("#tag-options").length > 0) {
       if ($("#tag-option-any")[0].checked) {
         self.filters.tagOptions = "any";
@@ -1058,14 +1033,8 @@ class TimeExplorer {
    * @param {string} text - the text to be made into a slug.
    */
   slugify(text) {
-    if (typeof(text) == "string") {
-      var output = text.trim()
-      var pattern = /[\s~!@$%^&*()+=,./';:"?><[\] \\{}|`#]+/g
-      output = output.replace(pattern,'_')
-      return output
-    } else {
-      return "";
-    }
+    const pattern = /[\s~!@$%^&*()+=,./';:"?><[\] \\{}|`#]+/g;
+    return typeof(text) == "string" ? text.trim().replace(pattern,'_') : "";
   }
 
   /**
