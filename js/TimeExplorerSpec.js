@@ -107,6 +107,12 @@ describe('Testing the TimeExplorer class', () => {
     expect(tags).toEqual('Tags');
   })
 
+  it('TimeExplorer.create_timeline() should create a timeline', ()=> {
+    explorer = new_explorer()
+    const timeline = explorer.create_timeline(explorer.options);
+    expect(Object.keys(timeline)).toContain('itemsData');
+  })
+
   it('TimeExplorer.set_options() should extend options', ()=> {
     explorer = new_explorer()
     const r = explorer.set_options(["Joe"])
