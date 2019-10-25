@@ -515,15 +515,14 @@ class TimeExplorer {
    * @param {string} sheet_id - ID of Google spreadsheet containing data
    */
   get_sheet_data(sheet_id) {
-    var self = this;
-    var dfd = $.Deferred();
-    var request_url = `https://sheets.googleapis.com/v4/spreadsheets/${sheet_id}/values/A:ZZZ?key=${this.api_key}`;
+    let self = this;
+    let dfd = $.Deferred();
+    const request_url = `https://sheets.googleapis.com/v4/spreadsheets/${sheet_id}/values/A:ZZZ?key=${this.api_key}`;
     $.getJSON(request_url).done(function(data) {
-      var columns = data.values[0];
-      for (var i = 1; i < data.values.length; i++) {
-        var values = zip_arrays(columns, data.values[i]);
-        self.sheet_data.push(values);
-      };
+      let columns = data.values[0];
+      self.sheet_data = data.values.slice(1).map( (item)=> {
+        return zip_arrays(columns,item);
+      });
       dfd.resolve();
     });
     return dfd.promise();

@@ -113,6 +113,12 @@ describe('Testing the TimeExplorer class', () => {
     expect(Object.keys(timeline)).toContain('itemsData');
   })
 
+  it('TimeExplorer.get_sheet_data() should return a promise', ()=> {
+    explorer = new_explorer()
+    const sheetData = explorer.get_sheet_data(api_key);
+    expect(Object.keys(sheetData)).toContain("promise");
+  })
+
   it('TimeExplorer.set_options() should extend options', ()=> {
     explorer = new_explorer()
     const r = explorer.set_options(["Joe"])
