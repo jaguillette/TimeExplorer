@@ -915,23 +915,16 @@ class TimeExplorer {
    */
   set_filters(slug, self) {
     // Set Group filters
-    var activeGroups = [];
-    var groupCheckboxes = $(".Groups input.filter-checkbox");
-    for (var i = 0; i < groupCheckboxes.length; i++) {
-      if (groupCheckboxes[i].checked) {
-        activeGroups.push(groupCheckboxes[i].value);
-      }
-    }
-    self.filters.activeGroups = activeGroups;
+    const groupCheckboxes = $(".Groups input.filter-checkbox");
+    self.filters.activeGroups = Array.prototype.map.call(groupCheckboxes, (box)=> {
+      if (box.checked) {return box.value;}
+    });
     // Set Tag filters
-    var activeTags = [];
-    var tagCheckboxes = $(".Tags input.filter-checkbox");
-    for (var i = 0; i < tagCheckboxes.length; i++) {
-      if (tagCheckboxes[i].checked) {
-        activeTags.push(tagCheckboxes[i].value);
-      }
-    }
-    self.filters.activeTags = activeTags;
+    const tagCheckboxes = $(".Tags input.filter-checkbox");
+    self.filters.activeTags = Array.prototype.map.call(tagCheckboxes, (box)=> {
+      if(box.checked) {return box.value;}
+    });
+
     if ($("#tag-options").length > 0) {
       if ($("#tag-option-any")[0].checked) {
         self.filters.tagOptions = "any";
