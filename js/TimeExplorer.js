@@ -552,7 +552,7 @@ class TimeExplorer {
    */
   get_all_sheet_data() {
     let self = this;
-    const promises = this.sheet_id.map( (id) => {
+    const promises = this.sheet_ids.map( (id) => {
       return this.get_sheet_data(id);
     });
     return $.when.apply($,promises);
