@@ -26,11 +26,11 @@ describe('Testing the functions of the TimeExplorer file', ()=> {
   })
 
   it('padToNDigit should pad a given number by given digits', ()=> {
-    const num = 6;
-    const negativeNum = -6;
-    const digits = 3;
-    expect(padToNDigit(num, digits)).toEqual("0006");
-    expect(padToNDigit(negativeNum, digits)).toEqual("-0006");
+    const digits = 4;
+    expect(padToNDigit(6, digits)).toEqual("0006");
+    expect(padToNDigit(-6, digits)).toEqual("-0006");
+    expect(padToNDigit(1987, digits)).toEqual("1987");
+    expect(padToNDigit(-1987, digits)).toEqual("-1987");
   })
 
   it('plainId should return id string without preceding #', ()=> {
@@ -76,6 +76,7 @@ describe('Testing the functions of the TimeExplorer file', ()=> {
 describe('Testing the TimeExplorer class', () => {
   let el;
   let div;
+  let explorer;
   const api_key = "AIzaSyCA8GIsjw-QL-CC1v6fgDWmDyyhRM_ZESE";
   const new_explorer = () => {
     return new TimeExplorer(api_key);
@@ -87,6 +88,7 @@ describe('Testing the TimeExplorer class', () => {
     div.setAttribute("id", "timeline");
     document.body.appendChild(el);
     el.appendChild(div);
+    explorer = new_explorer()
   });
 
   afterEach( ()=> {
@@ -97,49 +99,41 @@ describe('Testing the TimeExplorer class', () => {
   });
 
   it('TimeExplorer should have options after initialization', ()=> {
-    explorer = new_explorer()
     expect(explorer.options.timelineOptions.height).toEqual(window.innerHeight);
   })
 
   it('TimeExplorer.get_tag_col() should return "Tags"', ()=> {
-    explorer = new_explorer()
     const tags = explorer.get_tag_col();
     expect(tags).toEqual('Tags');
   })
 
   it('TimeExplorer.create_timeline() should create a timeline', ()=> {
-    explorer = new_explorer()
     const timeline = explorer.create_timeline(explorer.options);
     expect(Object.keys(timeline)).toContain('itemsData');
   })
 
   it('TimeExplorer.get_sheet_data() should return a promise', ()=> {
-    explorer = new_explorer()
     const sheetData = explorer.get_sheet_data(api_key);
     expect(Object.keys(sheetData)).toContain("promise");
   })
 
   it('TimeExplorer.set_options() should extend options', ()=> {
-    explorer = new_explorer()
     const r = explorer.set_options(["Joe"])
     expect(r.timelineOptions['0']).toEqual("Joe");
   })
 
   it('TimeExplorer.slugify() should return a valid slug', ()=> {
-    explorer = new_explorer()
     const slug = explorer.slugify("Let's make a slug");
     expect(slug).toEqual("Let_s_make_a_slug");
   })
 
   it('TimeExplorer.set_tags() return all tags', ()=> {
-    explorer = new_explorer()
     explorer.items = [{'tags': ["Joe"]}, {'tags': ["Mary", "Liam"]}];
     const tag_return = explorer.set_tags(explorer)
     expect(tag_return).toEqual([ 'Joe', 'Liam', 'Mary' ]);
   })
 
   it('TimeExplorer.set_groups() return all groups', ()=> {
-    explorer = new_explorer()
     explorer.items = [{'sheet_group': 1}, {'sheet_group': 2}];
     const group_return = explorer.set_groups(explorer)
     expect(group_return).toEqual([1,2]);
@@ -147,16 +141,16 @@ describe('Testing the TimeExplorer class', () => {
 
   it('TimeExplorer.set_filters() set filters some things checked', ()=> {
     // groups
-    group = addTestElement('div', 'Groups');
-    inp1 = addTestElement('input', 'filter-checkbox', 'Event', true);
-    inp2 = addTestElement('input', 'filter-checkbox', 'Thing', true);
+    group = addTestElement('div', {'class':'Groups'});
+    inp1 = addTestElement('input', {'class':'filter-checkbox', 'value':'Event', 'checked':true});
+    inp2 = addTestElement('input', {'class':'filter-checkbox', 'value':'Thing', 'checked':true});
     group.appendChild(inp1);
     group.appendChild(inp2);
 
     //tags
-    tag = addTestElement('div', 'Tags');
-    inp3 = addTestElement('input', 'filter-checkbox', 'TAG', true);
-    inp4 = addTestElement('input', 'filter-checkbox', 'Another', true);
+    tag = addTestElement('div', {'class':'Tags'});
+    inp3 = addTestElement('input', {'class':'filter-checkbox', 'value':'TAG', 'checked':true});
+    inp4 = addTestElement('input', {'class':'filter-checkbox', 'value':'Another', 'checked':true});
     tag.appendChild(inp3);
     tag.appendChild(inp4);
 
@@ -164,7 +158,6 @@ describe('Testing the TimeExplorer class', () => {
     el.appendChild(group);
     el.appendChild(tag);
 
-    explorer = new_explorer()
     explorer.set_filters('none', explorer)
     expect(explorer.filters.tagOptions).toBe('any');
     expect(explorer.filters.activeGroups).toEqual([ 'Event', 'Thing' ]);
@@ -179,21 +172,30 @@ describe('Testing the TimeExplorer class', () => {
     tag.remove();
   })
 
+  it('TimeExplorer.constructDate() constructs a date.', () =>{
+    let constructedDate = explorer.constructDate();
+    expect(constructedDate).toEqual(null);
+    constructedDate = explorer.constructDate(year=6);
+    let date = new Date("0006-01-01T00:00");
+    expect(constructedDate).toEqual(date);
+    constructedDate = explorer.constructDate(year=-6);
+    date = new Date("0000-01-01T00:00");
+    date.setFullYear(-6);
+    expect(constructedDate).toEqual(date);
+    constructedDate = explorer.constructDate(year=1987);
+    date = new Date("1987-01-01T00:00");
+    expect(constructedDate).toEqual(date);
+  })
+
 
 })
 
 
 // Helper function to set up an element to add for testing
-const addTestElement = (elem, cls, val, checked) => {
+const addTestElement = (elem, attrs) => {
   item = document.createElement(elem);
-  if(cls) {
-    item.setAttribute("class", cls);
-  }
-  if(val) {
-    item.setAttribute("value", val);
-  }
-  if(checked) {
-    item.setAttribute("checked", true);
-  }
+  Object.keys(attrs).forEach( (attribute) => {
+    item.setAttribute(attribute, attrs[attribute]);
+  });
   return item;
 }
