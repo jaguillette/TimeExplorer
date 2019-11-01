@@ -47,7 +47,9 @@ function timeParse(timestring) {
  */
 function padToNDigit(number, nDigits) {
   let str = String(number);
-  let pad = Array(nDigits+1).join("0");
+  let currentLength = str[0] === '-' ? str.length - 1 : str.length;
+  let digits = nDigits - (currentLength - 1);
+  let pad = Array(digits).join("0");
   let insert = str[0] === "-" ? 1 : 0;
   return str.slice(0, insert) + pad + str.slice(insert);
 }

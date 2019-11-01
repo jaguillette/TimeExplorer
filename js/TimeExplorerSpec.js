@@ -26,11 +26,11 @@ describe('Testing the functions of the TimeExplorer file', ()=> {
   })
 
   it('padToNDigit should pad a given number by given digits', ()=> {
-    const num = 6;
-    const negativeNum = -6;
-    const digits = 3;
-    expect(padToNDigit(num, digits)).toEqual("0006");
-    expect(padToNDigit(negativeNum, digits)).toEqual("-0006");
+    const digits = 4;
+    expect(padToNDigit(6, digits)).toEqual("0006");
+    expect(padToNDigit(-6, digits)).toEqual("-0006");
+    expect(padToNDigit(1987, digits)).toEqual("1987");
+    expect(padToNDigit(-1987, digits)).toEqual("-1987");
   })
 
   it('plainId should return id string without preceding #', ()=> {
@@ -170,6 +170,21 @@ describe('Testing the TimeExplorer class', () => {
     inp4.remove();
     group.remove();
     tag.remove();
+  })
+
+  it('TimeExplorer.constructDate() constructs a date.', () =>{
+    let constructedDate = explorer.constructDate();
+    expect(constructedDate).toEqual(null);
+    constructedDate = explorer.constructDate(year=6);
+    let date = new Date("0006-01-01T00:00");
+    expect(constructedDate).toEqual(date);
+    constructedDate = explorer.constructDate(year=-6);
+    date = new Date("0000-01-01T00:00");
+    date.setFullYear(-6);
+    expect(constructedDate).toEqual(date);
+    constructedDate = explorer.constructDate(year=1987);
+    date = new Date("1987-01-01T00:00");
+    expect(constructedDate).toEqual(date);
   })
 
 
