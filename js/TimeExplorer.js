@@ -4,11 +4,7 @@
  * @param {array} values - Array of values for output array
  */
 function zip_arrays(keys, values) {
-  var returnValues = {};
-  values.forEach(function(val, i) {
-    returnValues[keys[i]] = val;
-  });
-  return returnValues
+  return Object.assign(...keys.map((v,i) => ( {[v]: values[i]} )));
 }
 
 /**
@@ -32,62 +28,30 @@ function get_url_params() {
  * @param {string} timestring - A string representing a time, such as "10:30am"
  */
 function timeParse(timestring) {
-  var ampm_match = timestring.match(/(.*)[AP]M$/);
-  if (ampm_match) {
-    var pm_match = timestring.match(/(.*)pm\s*$/i);
-    if (pm_match) {
-      var timeArray = pm_match[1].split(':');
-      if (timeArray.length == 2) {
-        var hour = parseInt(timeArray[0])+12;
-        var minute = parseInt(timeArray[1]);
-        if (hour == 24) {
-          hour = 12;
-        }
-        return [hour,minute];
-      } else {
-        return null;
-      }
-    } else {
-      var timeArray = ampm_match[1].split(':');
-      if (timeArray.length == 2) {
-        var hour = parseInt(timeArray[0]);
-        var minute = parseInt(timeArray[1]);
-        if (hour == 12) {
-          hour = 24;
-        }
-        return [hour,minute];
-      } else {
-        return null;
-      }
+  let pmMatch = timestring.match(/(.*)pm\s*$/i);
+  let timeArray = pmMatch ? pmMatch[1].split(':') : timestring.split(':');
+  if (timeArray.length === 2) {
+    let hour = pmMatch ? parseInt(timeArray[0])+12 : parseInt(timeArray[0]);
+    let minute = parseInt(timeArray[1]);
+    if (pmMatch && hour == 12) {
+      hour = 24;
     }
+    return [hour,minute]
   } else {
-    var timeArray = timestring.split(':');
-    if (timeArray.length == 2) {
-      var hour = parseInt(timeArray[0]);
-      var minute = parseInt(timeArray[1]);
-      return [hour,minute];
-    } else {
-      return null;
-    }
+    return null;
   }
 }
 
 /**
  * Zero-pads a number to a 4-digit string
  */
-function padToNDigit(number,nDigits) {
-  var str = "" + number
-  if (str[0] == "-" ){
-    str = str.slice(1);
-    var pad = Array(nDigits+1).join("0");
-    var ans = pad.substring(0, pad.length - str.length) + str;
-    ans = "-" + ans;
-    return ans
-  } else {
-    var pad = Array(nDigits+1).join("0");
-    var ans = pad.substring(0, pad.length - str.length) + str;
-    return ans
-  }
+function padToNDigit(number, nDigits) {
+  let str = String(number);
+  let currentLength = str[0] === '-' ? str.length - 1 : str.length;
+  let digits = nDigits - (currentLength - 1);
+  let pad = Array(digits).join("0");
+  let insert = str[0] === "-" ? 1 : 0;
+  return str.slice(0, insert) + pad + str.slice(insert);
 }
 
 /**
@@ -95,11 +59,7 @@ function padToNDigit(number,nDigits) {
  * @param {string} id_string - string to be modified
  */
 function plainId(id_string) {
-  if (id_string.startsWith('#')) {
-    return id_string.slice(1);
-  } else {
-    return id_string;
-  }
+  return id_string.startsWith('#') ? id_string.slice(1) : id_string;
 }
 
 /**
@@ -110,33 +70,27 @@ function plainId(id_string) {
  * @param {datetime} startDate
  * @param {datetime} endDate
  */
-function GetDisplayDate(row,startDate,endDate) {
-  if (startDate == null) {
-    return null;
-  }
-  var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-  displayDate = "";
-  if (row['Month'] && row['Month'] != "") { displayDate += months[startDate.getMonth()]+" "; }
-  if (row['Day']   && row['Day'] != "")   { displayDate += startDate.getDate()+", "; }
-  if (row['Year']  && row['Year'] != "")  { displayDate += startDate.getFullYear(); }
-  if (row['Time']  && row['Time'] != "")  {
-    displayDate += " at " + startDate.getHours() + ":";
-    var minutes = String(startDate.getMinutes()).length == 1 ? "0"+String(startDate.getMinutes()) : String(startDate.getMinutes());
-    displayDate += minutes;
-  }
-  if (endDate) {
-    displayDate += " - ";
-    if (row['End Month'] && row['End Month'] != "") { displayDate += months[endDate.getMonth()]+" "; }
-    if (row['End Day']   && row['End Day'] != "")   { displayDate += endDate.getDate()+", "; }
-    if (row['End Year']  && row['End Year'] != "")  { displayDate += endDate.getFullYear(); }
-    if (row['End Time']  && row['End Time'] != "")  {
-      displayDate += " at " + endDate.getHours() + ":";
-      var minutes = String(endDate.getMinutes()).length == 1 ? "0"+String(endDate.getMinutes()) : String(endDate.getMinutes());
-      displayDate += minutes;
-     }
-  }
-  return displayDate;
-}
+ function GetDisplayDate(row, startDate, endDate) {
+   if (startDate == null) {return null;}
+   let displayDate = "";
+   displayDate = appendDate(row, displayDate, startDate, "");
+   if(endDate != null) {displayDate = appendDate(row, displayDate, endDate, "End ");}
+   return displayDate;
+
+   function appendDate(row, displayDate, date, rowIndicator) {
+     const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+     if (rowIndicator === "End ") {displayDate += " - ";}
+     if (row[rowIndicator + 'Month'] && row[rowIndicator + 'Month'] != "") { displayDate += months[date.getMonth()]+" "; }
+     if (row[rowIndicator + 'Day']   && row[rowIndicator + 'Day'] != "")   { displayDate += date.getDate()+", "; }
+     if (row[rowIndicator + 'Year']  && row[rowIndicator + 'Year'] != "")  { displayDate += date.getFullYear(); }
+     if (row[rowIndicator + 'Time']  && row[rowIndicator + 'Time'] != "")  {
+       displayDate += " at " + date.getHours() + ":";
+       let minutes = String(date.getMinutes()).length == 1 ? "0"+String(date.getMinutes()) : String(date.getMinutes());
+       displayDate += minutes;
+      }
+     return displayDate;
+   }
+ }
 
 /**
  * // TODO: What is this function for?
@@ -161,9 +115,7 @@ function testFilter(self) {
  * @param {string} displayDate - String representing date as it should be displayed
  */
 function GetDisplayTitle(row,displayDate) {
-  var output = "<div class=\"ft-item-tooltip\"><h1>"+row['Headline']+"</h1>";
-  output += "<p>"+displayDate+"</p></div>"
-  return output;
+  return "<div class=\"ft-item-tooltip\"><h1>" + row['Headline'] + "</h1><p>"+displayDate+"</p></div>";
 }
 
 /**
@@ -321,12 +273,7 @@ class TimeExplorer {
   }
 
   get_tag_col() {
-    var url_params = get_url_params();
-    if ('tag_col' in url_params) {
-      return url_params['tag_col'];
-    } else {
-      return 'Tags';
-    }
+    return 'tag_col' in get_url_params() ? url_params['tag_col'] : 'Tags';
   }
 
   /**
@@ -392,9 +339,8 @@ class TimeExplorer {
    *
    */
   create_timeline(options) {
-    var container = document.getElementById('ft-visualization');
-    var timeline = new vis.Timeline(container,options.timelineOptions);
-    return timeline;
+    let container = document.getElementById('ft-visualization');
+    return new vis.Timeline(container,options.timelineOptions);
   }
 
   /**
@@ -571,15 +517,14 @@ class TimeExplorer {
    * @param {string} sheet_id - ID of Google spreadsheet containing data
    */
   get_sheet_data(sheet_id) {
-    var self = this;
-    var dfd = $.Deferred();
-    var request_url = `https://sheets.googleapis.com/v4/spreadsheets/${sheet_id}/values/A:ZZZ?key=${this.api_key}`;
+    let self = this;
+    let dfd = $.Deferred();
+    const request_url = `https://sheets.googleapis.com/v4/spreadsheets/${sheet_id}/values/A:ZZZ?key=${this.api_key}`;
     $.getJSON(request_url).done(function(data) {
-      var columns = data.values[0];
-      for (var i = 1; i < data.values.length; i++) {
-        var values = zip_arrays(columns, data.values[i]);
-        self.sheet_data.push(values);
-      };
+      let columns = data.values[0];
+      self.sheet_data = data.values.slice(1).map( (item)=> {
+        return zip_arrays(columns,item);
+      });
       dfd.resolve();
     });
     return dfd.promise();
@@ -607,12 +552,10 @@ class TimeExplorer {
    * @uses get_sheet_data
    */
   get_all_sheet_data() {
-    var self = this;
-    var promises = [];
-    for (var i = 0; i < this.sheet_ids.length; i++) {
-      var sheet_id = this.sheet_ids[i];
-      promises.push(this.get_sheet_data(sheet_id));
-    };
+    let self = this;
+    const promises = this.sheet_ids.map( (id) => {
+      return this.get_sheet_data(id);
+    });
     return $.when.apply($,promises);
   };
 
@@ -812,27 +755,23 @@ class TimeExplorer {
    * Uses groups from Timeline JS to color the timeline.
    */
   set_groups(self) {
-    var groups = [];
-    for (var i = 0; i < self.items.length; i++) {
-      if (self.items[i]['sheet_group']) {
-        var group = self.items[i]['sheet_group'];
-        var slug = self.slugify(group);
-        if ($.inArray(group,groups) == -1) {
-          groups.push(group);
-        }
-        self.items[i]['className'] = slug;
+    let groups = self.items.map( (item)=> {
+      if (item['sheet_group']) {
+        item['className'] = self.slugify(item['sheet_group']);
+        return item['sheet_group'];
       } else {
-        self.items[i]['className'] = "Ungrouped";
-        self.items[i]['group_slug'] = "Ungrouped";
-        if ($.inArray('Ungrouped',groups) == -1) {
-          groups.push("Ungrouped");
-        }
+        item['className'] = "Ungrouped";
+        item['group_slug'] = "Ungrouped";
+        return "Ungrouped";
       }
-    }
+    });
+    groups.filter(self.onlyUnique);
     groups.sort();
     self.setup_group_ui(self, groups);
     return groups;
   }
+
+
 
   /**
    * Sets up color scheme and filters for groups.
@@ -882,19 +821,15 @@ class TimeExplorer {
    * Sets up tags to be used as filters
    */
   set_tags(self) {
-     var tags = [];
-     for (var i = 0; i < self.items.length; i++) {
-       if (self.items[i]['tags']) {
-         var these_tags = self.items[i]['tags'];
-         var slugs = these_tags.map(self.slugify);
-         tags = tags.concat(these_tags);
-         if (self.items[i]['className']) {
-           self.items[i]['className'] = self.items[i]['className'] + ' ' + slugs.join(' ');
-         } else {
-           self.items[i]['className'] = slugs.join(' ');
-         }
+    let tags = [];
+    self.items.forEach( (item)=> {
+       if (item['tags']) {
+         let slugs = item['tags'].map(self.slugify);
+         let concatter = item['classname'] ? item['classname'] : '';
+         item['classname'] = concatter + ' ' + slugs.join(' ');
+         tags = tags.concat(item['tags']);
        }
-     }
+     });
      tags = tags.filter( self.onlyUnique );
      tags.sort();
      self.setup_filters(self,tags,"Tags");
@@ -981,23 +916,16 @@ class TimeExplorer {
    */
   set_filters(slug, self) {
     // Set Group filters
-    var activeGroups = [];
-    var groupCheckboxes = $(".Groups input.filter-checkbox");
-    for (var i = 0; i < groupCheckboxes.length; i++) {
-      if (groupCheckboxes[i].checked) {
-        activeGroups.push(groupCheckboxes[i].value);
-      }
-    }
-    self.filters.activeGroups = activeGroups;
+    const groupCheckboxes = $(".Groups input.filter-checkbox");
+    self.filters.activeGroups = Array.prototype.map.call(groupCheckboxes, (box)=> {
+      if (box.checked) {return box.value;}
+    });
     // Set Tag filters
-    var activeTags = [];
-    var tagCheckboxes = $(".Tags input.filter-checkbox");
-    for (var i = 0; i < tagCheckboxes.length; i++) {
-      if (tagCheckboxes[i].checked) {
-        activeTags.push(tagCheckboxes[i].value);
-      }
-    }
-    self.filters.activeTags = activeTags;
+    const tagCheckboxes = $(".Tags input.filter-checkbox");
+    self.filters.activeTags = Array.prototype.map.call(tagCheckboxes, (box)=> {
+      if(box.checked) {return box.value;}
+    });
+
     if ($("#tag-options").length > 0) {
       if ($("#tag-option-any")[0].checked) {
         self.filters.tagOptions = "any";
@@ -1106,14 +1034,8 @@ class TimeExplorer {
    * @param {string} text - the text to be made into a slug.
    */
   slugify(text) {
-    if (typeof(text) == "string") {
-      var output = text.trim()
-      var pattern = /[\s~!@$%^&*()+=,./';:"?><[\] \\{}|`#]+/g
-      output = output.replace(pattern,'_')
-      return output
-    } else {
-      return "";
-    }
+    const pattern = /[\s~!@$%^&*()+=,./';:"?><[\] \\{}|`#]+/g;
+    return typeof(text) == "string" ? text.trim().replace(pattern,'_') : "";
   }
 
   /**
