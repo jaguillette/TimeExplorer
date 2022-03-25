@@ -160,11 +160,11 @@ $(".timeline-setup-text-input").on('change', function() {
     var sheetId = sharingUrl.match(pattern);
     var baseurl = `${location.protocol}//${location.origin}${location.pathname}`
     if (sheetId && tagColumn) {
-      var url = `${baseurl}/timeline?tl_sheet=${sheetId}&tag_col=${tagColumn}`;
+      var url = `${baseurl}timeline?tl_sheet=${sheetId}&tag_col=${tagColumn}`;
       $("#display_link").attr("href",url);
       $("#display_link").html(url);
     } else if (sheetId) {
-      var url = `${baseurl}/timeline?tl_sheet=${sheetId}`;
+      var url = `${baseurl}timeline?tl_sheet=${sheetId}`;
       $("#display_link").attr("href",url);
       $("#display_link").html(url);
     } else {
