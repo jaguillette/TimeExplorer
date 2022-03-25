@@ -158,12 +158,13 @@ $(".timeline-setup-text-input").on('change', function() {
   if (sharingUrl) {
     var pattern = /([a-zA-Z0-9_-]{44})/g;
     var sheetId = sharingUrl.match(pattern);
+    var baseurl = `${location.protocol}//${location.origin}${location.pathname}`
     if (sheetId && tagColumn) {
-      var url = `${location.href}timeline?tl_sheet=${sheetId}&tag_col=&${tagColumn}`;
+      var url = `${baseurl}/timeline?tl_sheet=${sheetId}&tag_col=${tagColumn}`;
       $("#display_link").attr("href",url);
       $("#display_link").html(url);
     } else if (sheetId) {
-      var url = `${location.href}timeline?tl_sheet=${sheetId}`;
+      var url = `${baseurl}/timeline?tl_sheet=${sheetId}`;
       $("#display_link").attr("href",url);
       $("#display_link").html(url);
     } else {
